@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { TokenService } from 'src/app/shared/service/token.service';
 import { environment } from 'src/environments/environment';
-
+import * as CryptoJS from 'crypto-js'; 
 
 const CHARACTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
