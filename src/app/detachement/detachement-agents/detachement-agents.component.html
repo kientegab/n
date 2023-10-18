@@ -60,9 +60,10 @@
       <tr>
         <td>{{ demande.numero }}</td>
         <td>{{ demande.dateDemande }}</td>
-        <td>{{ demande.structDestination }}</td>
-        <td>{{ demande.dateEffet }}</td>
-        <td>{{ demande.status }}</td>
+        <td>{{ demande.destination.libelle}}</td>
+        <td>{{ demande.dateEffet }}</td> 
+        <td>{{ demande.statut }}</td>
+
         <td class="actionsStyle">
           <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetailAgent(demande)"
             

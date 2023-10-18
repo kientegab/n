@@ -56,7 +56,7 @@ export class AviserDetachementComponent {
       if (this.demande.id) {
         console.log("historique ===========", this.historique);
         this.demande.historique=this.historique;
-        this.demandeService.aviserSH(this.demande).subscribe(
+        this.demandeService.aviserSG(this.demande).subscribe(
           {
             next: (response: any) => {
               this.dialogRef.close(response);

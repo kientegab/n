@@ -29,7 +29,7 @@ export class DetachementAgentsComponent {
   enableBtnInfo = true;
   enableBtnEdit = true;
   enableBtnDelete = true;
-  enableBtnValider=true;
+  enableBtnValider=false;
   isLoading!: boolean;
   isOpInProgress!: boolean;
   isDialogOpInProgress!: boolean;

@@ -12,7 +12,7 @@ export class ICircuit{
 export class Circuit implements ICircuit{
     constructor(
         public id?: number, 
-        public libelle ?: string,
+        public position ?: string,
         public statut ?: boolean,
         public delai ?: string,
         public parent ?: ICircuit,

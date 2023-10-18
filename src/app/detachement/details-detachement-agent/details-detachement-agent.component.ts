@@ -9,6 +9,8 @@ import { ReceptionDetachementComponent } from '../reception-detachement/receptio
 import { ValiderProjetComponent } from '../valider-projet/valider-projet.component';
 import {IPieceJointe} from "../../shared/model/pieceJointe.model";
 import {PieceService} from "../../shared/service/piece.service";
+import { IHistorique } from 'src/app/shared/model/historique.model';
+import { TokenService } from 'src/app/shared/service/token.service';
 
 @Component({
   selector: 'app-details-detachement-agent',
@@ -22,16 +24,20 @@ export class DetailsDetachementAgentComponent {
   idDmd: number | undefined;
   isOpInProgress!: boolean;
   isDialogOpInProgress!: boolean;
+  isLoggedIn = false;
   showDialog = false;
   message: any;
   timeoutHandle: any;
   demandes: any;
-    pieceJointes: IPieceJointe[] =[];
+  pieceJointes: IPieceJointe[] =[];
+  historiques: IHistorique[] =[];
+  matricule!: string;
 
   constructor(
     private dialogRef: DynamicDialogRef,
     private dialogService: DialogService,
     private demandeService: DemandeService,
+    private tokenStorageService: TokenService,
     private route: ActivatedRoute,
     private router: Router,
     private pieceService: PieceService,
@@ -42,6 +48,13 @@ export class DetailsDetachementAgentComponent {
     // if (this.dynamicDialog.data) {
     //   this.demande = cloneDeep(this.dynamicDialog.data);
     // }
+    this.isLoggedIn = !!this.tokenStorageService.getAccessToken();
+
+    if(this.isLoggedIn) {
+      const user = this.tokenStorageService.getUser();
+      this.matricule = user.matricule;
+    }
+
     this.idDmd = +this.route.snapshot.paramMap.get('id')!;
     this.getDemande();
   }
@@ -70,7 +83,7 @@ export class DetailsDetachementAgentComponent {
   openModalAviser(demande: IDemande): void {
     this.dialogService.open(AviserDetachementComponent,
     {
-      header: 'Aviser une demande',
+      header: 'Aviser une demande (Profil SG)',
       width: '40%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
@@ -90,7 +103,7 @@ export class DetailsDetachementAgentComponent {
    openModalValiderProjet(demande: IDemande): void {
     this.dialogService.open(ValiderProjetComponent,
     {
-      header: 'Valider un projet (Profil RH) ',
+      header: 'Viser un projet (Profil DCMEF) ',
       width: '40%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
@@ -130,7 +143,8 @@ export class DetailsDetachementAgentComponent {
     this.demandeService.find(this.idDmd!).subscribe(result => {
       if (result && result.body) {
         this.demande = result.body;
-        this.getPieceByDmd(this.demande.id!)
+        this.getPieceByDmd(this.demande.id!);
+        this.getHistoriquesByDmd(this.demande.id!)
       }
     });
   }
@@ -143,14 +157,23 @@ export class DetailsDetachementAgentComponent {
       });
   }
 
-    async voirPiece(filname?: string): Promise<void> {
-            if (filname) {
-                const link = await this.pieceService.visualiser(
-                    filname
-                );
-                if (link) {
-                    window.open(link, '_blank');
-                }
-            }
-    }
+  async voirPiece(filname?: string): Promise<void> {
+          if (filname) {
+              const link = await this.pieceService.visualiser(
+                  filname
+              );
+              if (link) {
+                  window.open(link, '_blank');
+              }
+          }
+  }
+
+  getHistoriquesByDmd(dmdId: number){
+    this.demandeService.findHistoriquesByDemande(dmdId).subscribe(result => {
+        if (result && result.body) {
+            this.historiques = result.body;
+            console.log("Listes historiques ======", this.historiques);
+        }
+    });
+}
 }

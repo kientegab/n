@@ -6,6 +6,7 @@ import { createRequestOption } from '../util/request-util';
 import { LazyLoadEvent } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import {IPieceJointe} from "../model/pieceJointe.model";
+import { IHistorique } from '../model/historique.model';
 
 type EntityResponseType = HttpResponse<IDemande>;
 type EntityArrayResponseType = HttpResponse<IDemande[]>;
@@ -15,6 +16,7 @@ type EntityArrayResponseType = HttpResponse<IDemande[]>;
 const demandeUrl = environment.detachementUrl+'/demandes';
 const reportUrl= environment.reportingUrl;
 const pieceUrl= environment.detachementUrl+'/piece-jointes';
+const historiqueUrl= environment.detachementUrl+'/positions';
 
 @Injectable({
   providedIn: 'root'
@@ -61,10 +63,6 @@ export class DemandeService {
     return this.http.get<IDemande[]>(demandeUrl+'/list', { observe: 'response' });
   }
 
-  // reception(groupe: IDemande): Observable<EntityResponseType> {
-  //   return this.http.post<IDemande>(demandeUrl+'/receptionner', groupe, { observe: 'response' });
-  // }
-
   reception(groupe: IDemande): Observable<EntityResponseType> {
     return this.http.post<IDemande>(`${demandeUrl}/receptionner/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
@@ -81,11 +79,19 @@ export class DemandeService {
     return this.http.post<IDemande>(`${demandeUrl}/avis-dgfp/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
 
+  aviserSG(groupe: IDemande): Observable<EntityResponseType> {
+    return this.http.post<IDemande>(`${demandeUrl}/valider-demande/${groupe.id}`, groupe.historique, { observe: 'response' });
+  }
+
   statDemande(){
     return this.http.get<IDemande[]>(reportUrl+'/check-total-globale', { observe: 'response' });
   }
 
-    findPiecesByDemande(idDemande: number): Observable<HttpResponse<IPieceJointe[]>> {
-        return this.http.get<IPieceJointe[]>(`${pieceUrl}/list/${idDemande}`, { observe: 'response' });
-    }
+  findPiecesByDemande(idDemande: number): Observable<HttpResponse<IPieceJointe[]>> {
+      return this.http.get<IPieceJointe[]>(`${pieceUrl}/list/${idDemande}`, { observe: 'response' });
+  }
+
+  findHistoriquesByDemande(idDemande: number): Observable<HttpResponse<IHistorique[]>> {
+    return this.http.get<IHistorique[]>(`${historiqueUrl}/list/${idDemande}`, { observe: 'response' });
+  }
 }

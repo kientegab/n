@@ -20,8 +20,8 @@
         <div class="field col-6 md:col-6">
             <label for="avis">Validation</label>
             <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}"
-              [options]="avis"
-              [(ngModel)]="historique.avis" optionLabel="label" inputId="avis"
+              [options]="receptions"
+              [(ngModel)]="historique.avis" optionValue="code" optionLabel="lib" inputId="avis"
               name="avis" placeholder="Sélectionner le type de validation..." [filter]="true" appendTo="body"
               [showClear]="true">
             </p-dropdown>

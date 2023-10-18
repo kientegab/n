@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash';
 import { ConfirmationService, SelectItem } from 'primeng/api';
 import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
 import { IDemande, Demande } from 'src/app/shared/model/demande.model';
-import { IHistorique, Historique, AVIS } from 'src/app/shared/model/historique.model';
+import { IHistorique, Historique, AVIS, RECEPTIONS } from 'src/app/shared/model/historique.model';
 
 @Component({
   selector: 'app-valider-projet',
@@ -24,6 +24,7 @@ export class ValiderProjetComponent {
   typeDemandes: any;
   message: { severity: string; summary: any; } | undefined;
   avis = AVIS;
+  receptions = RECEPTIONS;
   commentaire: string | undefined;
   historique:IHistorique = new Historique();
   historiques: IHistorique[] = []; 
@@ -47,11 +48,6 @@ export class ValiderProjetComponent {
     this.dialogRef.close();
     this.dialogRef.destroy();
   }
-
-  // avis: SelectItem[] = [
-  //   { label: 'Valider ', value: avis.avis1 },
-  //   { label: 'Rejetter', value: avis.avis2 },
-  // ];
 
   // receptions: SelectItem[] = [
   //   { label: 'conforme ', value: receptions.reception1 },

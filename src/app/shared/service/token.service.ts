@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 const ACCESS_TOKEN = 'access_token';
 const REFRESH_TOKEN = 'refresh_token';
 const CODE_VERIFIER = 'code_verifier';
+const USER_KEY = 'auth_user';
 
 @Injectable({
   providedIn: 'root'
@@ -72,4 +73,19 @@ export class TokenService {
   deleteVerifier(): void {
     localStorage.removeItem(CODE_VERIFIER);
   }
+
+  saveUser(user: any): void {
+    localStorage.removeItem(USER_KEY);
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+  }
+
+  getUser(): any {
+    const user = localStorage.getItem(USER_KEY);
+    if(user) {
+      return JSON.parse(user);
+    }
+
+    return {};
+  }
+  
 }

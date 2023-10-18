@@ -128,6 +128,7 @@ export class DetailsDetachementComponent {
     this.demandeService.find(this.idDmd!).subscribe(result => {
       if (result && result.body) {
         this.demande = result.body;
+        console.log("DEMANDE ========", this.demande);
       }
     });
   }

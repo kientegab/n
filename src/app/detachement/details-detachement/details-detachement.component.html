@@ -1,70 +1,100 @@
 <p-card>
   <!-- formulaire d'affichage du détail -->
-  <ng-template pTemplate="header">
+  <!-- <ng-template pTemplate="header">
       <span class="p-mr-auto"> <b>DETAILS DEMANDE</b></span>
-  </ng-template>
-    <!-- <p-divider></p-divider> -->
-    <hr>
-    <div class="row">
-      <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Numero demande:</span> {{demande.numero}}</span>
-      </div>
-      <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Date de demande:</span> {{demande.dateDemande}}</span>
-      </div>
-    </div>
+  </ng-template> -->
 
-    <div class="row">
-      <div class="col-md-6 details-item">
-          <span class="va-m"><span class="font-bold">Type de demande:</span> {{demande.typeDemande?.libelle}}</span>
-        </div>
-      <div class="col-md-6 details-item">
-        <!-- <span class="va-m"><span class="font-bold">Motif:</span>{{demande.typeDemande?.motifDTOs?.libelle}}</span> -->
-        <span class="va-m"><span class="font-bold">Motif : </span>Détachement pour exercer un mandat syndical</span>
-      </div>
-    </div>
+  <p-fieldset legend="Informations générales" [toggleable]="true">
+      <!-- <div class="row"> -->
+          <!-- <div class="col-md-12">
+              <div class="table-responsive">
+                  <table class="table table-sm no-border">
+                      <tbody>
+                      <tr>
+                          <th>Code</th>
+                          <td>: {{ typedemande.code}}</td>
+                          <th>Libelle</th>
+                          <td>: {{ typedemande.libelle}}</td>
+                          <th>Plafond année</th>
+                          <td>: {{ typedemande.plafondAnnee}}</td>
+                      </tr>
+                  </table>
+              </div>
+          </div> -->
+          <div class="row">
+            <div class="col-md-6 details-item">
+              <span class="va-m"><span class="font-bold">Numero demande : </span> {{ demande.numero }}</span>
+            </div>
+            <div class="col-md-6 details-item">
+              <span class="va-m"><span class="font-bold">Date de demande : </span> {{ demande.dateDemande }}</span>
+            </div>
+          </div>
+      
+          <div class="row">
+            <div class="col-md-6 details-item">
+                <span class="va-m"><span class="font-bold">Type de demande : </span> {{ demande.typeDemande?.libelle }}</span>
+              </div>
+            <div class="col-md-6 details-item">
+              <span class="va-m"><span class="font-bold">Motif : </span>{{ demande.motif?.libelle }}</span>
+            </div>
+          </div>
+      
+          <div class="row">
+            <div class="col-md-6 details-item">
+              <span class="va-m"><span class="font-bold">Structure de disponibilité : </span> {{ demande.destination?.libelle }}</span>
+            </div>
+            <div class="col-md-6 details-item">
+              <span class="va-m"><span class="font-bold">Date d'effet : </span> {{ demande.dateEffet }}</span>
+            </div>
+          </div>
+      
+          <div class="row">
+            <div class="col-md-6 details-item">
+              <span class="va-m"><span class="font-bold">Matricule agent : </span> {{ demande.agent?.matricule }}</span>
+            </div>
+            <div class="col-md-6 details-item">
+              <span class="va-m"><span class="font-bold">Nom agent : </span> {{ demande.agent?.nom }} {{ demande.agent?.prenom }}</span>
+            </div>
+          </div>
+      
+          <div class="row">
+            <div class="col-md-6 details-item">
+              <span class="va-m"><span class="font-bold">Statut demande : </span> {{ demande.statut }}</span>
+            </div>
+          </div>
+      <!-- </div> -->
+  </p-fieldset>
+  <br><br>
+  <p-fieldset legend="Liste des avis" [toggleable]="true">
+      <p-table [value]="demandes" [tableStyle]="{ 'min-width': '50rem' }" [styleClass]="'p-datatable-sm'">
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Code</th>
+                  <th>Libelle</th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-product>
+              <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+              </tr>
+          </ng-template>
+      </p-table>
+  </p-fieldset>
+  <br><br>
+  <p-fieldset legend="Liste des pièces" [toggleable]="true">
+      <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+  </p-fieldset>
 
-    <div class="row">
-      <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Structure de détachement : </span> {{demande.structure}}</span>
-      </div>
-      <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Date d'effet:</span> {{demande.dateEffet}}</span>
-      </div>
+  <p-divider></p-divider>
+  <div class="row justify-content-center">
+    <div class="p-ml-auto text-right">
+      <button description="reset" icon="pi pi-times" label="Fermer" (click)="fermer()" class="p-button-danger mr-2" pButton></button>
     </div>
-
-    <div class="row">
-      <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Matricule agent:</span> {{ demande.agent?.matricule }}</span>
-      </div>
-      <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Nom agent:</span> {{ demande.agent?.nom }} {{ demande.agent?.prenom }}</span>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Statut demande:</span> {{demande.statut}}</span>
-      </div>
-    </div>
-    
-    <p-divider></p-divider>
-    <div class="row justify-content-center">
-      <!--<div class="p-ml-auto text-right">
-          <button description="receptionner" icon="pi pi-folder-open" label="Receptionner" (click)="openModalReceptionner(demande)" class="p-button-primary mr-2"
-          pButton></button>
-      </div>
-      <div class="p-ml-auto text-right">
-          <button description="aviser" icon="pi pi-pencil" label="Aviser" (click)="openModalAviser(demande)" class="p-button-success mr-2"
-          pButton></button>
-      </div>
-      <div class="p-ml-auto text-right">
-        <button description="elaborer" icon="pi pi-pencil" label="Elaborer" (click)="openModalElaborerProjet(demande)" class="p-button-success mr-2"
-        pButton></button>
-    </div>-->
-      <div class="p-ml-auto text-right">
-          <button description="reset" icon="pi pi-times" label="Fermer" (click)="fermer()" class="p-button-danger mr-2"
-          pButton></button>
-      </div>
-    </div> 
+  </div>
+  
 </p-card>

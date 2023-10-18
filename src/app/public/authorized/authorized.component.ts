@@ -32,6 +32,8 @@ export class AuthorizedComponent implements OnInit {
     this.authService.findToken(code, code_verifier).subscribe(
       data => {
        this.tokenService.setTokens(data.access_token, data.refresh_token);
+       this.tokenService.saveUser(data);
+       console.log("========tok======", data);
        this.router.navigate(['']);
       },
       err => {

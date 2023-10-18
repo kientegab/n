@@ -1,96 +1,174 @@
 <p-card>
-    <!-- formulaire d'affichage du détail -->
-    <ng-template pTemplate="header">
-        <span class="p-mr-auto"> <b>DETAILS DEMANDE</b></span>
-    </ng-template>
-      <!-- <p-divider></p-divider> -->
-      <hr>
-      <div class="row">
-        <div class="col-md-6 details-item">
-          <span class="va-m"><span class="font-bold">Numero demande:</span> {{demande.numero}}</span>
-        </div>
-        <div class="col-md-6 details-item">
-          <span class="va-m"><span class="font-bold">Date de demande:</span> {{demande.dateDemande}}</span>
-        </div>
+  <!-- formulaire d'affichage du détail -->
+  <ng-template pTemplate="header">
+      <span class="p-mr-auto"> <b>DETAILS DEMANDE</b></span>
+  </ng-template>
+  
+  <p-fieldset legend="Informations générales" [toggleable]="true">
+    <div class="row">
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">Numero demande : </span> {{ demande.numero }}</span>
       </div>
-
-      <div class="row">
-        <div class="col-md-6 details-item">
-            <span class="va-m"><span class="font-bold">Type de demande:</span> {{demande.typeDemande?.libelle}}</span>
-          </div>
-        <div class="col-md-6 details-item">
-          <!-- <span class="va-m"><span class="font-bold">Motif:</span>{{demande.typeDemande?.motifDTOs?.libelle}}</span> -->
-          <span class="va-m"><span class="font-bold">Motif : </span>Détachement pour exercer un mandat syndical</span>
-        </div>
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">Date de demande : </span> {{ demande.dateDemande }}</span>
       </div>
-
-      <div class="row">
-        <div class="col-md-6 details-item">
-          <span class="va-m"><span class="font-bold">Structure de détachement : </span> {{demande.destination!.libelle}}</span>
-        </div>
-        <div class="col-md-6 details-item">
-          <span class="va-m"><span class="font-bold">Date d'effet:</span> {{demande.dateEffet}}</span>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 details-item">
-          <span class="va-m"><span class="font-bold">Matricule agent:</span> {{ demande.agent?.matricule }}</span>
-        </div>
-        <div class="col-md-6 details-item">
-          <span class="va-m"><span class="font-bold">Nom agent:</span> {{ demande.agent?.nom }} {{ demande.agent?.prenom }}</span>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 details-item">
-          <span class="va-m"><span class="font-bold">Statut demande:</span> {{demande.statut}}</span>
-        </div>
-      </div>
+    </div>
 
     <div class="row">
-        <table class="table table-sm">
+      <div class="col-md-6 details-item">
+          <span class="va-m"><span class="font-bold">Type de demande : </span> {{ demande.typeDemande?.libelle }}</span>
+        </div>
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">Motif : </span>{{ demande.motif?.libelle }}</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">Structure de disponibilité : </span> {{ demande.destination?.libelle }}</span>
+      </div>
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">Date d'effet : </span> {{ demande.dateEffet }}</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">Matricule agent : </span> {{ demande.agent?.matricule }}</span>
+      </div>
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">Nom agent : </span> {{ demande.agent?.nom }} {{ demande.agent?.prenom }}</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">Statut demande : </span> {{ demande.statut }}</span>
+      </div>
+    </div>
+  </p-fieldset>
+  <br>
+
+  <p-fieldset legend="Liste des pièces jointes" [toggleable]="true">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-sm no-border">
             <thead>
-            <tr>
+              <tr>
                 <th scope="col">#</th>
                 <th scope="col">Fichier</th>
                 <th scope="col">Action</th>
-            </tr>
+              </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let item of pieceJointes;let i = index">
+              <tr *ngFor="let item of pieceJointes;let i = index">
                 <th scope="row">{{i+1}}</th>
                 <td>{{item.libelle}}</td>
                 <td>
-                
-                  
-                  <button description="Visualiser" icon="pi pi-eye" label="Visualiser"  (click)="voirPiece(item.url)"  class="p-button-primary mr-2"pButton > 
-                 
-                </button>
-       
-              </td>
-            </tr>
+                  <button description="Visualiser" icon="pi pi-eye" label="Visualiser"  (click)="voirPiece(item.url)"  class="p-button-primary mr-2"pButton >
+                  </button>
+                </td>
+              </tr>
             </tbody>
-        </table>
+          </table>
+        </div>
+      </div>
     </div>
+  </p-fieldset>
+  <br>
 
-      <p-divider></p-divider>
-      <div class="row justify-content-center">
-        <div class="p-ml-auto text-right">
-            <button description="receptionner" icon="pi pi-folder-open" label="Receptionner" (click)="openModalReceptionner(demande)" class="p-button-primary mr-2"
-            pButton></button>
+  <p-fieldset legend="Liste des avis" [toggleable]="true">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-sm no-border">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Position</th>
+                <th scope="col">Avis</th>
+                <th scope="col">Commentaire</th>
+                <!-- <th scope="col">Action</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of historiques;let i = index">
+                <th scope="row">{{i+1}}</th>
+                <td>{{item.circuit?.position}}</td>
+                <td>{{item.avis}}</td>
+                <td>{{item.commentaire}}</td>
+                <!-- <td>
+                  <button description="Visualiser" icon="pi pi-eye" label="Visualiser"  (click)="voirPiece(item.url)"  class="p-button-primary mr-2"pButton >
+                  </button>
+                </td> -->
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="p-ml-auto text-right">
-            <button description="aviser" icon="pi pi-pencil" label="Aviser" (click)="openModalAviser(demande)" class="p-button-success mr-2"
-            pButton></button>
-        </div>
-        <div class="p-ml-auto text-right">
-          <button description="elaborer" icon="pi pi-pencil" label="Elaborer" (click)="openModalElaborerProjet(demande)" class="p-button-success mr-2"
-          pButton></button>
       </div>
-        <div class="p-ml-auto text-right">
-            <button description="reset" icon="pi pi-times" label="Fermer" (click)="fermer()" class="p-button-danger mr-2"
-            pButton></button>
+    </div>
+  </p-fieldset>
+  <br>
+
+  <p-fieldset legend="Projet d'arrété" [toggleable]="true">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-sm no-border">
+            <thead>
+              <tr>
+                <!-- <th scope="col">#</th> -->
+                <th scope="col">Fichier</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <!-- <th scope="row">{{i+1}}</th> -->
+                <!-- <td>{{item.libelle}}</td> -->
+                <td> MFP_SPMABG_2023-0001.pdf</td>
+                <td>
+                  <button description="Visualiser" icon="pi pi-eye" label="Visualiser"  (click)="voirPiece('item.url')"  class="p-button-primary mr-2"pButton >
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-  </p-card>
+    </div>
+  </p-fieldset>
+
+  <p-divider></p-divider>
+  <div class="row justify-content-center">
+    <!-- <div class="p-ml-auto text-right">
+      <button description="receptionner" icon="pi pi-folder-open" label="Receptionner" (click)="openModalReceptionner(demande)" class="p-button-primary mr-2"
+      pButton></button>
+    </div> -->
+    <!-- <div class="p-ml-auto text-right">
+      <button description="aviser" icon="pi pi-pencil" label="Aviser" (click)="openModalAviser(demande)" class="p-button-success mr-2"
+      pButton></button>
+    </div> -->
+    <!-- <div class="p-ml-auto text-right">
+      <button description="elaborer" icon="pi pi-pencil" label="Elaborer" (click)="openModalElaborerProjet(demande)" class="p-button-success mr-2"
+      pButton></button>
+  </div> -->
+
+  <div class="p-ml-auto text-right">
+    <button description="aviser" icon="pi pi-pencil" label="Viser projet" (click)="openModalValiderProjet(demande)" class="p-button-success mr-2"
+    pButton></button>
+  </div>
+
+  <!-- <td class="actionsStyle">
+    <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetailAgent(demande)"
+    [enableBtnValider]="enableBtnValider" (valider)="openModalValiderProjet(demande)">
+    </app-actions-toolbar-iud>
+  </td> -->
+
+    <div class="p-ml-auto text-right">
+      <button description="reset" icon="pi pi-times" label="Fermer" (click)="fermer()" class="p-button-danger mr-2"
+      pButton></button>
+    </div>
+  </div>
+</p-card>

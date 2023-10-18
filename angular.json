@@ -34,7 +34,8 @@
                       ],
                       "scripts": [],
                       "allowedCommonJsDependencies": [
-                        "lodash"
+                        "lodash",
+                        "crypto-js"
                      ]
                   },
                   "configurations": {

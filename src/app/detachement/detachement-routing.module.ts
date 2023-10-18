@@ -9,30 +9,14 @@ import { ValiderProjetComponent } from './valider-projet/valider-projet.componen
 import { DetailsDetachementAgentComponent } from './details-detachement-agent/details-detachement-agent.component';
 
 const routes: Routes = [
-  {
-    path:'', component: DetachementComponent
-  },
-  {
-      path:'nouveau', component: CreerModifierDetachementComponent
-  },
-  {
-    path: 'edit/:id',  component: CreerModifierDetachementComponent
-  },
-  {
-    path:'agents', component: DetachementAgentsComponent
-  },
-  {
-    path: 'details/:id',  component: DetailsDetachementComponent
-  },
-  {
-    path: 'details-ags/:id',  component: DetailsDetachementAgentComponent
-  },
-  {
-    path: 'elaborer/:id',  component: ElaborerProjetComponent
-  },
-  {
-    path: 'valider/:id',  component: ValiderProjetComponent
-  }
+  { path: '', component: DetachementComponent },
+  { path: 'nouveau', component: CreerModifierDetachementComponent },
+  { path: 'edit/:id',  component: CreerModifierDetachementComponent },
+  { path: 'agents', component: DetachementAgentsComponent },
+  { path: 'details/:id',  component: DetailsDetachementComponent },
+  { path: 'details-ags/:id',  component: DetailsDetachementAgentComponent },
+  { path: 'elaborer/:id',  component: ElaborerProjetComponent },
+  { path: 'valider/:id',  component: ValiderProjetComponent }
 ];
 
 @NgModule({
