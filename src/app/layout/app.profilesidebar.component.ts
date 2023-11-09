@@ -16,7 +16,7 @@ export class AppProfileSidebarComponent {
         private router: Router,
         private authService: AuthenticationService
         ) {
-            this.findUser();
+            // this.findUser();
          }
 
     get visible(): boolean {

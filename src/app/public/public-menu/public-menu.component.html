@@ -80,11 +80,11 @@
         <div >
             <button pButton type="button" icon="pi pi-sign-in"
                 style="background-color: #f8f9fa; color: #756254;" pTooltip="Se connecter si vous avez déja un compte"
-                tooltipPosition="bottom"  *ngIf="!isLogged" (click)="onLogin()">se connecter
+                tooltipPosition="bottom"  *ngIf="!isLogged" (click)="login()">se connecter
             </button>
             <button pButton type="button" icon="pi pi-sign-in"
             style="background-color: #f8f9fa; color: #756254;" pTooltip="Se connecter si vous avez déja un compte"
-            tooltipPosition="bottom"  *ngIf="isLogged" (click)="onLogout()">se deconnecter
+            tooltipPosition="bottom"  *ngIf="isLogged" (click)="logout()">se deconnecter
             </button>  
             <button pButton type="button" icon="pi pi-user-plus"
                 style="background-color: #f8f9fa; color: #756254;" pTooltip="Creer Un Compte si vous n'en disposer pas"

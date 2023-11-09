@@ -6,6 +6,7 @@ import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { IDemande, Demande } from 'src/app/shared/model/demande.model';
 import { IHistorique, Historique, AVIS } from 'src/app/shared/model/historique.model';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
+import { TokenService } from 'src/app/shared/service/token.service';
 
 @Component({
   selector: 'app-aviser-detachement',
@@ -18,6 +19,8 @@ export class AviserDetachementComponent {
   @Input() data: IDemande = new Demande();
   isDialogOpInProgress: boolean | undefined;
   isOpInProgress: boolean | undefined;
+  isLoggedIn = false;
+  profil!: string;
   dialogErrorMessage: any;
   message: any;
   timeoutHandle: any;
@@ -28,10 +31,18 @@ export class AviserDetachementComponent {
   constructor(
     private dialogRef: DynamicDialogRef,
     private dynamicDialog:  DynamicDialogConfig,
-    private demandeService: DemandeService
+    private demandeService: DemandeService,
+    private tokenService: TokenService
   ) {}
 
   ngOnInit(): void {
+
+    this.isLoggedIn = !!this.tokenService.getToken();
+    if (this.isLoggedIn) {
+      const user = this.tokenService.getUser();
+      this.profil = user.profil;
+    }
+
     if (this.dynamicDialog.data) {
       this.demande = cloneDeep(this.dynamicDialog.data);
     }
@@ -56,20 +67,78 @@ export class AviserDetachementComponent {
       if (this.demande.id) {
         console.log("historique ===========", this.historique);
         this.demande.historique=this.historique;
-        this.demandeService.aviserSG(this.demande).subscribe(
-          {
-            next: (response: any) => {
-              this.dialogRef.close(response);
-              this.dialogRef.destroy();
-              this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
-             
-            },
-            error: (error: { error: { message: any; }; }) => {
-              console.error("error" + JSON.stringify(error));
-              this.isOpInProgress = false;
-              this.showMessage({ severity: 'error', summary: error.error.message });
+
+        if(this.profil === "SH") {
+          this.demandeService.aviserSH(this.demande).subscribe(
+            {
+              next: (response: any) => {
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
+              
+              },
+              error: (error: { error: { message: any; }; }) => {
+                console.error("error" + JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
+              }
             }
-          });
+          );
+        }
+
+        if(this.profil === "DRH") {
+          this.demandeService.aviserDRH(this.demande).subscribe(
+            {
+              next: (response: any) => {
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
+              
+              },
+              error: (error: { error: { message: any; }; }) => {
+                console.error("error" + JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
+              }
+            }
+          );
+        }
+
+        if(this.profil === "DGFP") {
+          this.demandeService.aviserDGFP(this.demande).subscribe(
+            {
+              next: (response: any) => {
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
+              
+              },
+              error: (error: { error: { message: any; }; }) => {
+                console.error("error" + JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
+              }
+            }
+          );
+        }
+
+        if(this.profil === "SG") {
+          this.demandeService.aviserSG(this.demande).subscribe(
+            {
+              next: (response: any) => {
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
+              
+              },
+              error: (error: { error: { message: any; }; }) => {
+                console.error("error" + JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
+              }
+            }
+          );
+        }
       }
     }
   }
@@ -84,9 +153,5 @@ export class AviserDetachementComponent {
       this.message = null;
     }, 5000);
   }
-  
-  // avis: SelectItem[] = [
-  //   { label: 'Avis favorable ', value: avis.avis1 },
-  //   { label: 'Avis defavorable', value: avis.avis2 },
-  // ];
+
 }

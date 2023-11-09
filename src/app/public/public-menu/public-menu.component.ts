@@ -54,6 +54,9 @@ export class PublicMenuComponent implements  OnInit {
     }
   
   
+    // login(){
+    //   this.router.navigate(['auth/login']);
+    // }
   
     onLogout(): void {
       location.href = this.logout_url;

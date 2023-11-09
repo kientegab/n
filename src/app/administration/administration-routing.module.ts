@@ -12,14 +12,12 @@ const routes: Routes = [
   { path: 'type-structures', data: {breadcrumb: 'Gestion des types de structures'}, loadChildren: () => import('./parametre/type-structure/type-structure.module').then(m => m.TypeStructureModule) },
   { path: 'type-demandes', data: {breadcrumb: 'Gestion des types de demandes'}, loadChildren: () => import('./parametre/type-demande/type-demande.module').then(m => m.TypeDemandeModule) },
 
-
-   { path: 'motifs', data: {breadcrumb: 'Gestion des motifs'}, loadChildren: () => import('./parametre/motif/motif.module').then(m => m.MotifModule) },
-
+  { path: 'motifs', data: {breadcrumb: 'Gestion des motifs'}, loadChildren: () => import('./parametre/motif/motif.module').then(m => m.MotifModule) },
   { path: 'pieces', data: {breadcrumb: 'Gestion des pieces'}, loadChildren: () => import('./parametre/piece/piece.module').then(m => m.PieceModule) },
   { path: 'articles', data: {breadcrumb: 'Gestion des articles'}, loadChildren: () => import('./parametre/article/article.module').then(m => m.ArticleModule) },
   { path: 'corps', data: {breadcrumb: 'Gestion des corps'}, loadChildren: () => import('./parametre/corps/corps.module').then(m => m.CorpsModule) },
   { path: 'ampliations', data: {breadcrumb: 'Gestion des ampliations'}, loadChildren: () => import('./parametre/ampliation/ampliation.module').then(m => m.AmpliationModule) },
-
+  { path: 'profils', data: {breadcrumb: 'Gestion des profils'}, loadChildren: () => import('./parametre/profil/profil.module').then(m => m.ProfilModule) },
   { path: '**', redirectTo: '/notfound' }
 ];
 

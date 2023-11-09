@@ -1,0 +1,23 @@
+<!-- formulaire d'affichage du détail -->
+<ng-template pTemplate="header">
+    <span class="p-mr-auto"> <b>DETAILS PROFIL</b></span>
+  </ng-template>
+  <!-- <p-divider></p-divider> -->
+  <hr>
+  <div class="row">
+    <div class="col-md-12 details-item">
+      <span class="va-m"><span class="font-bold">Libelle:</span> {{profil.name}}</span>
+    </div>
+    
+    <div class="col-md-12 details-item">
+      <span class="va-m"><span class="font-bold">Est actif:</span> {{profil.actif}}</span>
+    </div>
+
+    <div class="col-md-12 details-item">
+    </div>
+  </div>
+  <!-- <p-divider></p-divider> -->
+  <div class="p-ml-auto text-right">
+    <button description="reset" icon="pi pi-times" label="Fermer" (click)="clear()" class="p-button-filter mr-2"
+      pButton></button>
+  </div>

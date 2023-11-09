@@ -19,12 +19,12 @@ const pieceShowUrl = environment.detachementUrl+'/files/recuperer-piece';
 export class PieceService {
 
   constructor(private http:HttpClient) { }
-  create(pays: IPiece): Observable<EntityResponseType> {
-    return this.http.post<IPiece>(pieceUrl+'/new', pays, { observe: 'response' });
+  create(piece: IPiece): Observable<EntityResponseType> {
+    return this.http.post<IPiece>(pieceUrl+'/new', piece, { observe: 'response' });
   }
 
-  update(pays: IPiece): Observable<EntityResponseType> {
-    return this.http.put<IPiece>(pieceUrl+'/update', pays, { observe: 'response' });
+  update(piece: IPiece): Observable<EntityResponseType> {
+    return this.http.put<IPiece>(pieceUrl+'/update', piece, { observe: 'response' });
   }
 
 

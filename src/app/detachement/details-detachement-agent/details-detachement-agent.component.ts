@@ -11,6 +11,7 @@ import {IPieceJointe} from "../../shared/model/pieceJointe.model";
 import {PieceService} from "../../shared/service/piece.service";
 import { IHistorique } from 'src/app/shared/model/historique.model';
 import { TokenService } from 'src/app/shared/service/token.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-details-detachement-agent',
@@ -31,13 +32,19 @@ export class DetailsDetachementAgentComponent {
   demandes: any;
   pieceJointes: IPieceJointe[] =[];
   historiques: IHistorique[] =[];
-  matricule!: string;
+  username!: string;
+  profil!: string;
+  disableAviserSH = true;
+  disableAviserDRH = true;
+  disableAviserSG = true;
+  disableReceptionner = true;
+  disableElaborer = true;
 
   constructor(
     private dialogRef: DynamicDialogRef,
     private dialogService: DialogService,
     private demandeService: DemandeService,
-    private tokenStorageService: TokenService,
+    private tokenService: TokenService,
     private route: ActivatedRoute,
     private router: Router,
     private pieceService: PieceService,
@@ -45,18 +52,10 @@ export class DetailsDetachementAgentComponent {
 
 
   ngOnInit(): void {
-    // if (this.dynamicDialog.data) {
-    //   this.demande = cloneDeep(this.dynamicDialog.data);
-    // }
-    this.isLoggedIn = !!this.tokenStorageService.getAccessToken();
-
-    if(this.isLoggedIn) {
-      const user = this.tokenStorageService.getUser();
-      this.matricule = user.matricule;
-    }
 
     this.idDmd = +this.route.snapshot.paramMap.get('id')!;
     this.getDemande();
+
   }
 
   /** Permet d'afficher un modal pour la reception */
@@ -83,7 +82,7 @@ export class DetailsDetachementAgentComponent {
   openModalAviser(demande: IDemande): void {
     this.dialogService.open(AviserDetachementComponent,
     {
-      header: 'Aviser une demande (Profil SG)',
+      header: 'Aviser une demande',
       width: '40%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
@@ -97,13 +96,13 @@ export class DetailsDetachementAgentComponent {
       }
 
     });
-
   }
-   /** Permet d'afficher un modal pour aviser une demande */
+
+  /** Permet d'afficher un modal pour aviser une demande */
    openModalValiderProjet(demande: IDemande): void {
     this.dialogService.open(ValiderProjetComponent,
     {
-      header: 'Viser un projet (Profil DCMEF) ',
+      header: 'Valider un projet',
       width: '40%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
@@ -144,17 +143,45 @@ export class DetailsDetachementAgentComponent {
       if (result && result.body) {
         this.demande = result.body;
         this.getPieceByDmd(this.demande.id!);
-        this.getHistoriquesByDmd(this.demande.id!)
+        this.getHistoriquesByDmd(this.demande.id!);
+
+        this.isLoggedIn = !!this.tokenService.getToken();
+
+        if (this.isLoggedIn) {
+          const user = this.tokenService.getUser();
+          this.username = user.username;
+          this.profil = user.profil;
+
+          if(this.demande.statut === 'INITIEE' && this.profil === 'SH') {
+            this.disableAviserSH = false;
+          }
+
+          if (this.demande.statut === 'AVIS_SH' && (this.profil === 'STDRH' || this.profil === 'STDGFP')) {
+            this.disableReceptionner = false;
+          }
+
+          if(this.demande.statut === 'RECEPTIONEE' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
+            this.disableAviserDRH = false;
+          }
+
+          if((this.demande.statut === 'AVIS_DRH' || this.demande.statut === 'AVIS_DGFP') && this.profil === 'SG') {
+            this.disableAviserSG = false;
+          }
+
+          if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGF')) {
+            this.disableElaborer = false;
+          }
+        }
       }
     });
   }
 
   getPieceByDmd(dmdId: number){
-      this.demandeService.findPiecesByDemande(dmdId).subscribe(result => {
-          if (result && result.body) {
-              this.pieceJointes = result.body;
-          }
-      });
+    this.demandeService.findPiecesByDemande(dmdId).subscribe(result => {
+        if (result && result.body) {
+            this.pieceJointes = result.body;
+        }
+    });
   }
 
   async voirPiece(filname?: string): Promise<void> {
@@ -172,8 +199,10 @@ export class DetailsDetachementAgentComponent {
     this.demandeService.findHistoriquesByDemande(dmdId).subscribe(result => {
         if (result && result.body) {
             this.historiques = result.body;
-            console.log("Listes historiques ======", this.historiques);
+            // console.log("Listes historiques ======", this.historiques);
         }
     });
-}
+  }
+
+
 }

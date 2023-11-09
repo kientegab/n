@@ -1,14 +1,15 @@
 import { Component, Input } from '@angular/core';
-import { cloneDeep } from 'lodash';
 import { Message } from 'primeng/api';
-import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dynamicdialog';
+import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { AviserDetachementComponent } from '../aviser-detachement/aviser-detachement.component';
-import { AviserDisponibiliteComponent } from 'src/app/disponibilite/aviser-disponibilite/aviser-disponibilite.component';
 import { IDemande, Demande } from 'src/app/shared/model/demande.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
 import { ReceptionDetachementComponent } from '../reception-detachement/reception-detachement.component';
 import { ValiderProjetComponent } from '../valider-projet/valider-projet.component';
+import { IHistorique } from 'src/app/shared/model/historique.model';
+import { IPieceJointe } from 'src/app/shared/model/pieceJointe.model';
+import { PieceService } from 'src/app/shared/service/piece.service';
 
 @Component({
   selector: 'app-details-detachement',
@@ -25,12 +26,14 @@ export class DetailsDetachementComponent {
   showDialog = false;
   message: any;
   timeoutHandle: any;
-  demandes: any;
+  pieceJointes: IPieceJointe[] =[];
+  historiques: IHistorique[] =[];
 
   constructor(
     private dialogRef: DynamicDialogRef,
     private dialogService: DialogService,
     private demandeService: DemandeService,
+    private pieceService: PieceService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -129,8 +132,38 @@ export class DetailsDetachementComponent {
       if (result && result.body) {
         this.demande = result.body;
         console.log("DEMANDE ========", this.demande);
+        this.getPieceByDmd(this.demande.id!);
+        this.getHistoriquesByDmd(this.demande.id!)
       }
     });
   }
+
+  getPieceByDmd(dmdId: number){
+    this.demandeService.findPiecesByDemande(dmdId).subscribe(result => {
+        if (result && result.body) {
+          this.pieceJointes = result.body;
+        }
+    });
+}
+
+async voirPiece(filname?: string): Promise<void> {
+        if (filname) {
+            const link = await this.pieceService.visualiser(
+                filname
+            );
+            if (link) {
+                window.open(link, '_blank');
+            }
+        }
+}
+
+getHistoriquesByDmd(dmdId: number){
+  this.demandeService.findHistoriquesByDemande(dmdId).subscribe(result => {
+      if (result && result.body) {
+          this.historiques = result.body;
+          console.log("Listes historiques ======", this.historiques);
+      }
+  });
+}
 
 }

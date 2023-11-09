@@ -11,6 +11,7 @@ import { DemandeService } from '../shared/service/demande-service.service';
 import { CreerModifierDetachementComponent } from './creer-modifier-detachement/creer-modifier-detachement.component';
 import { DetailsDetachementComponent } from './details-detachement/details-detachement.component';
 import { ValiderProjetComponent } from './valider-projet/valider-projet.component';
+import {TokenService} from "../shared/service/token.service";
 
 @Component({
   selector: 'app-detachement',
@@ -57,14 +58,16 @@ export class DetachementComponent {
     private activatedRoute: ActivatedRoute,
     private dialogService: DialogService,
     private router: Router,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private tokenStorage: TokenService,
   ){}
 
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(
       () => {
-        this.loadAll();
+        //this.loadAll();
+          this.loadMesDemandes();
       }
     );
 
@@ -80,7 +83,8 @@ export class DetachementComponent {
   }
 
   filtrer(): void {
-    this.loadAll();
+   // this.loadAll();
+      this.loadMesDemandes();
   }
 
   resetFilter(): void {
@@ -104,11 +108,13 @@ export class DetachementComponent {
         sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc'),
       },
     });
-    this.loadAll();
+   // this.loadAll();
+      this.loadMesDemandes();
   }
 
-  loadAll(): void {
+ /* loadAll(): void {
     const req = this.buildReq();
+    console.warn("USER-CONNECTED",this.tokenStorage.getUser())
     this.demandeService.query(req).subscribe(result => {
       if (result && result.body) {
         this.totalRecords = Number(result.headers.get('X-Total-Count'));
@@ -116,7 +122,18 @@ export class DetachementComponent {
         console.log("====== demandes =======", this.demandes);
       }
     });
-  }
+  }*/
+
+    loadMesDemandes(): void {
+        const req = this.buildReq();
+        this.demandeService.findMyDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
+            if (result && result.body) {
+                this.totalRecords = Number(result.headers.get('X-Total-Count'));
+                this.demandes = result.body || [];
+                console.log("====== demandes personnelles =======", this.demandes);
+            }
+        });
+    }
 
 
   sortMethod(): string[] {
@@ -225,5 +242,5 @@ export class DetachementComponent {
       this.message = null;
     }, 5000);
   }
-      
+
 }

@@ -9,7 +9,7 @@
     padding-bottom: 5px;">
         <!-- <i class="{{isEditing() ? 'pi-pencil' : 'pi-plus'}} pi p-mr-1 mr-2"></i> -->
         <h3 class="mr-auto">
-            {{demande.id? "Formulaire de modification" : "Formulaire d'ajout de"}} demande
+            {{demande.id? "Formulaire de modification" : "Formulaire  de"}} demande
         </h3>
     </ng-template>
     <p-progressBar *ngIf="isOpInProgress" mode="indeterminate" color="#1e88e0"></p-progressBar>
@@ -160,7 +160,7 @@
                 <div class="p-field p-fluid">
                     <label for="annee">Nombre d'année</label>
                     <input type="number" [(ngModel)]="duree.annee" id="annee" [readonly]="false" name="annee"
-                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" min="0" max="5">
                 </div>
             </div>
 
@@ -168,7 +168,7 @@
             <div class="field col-4 md:col-4">
                 <div class="p-field p-fluid">
                     <label for="mois">Nombre de mois</label>
-                    <input type="number" [(ngModel)]="duree.mois" id="mois" [readonly]="false" name="mois"
+                    <input type="number" [(ngModel)]="duree.mois" id="mois" [readonly]="false" name="mois" min="0" max="12"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 </div>
             </div>
@@ -177,7 +177,7 @@
             <div class="field col-4 md:col-4">
                 <div class="p-field p-fluid">
                     <label for="jours">Nombre de jours</label>
-                    <input type="number" [(ngModel)]="duree.jours" id="jours" [readonly]="false" name="jours"
+                    <input type="number" [(ngModel)]="duree.jours" id="jours" [readonly]="false" name="jours" name="mois" min="0" max="31"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 </div>
             </div>
@@ -245,7 +245,7 @@
                     icon="pi pi-trash"></button>
                 <button label="Annuler" (click)="clear()" class="p-button-filter mr-3" pButton
                     icon="pi pi-times"></button>
-                <button (click)="saveEntity()" [disabled]="!dtf.form.valid" label="{{isEditing() ? 'Enregistrer' : 'Ajouter'}}"
+                <button (click)="saveEntity()" [disabled]="!dtf.form.valid" label="{{isEditing() ? 'Envoyer' : 'Envoyer'}}"
                     icon="pi {{isEditing() ? 'pi-save' : 'pi-plus'}}"
                     class="  {{isEditing() ? 'p-button-primary' : 'p-button-success'}}" pButton>
                 </button>

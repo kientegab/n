@@ -42,7 +42,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     ],
     imports: [
         AppRoutingModule,
-        PublicModule,
+       // PublicModule,
         AccountModule,
         AppLayoutModule,
         ComonModule,

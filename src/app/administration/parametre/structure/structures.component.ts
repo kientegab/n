@@ -10,7 +10,7 @@ import {IStructure, Structure} from "../../../shared/model/structure.model";
 import {StructureService} from "../../../shared/service/structure.service";
 import {CreerModifierStructureComponent} from "./creer-modifier-structure/creer-modifier-structure.component";
 import {DetailStructureComponent} from "./detail-structure/detail-structure.component";
-import {IStructureMinistere} from "../../../shared/model/structure-ministere.model";
+import {IStructureMinistere} from "../../../shared/model/structure-ministere";
 import {MinistereService} from "../../../shared/service/ministere-service";
 import {IMinistere} from "../../../shared/model/ministere.model";
 

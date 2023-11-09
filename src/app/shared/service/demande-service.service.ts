@@ -94,4 +94,14 @@ export class DemandeService {
   findHistoriquesByDemande(idDemande: number): Observable<HttpResponse<IHistorique[]>> {
     return this.http.get<IHistorique[]>(`${historiqueUrl}/list/${idDemande}`, { observe: 'response' });
   }
+
+    findMyDmds(req?: any,matricule?: string): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http.get<IDemande[]>(`${demandeUrl}/list-page/mes-demandes/${matricule}`, { params: options, observe: 'response' });
+    }
+
+    findAgentDmds(req?: any,matricule?: string): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http.get<IDemande[]>(`${demandeUrl}/list-page/demandes-agent/${matricule}`, { params: options, observe: 'response' });
+    }
 }
