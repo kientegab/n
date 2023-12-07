@@ -49,6 +49,7 @@ export class DetachementAgentsComponent {
   filtreNumero: string | undefined;
   items: MenuItem[] = [];
   matricule?:string;
+  profil!: string;
   isLoggedIn = false;
 
 
@@ -131,13 +132,31 @@ export class DetachementAgentsComponent {
       }*/
 
     loadAgentDmds(): void {
-        const req = this.buildReq();
-        this.demandeService.findAgentDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
-            if (result && result.body) {
-                this.totalRecords = Number(result.headers.get('X-Total-Count'));
-                this.demandes = result.body || [];
-            }
-        });
+      const req = this.buildReq();
+      this.isLoggedIn = !!this.tokenService.getToken();
+
+        if (this.isLoggedIn) {
+          const user = this.tokenService.getUser();
+          this.profil = user.profil;
+
+          if(this.profil === 'STDRH' || this.profil === 'STDGFP' || this.profil === 'DRH' || 
+                this.profil === 'DGFP' || this.profil === 'SG' || this.profil === 'DCMEF') {
+            this.demandeService.findMinistereDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
+                if (result && result.body) {
+                    this.totalRecords = Number(result.headers.get('X-Total-Count'));
+                    this.demandes = result.body || [];
+                }
+            });
+          }
+          else {
+            this.demandeService.findAgentDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
+              if (result && result.body) {
+                  this.totalRecords = Number(result.headers.get('X-Total-Count'));
+                  this.demandes = result.body || [];
+              }
+            });
+          }
+        }
     }
 
 

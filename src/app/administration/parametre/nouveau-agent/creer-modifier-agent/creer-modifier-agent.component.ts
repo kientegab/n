@@ -1,30 +1,31 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MenuItem, Message, MessageService } from 'primeng/api';
+import { MenuItem, MessageService, Message } from 'primeng/api';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LISTE_TYPE_AGENT } from 'src/app/shared/constants/liste.constants';
 import { Agent, IAgent } from 'src/app/shared/model/agent.model';
 import { CanActivateRequest, CreateAccountRequest, ICanActivateRequest, ICreateAccountRequest } from 'src/app/shared/model/can-activate-request';
 import { IMinistere } from 'src/app/shared/model/ministere.model';
-import { IProfil, Profil } from 'src/app/shared/model/profil.model';
+import { IProfil, Profil } from 'src/app/shared/model/profil-old';
 import { IStructure } from 'src/app/shared/model/structure.model';
 import { AgentService } from 'src/app/shared/service/agent.service';
 import { MinistereService } from 'src/app/shared/service/ministere-service';
 import { ProfilService } from 'src/app/shared/service/profil.service';
 import { StructureService } from 'src/app/shared/service/structure.service';
 import { UserService } from 'src/app/shared/service/user.service';
-
 enum Step {
   CANACTIVATE, CREATION
 }
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.scss']
+  selector: 'app-creer-modifier-agent',
+  templateUrl: './creer-modifier-agent.component.html',
+  styleUrls: ['./creer-modifier-agent.component.scss']
 })
-export class AccountComponent implements OnInit {
+export class CreerModifierAgentComponent {
 
+  
   @ViewChild('cf') form!: NgForm;
 
   activeStep = Step.CANACTIVATE;
@@ -38,7 +39,8 @@ export class AccountComponent implements OnInit {
   request: ICanActivateRequest = new CanActivateRequest();
 
   agent: IAgent = new Agent ();
-
+  idAgt: number | undefined;
+  isDisplay = true;
   accountRequest: ICreateAccountRequest = new CreateAccountRequest();
   pwdConfirmation: any;
 
@@ -61,6 +63,7 @@ export class AccountComponent implements OnInit {
   typeAgents= LISTE_TYPE_AGENT;
 
   constructor(
+    private dialogRef: DynamicDialogRef,
     private accountService: UserService,
     private ministereService: MinistereService,
     private profilService: ProfilService,
@@ -77,8 +80,20 @@ export class AccountComponent implements OnInit {
     this.loadProfil();
     this.LoadAgentByMatricule();
 
+   // this.idAgt= +this.activatedRoute.snapshot.paramMap.get('id')!;
+  
+    // if(this.idAgt){
+    //     this.getAgent();
+    // }
+
     if (!this.request.superieurHierarchique) {
       this.request.superieurHierarchique = {
+        matricule: '' // Valeur par défaut ou vide
+      };
+    }
+
+    if (!this.agent.superieurHierarchique) {
+      this.agent.superieurHierarchique = {
         matricule: '' // Valeur par défaut ou vide
       };
     }
@@ -124,6 +139,9 @@ loadProfil(): void {
 //   });
 // }
 
+isEditing() {
+  return !!this.agent.id;
+}
 
 loadStructure() {
   this.structureService.findListe().subscribe(response => {
@@ -154,6 +172,20 @@ loadStructure() {
       this.handleError(error);
     });
   }
+
+
+
+
+//   getAgent(): void {
+//     this.agentService.find(this.idAgt!).subscribe(result => {
+//         if (result && result.body) {
+//             this.agent = result.body;
+//             this.isDisplay = false;
+//             console.warn("Agent",this.agent);
+//             this.LoadAgentByMatricule();          
+//         }
+//     });
+// }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 LoadAgentByMatricule() {
@@ -194,30 +226,13 @@ LoadAgentByMatricule() {
 }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   create() {
     // this.accountRequest.noMatricule = this.request.noMatricule;
     // this.profil = { name: "SH" };
 
    // this.request.profil = this.profil
     //this.request.profil = this.profil
-     this.request.profil= { id: 2 };
+    // this.request.profil= { id: 2 };
 
     
     this.request.superieurHierarchique = this.agent;
@@ -228,44 +243,49 @@ LoadAgentByMatricule() {
     console.log("Création de compte=====================================================",this.request);
     console.warn("Supérieur à envoyé================================================", this.agent)
 
-    this.accountService.create(this.request).subscribe(() => {
-      this.showMessage({ severity: 'success', summary: 'Compte d\'utilisateur crée avec succès' });
-      this.resetForm();
-      this.router.navigate(['/login']);
-      setTimeout(() => {
-        this.accountService.login();
-      }, 2000);
-      this.accountRequest = {};
-      this.pwdConfirmation = null;
-      this.form.reset();
-      this.isOpInProgress = false;
-    }, error => {
-      this.isOpInProgress = false;
-      this.handleError(error);
-    });
+    this.accountService.create(this.request).subscribe(
+      
+      
+      {
+        next: (response) => {
+          this.dialogRef.close(response);
+          this.dialogRef.destroy();
+          this.router.navigate(['admin/agents']);
+          this.showMessage({
+              severity: 'success',
+              summary: 'agent créé avec succès',
 
+          });
 
+              this.resetForm();
+  //     this.router.navigate(['agents']);
+       setTimeout(() => {
+         this.accountService.login();
+       }, 2000);
+       this.accountRequest = {};
+       this.pwdConfirmation = null;
+       this.form.reset();
+       this.isOpInProgress = false;
+  //   }, 
 
+          this.isDialogOpInProgress = false;
+      },
+      error: (error) => {
+         console.error("error" + JSON.stringify(error));
+         this.isOpInProgress = false;
+         this.isDialogOpInProgress = false;
+         this.showMessage({severity: 'error', summary: error.error.message});
+
+     }
+      
+  
+  
   }
-
-
-  // create() {
-  //   this.isOpInProgress = true;
-  
-  //   // Traitement de la création du compte ici
-  
-  //   this.accountService.create(this.request).subscribe(
-  //     () => {
-  //       this.showMessage({ severity: 'success', summary: 'Compte d\'utilisateur crée avec succès' });;
-  //       this.resetForm();
-  //       this.isOpInProgress = false;
-  //     },
-  //     (error) => {
-  //       this.isOpInProgress = false;
-  //       this.handleError(error);
-  //     }
-  //   );
-  // }
+      
+    )
+      
+}
+      
   
 
   
@@ -294,4 +314,5 @@ showMessage(message: Message) {
         this.message = null;
     }, 5000);
 }
+
 }

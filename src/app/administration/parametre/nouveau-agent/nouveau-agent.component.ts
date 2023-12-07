@@ -1,27 +1,27 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuItem, ConfirmationService, Message } from 'primeng/api';
+import { ConfirmationService, MenuItem, Message } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { CURRENT_PAGE, MAX_SIZE_PAGE } from 'src/app/shared/constants/pagination.constants';
-import { IProfil, Profil } from 'src/app/shared/model/profil-old';
-import { ProfilService } from 'src/app/shared/service/profil.service';
+import { Agent, IAgent } from 'src/app/shared/model/agent.model';
+import { AgentService } from 'src/app/shared/service/agent.service';
 import { environment } from 'src/environments/environment';
-import { CreerModifierProfilComponent } from './creer-modifier-profil/creer-modifier-profil.component';
-import { DetailsProfilComponent } from './details-profil/details-profil.component';
+import { CreerModifierAgentComponent } from './creer-modifier-agent/creer-modifier-agent.component';
+import { DetailsAgentComponent } from './details-agent/details-agent.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-profil',
-  templateUrl: './profil.component.html',
-  styleUrls: ['./profil.component.scss']
+  selector: 'app-nouveau-agent',
+  templateUrl: './nouveau-agent.component.html',
+  styleUrls: ['./nouveau-agent.component.scss']
 })
-export class ProfilComponent {
+export class NouveauAgentComponent {
 
   routeData: Subscription | undefined;
-  profilListSubscription: Subscription | undefined;
-  profils: IProfil[] = [];
-  profil: IProfil = new Profil();
+  agentListSubscription: Subscription | undefined;
+  agents: IAgent[] = [];
+  agent: IAgent = new Agent();
   timeoutHandle: any;
   totalRecords: number = 0;
   recordsPerPage = environment.recordsPerPage;
@@ -51,7 +51,7 @@ export class ProfilComponent {
 
 
   constructor(
-    private profilService: ProfilService,
+    private agentService: AgentService,
     private activatedRoute: ActivatedRoute,
     private dialogService: DialogService,
     private dialogRef: DynamicDialogRef,
@@ -72,8 +72,8 @@ export class ProfilComponent {
       ngOnDestroy(): void {
         if (this.routeData) {
           this.routeData.unsubscribe();
-          if (this.profilListSubscription) {
-            this.profilListSubscription.unsubscribe();
+          if (this.agentListSubscription) {
+            this.agentListSubscription.unsubscribe();
           }
         }
       }
@@ -108,11 +108,11 @@ export class ProfilComponent {
 
       loadAll(): void {
         const req = this.buildReq();
-        this.profilService.query(req).subscribe(result => {
+        this.agentService.query(req).subscribe(result => {
           if (result && result.body) {
             this.totalRecords =result.body.length;
             // this.totalRecords = Number(result.headers.get('X-Total-Count'));
-            this.profils = result.body || [];
+            this.agents = result.body || [];
           }
         });
       }
@@ -142,9 +142,9 @@ export class ProfilComponent {
 
       /** Permet d'afficher un modal pour l'ajout */
       openModalCreate(): void {
-        this.dialogService.open(CreerModifierProfilComponent,
+        this.dialogService.open(CreerModifierAgentComponent,
           {
-            header: 'Ajouter un profil',
+            header: 'Ajouter un agent',
             width: '60%',
             contentStyle: { overflow: 'auto', },
             baseZIndex: 10000,
@@ -153,30 +153,30 @@ export class ProfilComponent {
           }
         ).onClose.subscribe(result => {
           if(result) {
-          this.profils.push(result);
+          this.agents.push(result);
           this.loadAll();
           this.isDialogOpInProgress = false;
-          this.showMessage({ severity: 'success', summary: 'Profil créé avec succès' });
+          this.showMessage({ severity: 'success', summary: 'agent créé avec succès' });
           }
         });
       }
 
       /** Permet d'afficher un modal pour la modification */
-      openModalEdit(profil: IProfil): void {
-        this.dialogService.open(CreerModifierProfilComponent,
+      openModalEdit(agent: IAgent): void {
+        this.dialogService.open(CreerModifierAgentComponent,
           {
-            header: 'Modifier un profil',
+            header: 'Modifier un agent',
             width: '60%',
             contentStyle: { overflow: 'auto' },
             baseZIndex: 10000,
             maximizable: true,
             closable: true,
-            data: profil
+            data: agent
           }).onClose.subscribe(result => {
             if(result){
               this.isDialogOpInProgress = false;
               this.loadAll();
-              this.showMessage({ severity: 'success', summary: 'Profil modifié avec succès' });
+              this.showMessage({ severity: 'success', summary: 'agent modifié avec succès' });
             }
 
           });
@@ -184,42 +184,42 @@ export class ProfilComponent {
       }
 
       /** Permet d'afficher un modal pour voir les détails */
-      openModalDetail(profil:IProfil): void {
-        this.dialogService.open(DetailsProfilComponent,
+      openModalDetail(agent:IAgent): void {
+        this.dialogService.open(DetailsAgentComponent,
           {
-            header: 'Details du profil',
+            header: 'Details du agent',
             width: '60%',
             contentStyle: { overflow: 'auto' },
             baseZIndex: 10000,
             maximizable: true,
-            data: profil
+            data: agent
           });
       }
 
 
       // Deletion
-      onDelete(profil: IProfil) {
+      onDelete(agent: IAgent) {
         this.confirmationService.confirm({
-          message: 'Etes-vous sur de vouloir supprimer ce profil?',
+          message: 'Etes-vous sur de vouloir supprimer ce agent?',
           accept: () => {
-            this.delete(profil);
+            this.delete(agent);
           }
         });
       }
 
       delete(selection: any) {
         this.isOpInProgress = true;
-        this.profilService.delete(selection.id).subscribe(() => {
-          this.profils = this.profils.filter(profil => profil.id !== selection.id);
+        this.agentService.delete(selection.id).subscribe(() => {
+          this.agents = this.agents.filter(agent => agent.id !== selection.id);
           selection = null;
           this.isOpInProgress = false;
           this.totalRecords--;
           this.showMessage({
             severity: 'success',
-            summary: 'Profil supprimé avec succès',
+            summary: 'agent supprimé avec succès',
           });
         }, (error) => {
-          console.error("profil " + JSON.stringify(error));
+          console.error("agent " + JSON.stringify(error));
           this.isOpInProgress = false;
           this.showMessage({ severity: 'error', summary: error.error.message });
         });
@@ -242,5 +242,4 @@ export class ProfilComponent {
           this.message = null;
         }, 5000);
       }
-
 }

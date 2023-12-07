@@ -11,7 +11,6 @@ import {IPieceJointe} from "../../shared/model/pieceJointe.model";
 import {PieceService} from "../../shared/service/piece.service";
 import { IHistorique } from 'src/app/shared/model/historique.model';
 import { TokenService } from 'src/app/shared/service/token.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-details-detachement-agent',
@@ -47,7 +46,7 @@ export class DetailsDetachementAgentComponent {
     private tokenService: TokenService,
     private route: ActivatedRoute,
     private router: Router,
-    private pieceService: PieceService,
+    private pieceService: PieceService 
   ) {}
 
 
@@ -72,6 +71,7 @@ export class DetailsDetachementAgentComponent {
       }).onClose.subscribe(result => {
         if(result){
           this.isDialogOpInProgress = false;
+          window.location.reload();
           this.showMessage({ severity: 'success', summary: 'Demande receptionnée avec succès' });
         }
 
@@ -92,6 +92,7 @@ export class DetailsDetachementAgentComponent {
     }).onClose.subscribe(result => {
       if(result){
         this.isDialogOpInProgress = false;
+        window.location.reload();
         this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
       }
 
@@ -112,6 +113,7 @@ export class DetailsDetachementAgentComponent {
     }).onClose.subscribe(result => {
       if(result){
         this.isDialogOpInProgress = false;
+        window.location.reload();
         this.showMessage({ severity: 'success', summary: 'Projet validé avec succès' });
       }
 

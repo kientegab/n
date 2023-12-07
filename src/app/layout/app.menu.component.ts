@@ -161,6 +161,12 @@ export class AppMenuComponent implements OnInit {
                                         routerLink: ['/admin/corps']
                                     },
 
+                                    {
+                                        label: 'Agents',
+                                        icon: 'pi pi-fw pi-eye-slash',
+                                        routerLink: ['/admin/agents']
+                                    }
+
                                 ]
                             },
                         ]

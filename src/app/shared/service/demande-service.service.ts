@@ -104,4 +104,9 @@ export class DemandeService {
         const options = createRequestOption(req);
         return this.http.get<IDemande[]>(`${demandeUrl}/list-page/demandes-agent/${matricule}`, { params: options, observe: 'response' });
     }
+
+    findMinistereDmds(req?: any,matricule?: string): Observable<EntityArrayResponseType> {
+      const options = createRequestOption(req);
+      return this.http.get<IDemande[]>(`${demandeUrl}/list-page/demandes-ministere/${matricule}`, { params: options, observe: 'response' });
+  }
 }

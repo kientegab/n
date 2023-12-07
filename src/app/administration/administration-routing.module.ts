@@ -18,6 +18,7 @@ const routes: Routes = [
   { path: 'corps', data: {breadcrumb: 'Gestion des corps'}, loadChildren: () => import('./parametre/corps/corps.module').then(m => m.CorpsModule) },
   { path: 'ampliations', data: {breadcrumb: 'Gestion des ampliations'}, loadChildren: () => import('./parametre/ampliation/ampliation.module').then(m => m.AmpliationModule) },
   { path: 'profils', data: {breadcrumb: 'Gestion des profils'}, loadChildren: () => import('./parametre/profil/profil.module').then(m => m.ProfilModule) },
+  { path: 'agents', data: {breadcrumb: 'Gestion des agents'}, loadChildren: () => import('./parametre/nouveau-agent/nouveau-agent.module').then(m => m.NouveauAgentModule) },
   { path: '**', redirectTo: '/notfound' }
 ];
 

@@ -104,6 +104,5 @@ export const environment = {
   resource_url: 'http://localhost:8080/resource/',
   logout_url: 'http://localhost:9000/oauth2/logout',
   secret_pkce: 'secret'
-
 };
 /****** */
