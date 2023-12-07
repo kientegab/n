@@ -1,15 +1,13 @@
 const commonAppURI: string = 'http://localhost:8081/api/';
-const commonAuth: string = 'http://localhost:8080/api/auth/';
+const commonAuth: string = 'http://localhost:9000/api/auth/';
 const domaineUrl: string='localhost:4200'
 
 export const environment = {
   production: false,
   domaine:`${domaineUrl}`,
   recordsPerPage: 20,
-
-  // detachementUrl: 'http://10.53.218.146:8081/api',
   detachementUrl: 'http://localhost:8081/api',
-  authentificationUrl: 'http://localhost:8080/api/auth',
+  authentificationUrl: 'http://localhost:8081/api/auth',
 
   circuitUrl:commonAppURI + 'circuit',
   communeUrl: commonAppURI +'communes',
@@ -35,36 +33,12 @@ export const environment = {
   ministereUrl: commonAuth + 'ministeres',
   ampliationUrl:commonAuth + 'ampliations',
   demandeUrl:commonAppURI + 'demandes',
-   // typeEmployeurUrl: commonAppURI +'typeEmployeur',
-
-
-  //typesCotisationUrl:commonAppCOT+'type-cotisations',
   arrondissementUrl: commonAppURI +'arrondissements',
-
-
-  //tauxCotisationUrl: commonAppURI +'taux-cotisations',
-  // regionUrl: commonAppURI +'regions ',
-  // province: commonAppURI +'province ',
-  // situationMatrimonial: commonAppURI +'situation-matrimoniale ',
-  // affiliation: commonAppURI +'employeurs',
   categorieEmployeurUrl: commonAppURI +'categorieemployeurs',
-  // banqueUrl: commonAppURI +'banque ',
-  // caisseUrl: commonAppURI +'caisse ',
-  // paysUrl: commonAppURI +'pays ',
-  // roleUrl: commonAppURI +'role ',
-  // typesCotisationUrl:commonAppURI+'types-cotisations',
-
-
   formesJuridique: commonAppURI +'formes-juridiques ',
-  // situationMatrimonialeUrl: commonAppURI +'situation-matrimoniales ',
-  //secteurVillage: commonAppURI +'secteur-villages ',
-
   regionUrl: commonAppURI +'regions',
   province: commonAppURI +'province',
   banqueUrl: commonAppURI +'banques',
-
-  // caisseUrl: commonAppCOT +'caisses',
-
   paysUrl: commonAppURI +'pays',
   roleUrl: commonAppURI +'role',
 
