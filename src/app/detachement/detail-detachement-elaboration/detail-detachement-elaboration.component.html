@@ -1,0 +1,175 @@
+<p-card>
+    <ng-template pTemplate="header">
+        <span class="p-mr-auto"> <b>DETAILS DEMANDE</b></span>
+    </ng-template>
+
+    <p-fieldset legend="Informations agent" [toggleable]="true">
+        <div class="row">
+            <div class="col-md-6 details-item">
+                <span class="va-m"><span class="font-bold">Nom : </span> {{ demande.agent?.nom }}</span>
+            </div>
+            <div class="col-md-6 details-item">
+                <span class="va-m"><span class="font-bold">Prénom (s): </span> {{ demande.agent?.prenom }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 details-item">
+                <span class="va-m"><span class="font-bold">Categorie : </span> {{ demande.agent?.categorie }}</span>
+            </div>
+            <div class="col-md-6 details-item">
+                <span class="va-m"><span class="font-bold">Echelle : </span>{{ demande.agent?.echelle }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 details-item">
+                <span class="va-m"><span class="font-bold">Echelon : </span> {{ demande.agent?.echelon }}</span>
+            </div>
+            <div class="col-md-6 details-item">
+                <span class="va-m"><span class="font-bold">Classe : </span> {{ demande.agent?.classe }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 details-item">
+                <span class="va-m"><span class="font-bold">Matricule agent : </span> {{ demande.agent?.matricule }}</span>
+            </div>
+        </div>
+    </p-fieldset>
+    <br>
+
+
+    <p-fieldset legend="Liste des visas" [toggleable]="true">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-sm no-border">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Libelle</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of visas;let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{item.code}}</td>
+                            <td>{{item.libelle}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </p-fieldset>
+    <br>
+    <p-fieldset legend="Liste des articles" [toggleable]="true">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-sm no-border">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Libelle</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of articles;let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{item.code}}</td>
+                            <td>{{item.libelle}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </p-fieldset>
+    <br>
+    <p-fieldset legend="Liste des ampliations" [toggleable]="true">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-sm no-border">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Libelle</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of ampliations;let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{item.code}}</td>
+                            <td>{{item.libelle}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </p-fieldset>
+    <br>
+
+    <p-divider></p-divider>
+    <div class="row justify-content-center">
+
+        <div class="p-ml-auto text-right">
+            <button description="aviser sh" icon="pi pi-pencil" label="Aviser" [hidden]="disableAviserSH" (click)="openModalAviser(demande)" class="p-button-success mr-2"
+                    pButton></button>
+        </div>
+
+        <div class="p-ml-auto text-right">
+            <button description="aviser drh" icon="pi pi-pencil" label="Aviser" [hidden]="disableAviserDRH" (click)="openModalAviser(demande)" class="p-button-success mr-2"
+                    pButton></button>
+        </div>
+
+        <div class="p-ml-auto text-right">
+            <button description="aviser sg" icon="pi pi-pencil" label="Aviser" [hidden]="disableAviserSG" (click)="openModalAviser(demande)" class="p-button-success mr-2"
+                    pButton></button>
+        </div>
+
+        <div class="p-ml-auto text-right">
+            <button description="receptionner" icon="pi pi-folder-open" label="Receptionner" [hidden]="disableReceptionner" (click)="openModalReceptionner(demande)" class="p-button-primary mr-2"
+                    pButton></button>
+        </div>
+
+        <div class="p-ml-auto text-right">
+            <button description="elaborer" icon="pi pi-pencil" label="Declencher processus Elaboration" [hidden]="disableElaborer" (click)="elaborer()" class="p-button-success mr-2"
+                    pButton></button>
+        </div>
+
+
+        <div class="p-ml-auto text-right">
+            <button description="verifier" icon="pi pi-pencil" label="Avis" [hidden]="disableVerifierSTDCMEF" (click)="openModalVerifierProjet(demande)" class="p-button-success mr-2"
+            pButton></button>
+        </div>
+        
+        
+        <div class="p-ml-auto text-right">
+          <button description="viser" icon="pi pi-pencil" label="Procéder au visas" [hidden]="diableViserDCMEF" (click)="openModalViserProjet(demande)" class="p-button-success mr-2"
+          pButton></button>
+        </div>
+
+
+        <div class="p-ml-auto text-right">
+            <button description="valider le projet" icon="pi pi-pencil" label="Valider Elaboration" [hidden]="disableValiderElaboration" (click)="openModalValiderElaborerProjet(demande)" class="p-button-success mr-2"
+                    pButton></button>
+        </div>
+
+        <div class="p-ml-auto text-right">
+            <button description="signer le projet" icon="pi pi-pencil" label="Signer Elaboration" [hidden]="disableSignerElaboration" (click)="signerElaboration()" class="p-button-success mr-2"
+                    pButton></button>
+        </div>
+
+        <div class="p-ml-auto text-right">
+            <button description="reset" icon="pi pi-times" label="Fermer" (click)="fermer()" class="p-button-danger mr-2"
+                    pButton></button>
+        </div>
+    </div>
+</p-card>

@@ -22,7 +22,7 @@ export const environment = {
   divisionUrl: commonAppURI +'divisions',
   sectionUrl : commonAppURI +'sections',
   secteurActiviteUrl: commonAppURI +'secteur-activites',
-  secteurVillageUrl: commonAppURI +'secteur-villages',
+  // secteurVillageUrl: commonAppURI +'secteur-villages',
   userUrl: commonAuth +'register',
   profilUrl: commonAuth +'profils',
   privilegeUrl: commonAuth +'privileges',

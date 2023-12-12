@@ -140,7 +140,7 @@ export class DetachementAgentsComponent {
           this.profil = user.profil;
 
           if(this.profil === 'STDRH' || this.profil === 'STDGFP' || this.profil === 'DRH' || 
-                this.profil === 'DGFP' || this.profil === 'SG' || this.profil === 'DCMEF') {
+                this.profil === 'DGFP' || this.profil === 'SG' || this.profil === 'DCMEF' || this.profil === 'STDCMEF') {
             this.demandeService.findMinistereDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
                 if (result && result.body) {
                     this.totalRecords = Number(result.headers.get('X-Total-Count'));

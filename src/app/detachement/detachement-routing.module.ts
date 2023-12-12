@@ -7,6 +7,11 @@ import { DetailsDetachementComponent } from './details-detachement/details-detac
 import { ElaborerProjetComponent } from './elaborer-projet/elaborer-projet.component';
 import { ValiderProjetComponent } from './valider-projet/valider-projet.component';
 import { DetailsDetachementAgentComponent } from './details-detachement-agent/details-detachement-agent.component';
+import {
+    DetailDetachementElaborationComponent
+} from "./detail-detachement-elaboration/detail-detachement-elaboration.component";
+import { VerifierProjetComponent } from './verifier-projet/verifier-projet.component';
+import { ViserProjetComponent } from './viser-projet/viser-projet.component';
 
 const routes: Routes = [
   { path: '', component: DetachementComponent },
@@ -15,8 +20,11 @@ const routes: Routes = [
   { path: 'agents', component: DetachementAgentsComponent },
   { path: 'details/:id',  component: DetailsDetachementComponent },
   { path: 'details-ags/:id',  component: DetailsDetachementAgentComponent },
-  { path: 'elaborer/:id',  component: ElaborerProjetComponent },
-  { path: 'valider/:id',  component: ValiderProjetComponent }
+  { path: 'elaborer/:id',  component: DetailDetachementElaborationComponent },
+  { path: 'valider/:id',  component: ValiderProjetComponent },
+  { path: 'verifier/:id',  component: VerifierProjetComponent },
+  { path: 'viser/:id',  component: ViserProjetComponent }
+
 ];
 
 @NgModule({

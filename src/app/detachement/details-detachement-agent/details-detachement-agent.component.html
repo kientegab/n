@@ -3,7 +3,7 @@
   <ng-template pTemplate="header">
       <span class="p-mr-auto"> <b>DETAILS DEMANDE</b></span>
   </ng-template>
-  
+
   <p-fieldset legend="Informations générales" [toggleable]="true">
     <div class="row">
       <div class="col-md-6 details-item">
@@ -22,12 +22,15 @@
         <span class="va-m"><span class="font-bold">Motif : </span>{{ demande.motif?.libelle }}</span>
       </div>
     </div>
-
+  
     <div class="row">
       <div class="col-md-6 details-item">
         <span class="va-m"><span class="font-bold">Structure de disponibilité : </span> {{ demande.destination?.libelle }}</span>
       </div>
+    
       <div class="col-md-6 details-item">
+        <div></div>
+        <br>
         <span class="va-m"><span class="font-bold">Date d'effet : </span> {{ demande.dateEffet }}</span>
       </div>
     </div>
@@ -127,10 +130,10 @@
               <tr>
                 <!-- <th scope="row">{{i+1}}</th> -->
                 <!-- <td>{{item.libelle}}</td> -->
-                <td> MFP_SPMABG_2023-0001.pdf</td>
+                <!-- <td> MFP_SPMABG_2023-0001.pdf</td> -->
                 <td>
-                  <button description="Visualiser" icon="pi pi-eye" label="Visualiser"  (click)="voirPiece('item.url')"  class="p-button-primary mr-2"pButton >
-                  </button>
+                  <!-- <button description="Visualiser" icon="pi pi-eye" label="Visualiser"  (click)="voirPiece('item.url')"  class="p-button-primary mr-2"pButton >
+                  </button> -->
                 </td>
               </tr>
             </tbody>
@@ -154,7 +157,7 @@
     </div>
 
     <div class="p-ml-auto text-right">
-      <button description="aviser sg" icon="pi pi-pencil" label="Aviser" [hidden]="disableAviserSG" (click)="openModalAviser(demande)" class="p-button-success mr-2"
+      <button description="aviser sg" icon="pi pi-pencil" label="Valider" [hidden]="disableAviserSG" (click)="openModalAviser(demande)" class="p-button-success mr-2"
       pButton></button>
     </div>
 
@@ -162,16 +165,43 @@
       <button description="receptionner" icon="pi pi-folder-open" label="Receptionner" [hidden]="disableReceptionner" (click)="openModalReceptionner(demande)" class="p-button-primary mr-2"
       pButton></button>
     </div>
-    
+
+
     <div class="p-ml-auto text-right">
-      <button description="elaborer" icon="pi pi-pencil" label="Elaborer" [hidden]="disableElaborer" (click)="openModalElaborerProjet(demande)" class="p-button-success mr-2"
+      <button description="elaborer" icon="pi pi-pencil" label="Procéder a l'élaboration" [hidden]="disableElaborer" (click)="openModalElaborerProjet(demande)" class="p-button-success mr-2"
       pButton></button>
   </div>
 
-  <!-- <div class="p-ml-auto text-right">
-    <button description="aviser" icon="pi pi-pencil" label="Valider projet" (click)="openModalValiderProjet(demande)" class="p-button-success mr-2"
+
+  <div class="p-ml-auto text-right">
+    <button description="verifier" icon="pi pi-pencil" label="Procéder a la vérification" [hidden]="disableVerifierSTDCMEF" (click)="openModalVerifierProjet(demande)" class="p-button-success mr-2"
     pButton></button>
-  </div> -->
+</div>
+
+
+<div class="p-ml-auto text-right">
+  <button description="viser" icon="pi pi-pencil" label="Viser projet" [hidden]="diableViserDCMEF" (click)="openModalViserProjet(demande)" class="p-button-success mr-2"
+  pButton></button>
+</div>
+
+
+
+
+
+ <div class="p-ml-auto text-right">
+    <button description="valider" icon="pi pi-pencil" [hidden]="disableValiderElaboration" label="Procéder à la validation" (click)="openModalValiderProjet(demande)" class="p-button-success mr-2"
+    pButton></button>
+  </div>
+
+      <div class="p-ml-auto text-right">
+          <button description="signer" icon="pi pi-pencil" [hidden]="disableSignerElaboration" label="Procéder à la signature" (click)="openModalSignatureProjet(demande)" class="p-button-success mr-2"
+                  pButton></button>
+      </div>
+
+      <div class="p-ml-auto text-right">
+          <button description="telecharger" icon="pi pi-pencil" [hidden]="disableExporterElaboration" label="Exporter l'arrete signé" (click)="exporter()" class="p-button-success mr-2"
+                  pButton></button>
+      </div>
 
     <div class="p-ml-auto text-right">
       <button description="reset" icon="pi pi-times" label="Fermer" (click)="fermer()" class="p-button-danger mr-2"

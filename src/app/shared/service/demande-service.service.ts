@@ -17,6 +17,7 @@ const demandeUrl = environment.detachementUrl+'/demandes';
 const reportUrl= environment.reportingUrl;
 const pieceUrl= environment.detachementUrl+'/piece-jointes';
 const historiqueUrl= environment.detachementUrl+'/positions';
+const exportUrl= environment.detachementUrl+'/exports';
 
 @Injectable({
   providedIn: 'root'
@@ -67,6 +68,21 @@ export class DemandeService {
     return this.http.post<IDemande>(`${demandeUrl}/receptionner/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
 
+
+
+  
+  verifierProjetSTDCMEF(groupe: IDemande): Observable<EntityResponseType>{
+    return this.http.post<IDemande>(`${demandeUrl}/verifier-projet/${groupe.id}`, groupe.historique, { observe: 'response' });
+
+  }
+
+ viserProjetDCMEF(demande: IDemande): Observable<EntityResponseType>{
+  return this.http.post<IDemande>(`${demandeUrl}/viser-projet/${demande.id}`, demande.historique, { observe: 'response' });
+  }
+
+
+
+
   aviserSH(groupe: IDemande): Observable<EntityResponseType> {
     return this.http.post<IDemande>(`${demandeUrl}/avis-sh/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
@@ -109,4 +125,21 @@ export class DemandeService {
       const options = createRequestOption(req);
       return this.http.get<IDemande[]>(`${demandeUrl}/list-page/demandes-ministere/${matricule}`, { params: options, observe: 'response' });
   }
+
+    printArrete(dmdId: number,isRegularisation: boolean): Observable<Blob> {
+        return this.http.get(`${exportUrl}/arrete-detachement/${dmdId}/${isRegularisation}`, { responseType: 'blob' });
+    }
+
+    elaborationSTDRH(demande: IDemande): Observable<EntityResponseType> {
+        return this.http.post<IDemande>(`${demandeUrl}/elaborer/${demande.id}`, demande.historique, { observe: 'response' });
+    }
+    validerElaborationDRH(demande: IDemande): Observable<EntityResponseType> {
+        return this.http.post<IDemande>(`${demandeUrl}/valider-projet/${demande.id}`, demande.historique, { observe: 'response' });
+    }
+
+    signerElaborationSG(demande: IDemande): Observable<EntityResponseType> {
+        return this.http.post<IDemande>(`${demandeUrl}/signer-projet/${demande.id}`, demande.historique, { observe: 'response' });
+    }
+
+    
 }
