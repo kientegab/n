@@ -137,6 +137,7 @@ export class DetailsDetachementComponent {
     this.demandeService.find(this.idDmd!).subscribe(result => {
       if (result && result.body) {
         this.demande = result.body;
+<<<<<<< HEAD
         console.log("DEMANDE ========", this.demande);
         this.getPieceByDmd(this.demande.id!);
         this.getHistoriquesByDmd(this.demande.id!)
@@ -145,6 +146,10 @@ export class DetailsDetachementComponent {
             if (this.demande.statut === 'PROJET_SIGNE') {
                 this.disableExporterElaboration = false;
             }}
+=======
+
+        console.warn("OBJET DEMANDE:::::::::::::",this.demande)
+>>>>>>> 5d322ba7bf02c14b0367db39aeb88fc2db1f94da
       }
     });
   }

@@ -35,13 +35,14 @@
             </div>
 
             <div class="field col-6 md:col-6">
-                <label for="typeDemandes">Type Demande :</label>
-                <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" [options]="typeDemandes"
-                    [(ngModel)]="demande.typeDemande" optionLabel="libelle" inputId="typeDemande"
-                     name="typeDemandes" placeholder="Sélectionner le type de Demande..."  [filter]="true" appendTo="body" [showClear]="true">
+                <label for="typeDemandes">Type Demande {{ typeDemandeSelected.libelle}} </label>
+                <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="typeDemandes"
+                    [(ngModel)]="typeDemandeSelected" optionLabel="libelle"  inputId="typeDemandeSelected"
+                     name="typeDemandeSelected" [filter]="true" appendTo="body" [showClear]="true" >
                 </p-dropdown>
             </div>
 
+           
             <div class="field col-6 md:col-6">
                 <label for="motif">Motif :</label>
                 <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="motifsFiltres"
