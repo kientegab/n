@@ -419,15 +419,11 @@ console.warn("ALERT ICI",this.demande);
         this.demandeService.find(this.idDmd!).subscribe(result => {
             if (result && result.body) {
                 this.demande = result.body;
-<<<<<<< HEAD
                 this.isDisplay = false;
-                console.warn("DEMANDE",this.demande);
-=======
                 console.warn("DEMANDE::::::::::::::::::::::::::::::::::::::",this.demande);
                 this.typeDemandeSelected = this.demande.typeDemande!;
                 console.warn("======================== ma demande :\n",this.typeDemandeSelected);
                // this.demande.typeDemande = this.typeDemandeSelected;
->>>>>>> 5d322ba7bf02c14b0367db39aeb88fc2db1f94da
                 this.onChangeMatricule();
                 this.duree = this.demande.duree!;
                 if (this.demande.dateEffet) {
