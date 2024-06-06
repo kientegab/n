@@ -341,6 +341,7 @@ console.warn("ALERT ICI",this.demande);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             this.demande.duree = this.duree;
             this.demande.motif = this.selectedMotif;
+            this.demande.typeDemande = this.typeDemandeSelected;
             if (this.demande.id) {
                 console.warn("ALERT ICI",this.demande);
                 this.demandeService.update(this.demande).subscribe(
