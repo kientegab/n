@@ -19,7 +19,7 @@ export class ArticleProjetComponent {
 
 
   @ViewChild('dtf') form!: NgForm;
-  article: IArticleDemande = new ArticleDemande();
+  articleDemande: IArticleDemande = new ArticleDemande();
   @Input() data: IArticleDemande = new ArticleDemande();
   demande: IDemande = new Demande();
   demandes: IDemande[] = [];
@@ -42,7 +42,7 @@ export class ArticleProjetComponent {
   ngOnInit(): void {
    
     if (this.dynamicDialog.data) {
-      this.demande = cloneDeep(this.dynamicDialog.data);
+      this.articleDemande = cloneDeep(this.dynamicDialog.data);
       // this.demandes.push(this.demande);
     }
   }
@@ -53,7 +53,7 @@ export class ArticleProjetComponent {
     this.dialogRef.destroy();
   }
   isEditing() {
-    return !!this.article.id;
+    return !!this.articleDemande.id;
   }
 
   clearDialogMessages() {
@@ -72,30 +72,55 @@ export class ArticleProjetComponent {
       this.message = null;
     }, 5000);
   }
+
+
   saveEntity(): void {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
-    this.article.demande = this.demande;
-    console.log("article a envoyé", this.article)
-        this.articleProjetService.create(this.article).subscribe({
-          next: (response) => {
-            this.dialogRef.close(response);
-            this.dialogRef.destroy();
-            this.showMessage({
-              severity: 'success',
-              summary: 'visa creer avec succès',
-            });
-          },
-          error: (error) => {
-            console.error("error" + JSON.stringify(error));
-            this.isOpInProgress = false;
-            this.showMessage({ severity: 'error', summary: error.error.message });
 
-          }
+    console.log("ID de l'article :", this.articleDemande.id);
+
+    if (this.articleDemande && this.articleDemande.id) {
+        console.log("Mise à jour d'article");
+
+        console.log("article à envoyer", this.articleDemande);
+
+        this.articleProjetService.update(this.articleDemande).subscribe({
+            next: (response) => {
+                console.log("Réponse de mise à jour :", response);
+
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'article modifié avec succès' });
+            },
+            error: (error) => {
+                console.error("Erreur de mise à jour :", JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
+            }
         });
-      
-    }
+    } else {
+        console.log("Création d'article");
 
+    //    this.articleDemande.demande = this.demande;
+        console.log("article à envoyer", this.articleDemande);
+
+        this.articleProjetService.create(this.articleDemande).subscribe({
+            next: (response) => {
+                console.log("Réponse de création :", response);
+
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'article creer avec succès' });
+            },
+            error: (error) => {
+                console.error("Erreur de création :", JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
+            }
+        });
+    }
+}
   
 }
 

@@ -23,7 +23,7 @@ import { environment } from 'src/environments/environment';
 export class VisaProjetComponent {
  
   @ViewChild('dtf') form!: NgForm;
-  visa: IVisaDemande = new VisaDemande();
+  visaDemande: IVisaDemande = new VisaDemande();
   @Input() data: IVisaDemande = new VisaDemande();
 
   demande: IDemande = new Demande();
@@ -47,7 +47,7 @@ export class VisaProjetComponent {
   ngOnInit(): void {
    
     if (this.dynamicDialog.data) {
-      this.demande = cloneDeep(this.dynamicDialog.data);
+      this.visaDemande = cloneDeep(this.dynamicDialog.data);
       // this.demandes.push(this.demande);
     }
   }
@@ -59,7 +59,7 @@ export class VisaProjetComponent {
     this.dialogRef.destroy();
   }
   isEditing() {
-    return !!this.visa.id;
+    return !!this.visaDemande.id;
   }
 
   clearDialogMessages() {
@@ -78,29 +78,55 @@ export class VisaProjetComponent {
       this.message = null;
     }, 5000);
   }
+
   saveEntity(): void {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
-    this.visa.demande = this.demande;
-    console.log("visaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa a envoyé", this.visa)
-        this.visaProjetService.create(this.visa).subscribe({
-          next: (response) => {
-            this.dialogRef.close(response);
-            this.dialogRef.destroy();
-            this.showMessage({
-              severity: 'success',
-              summary: 'visa creer avec succès',
-            });
-          },
-          error: (error) => {
-            console.error("error" + JSON.stringify(error));
-            this.isOpInProgress = false;
-            this.showMessage({ severity: 'error', summary: error.error.message });
 
-          }
+    console.log("ID du visa :", this.visaDemande.id);
+
+    if (this.visaDemande && this.visaDemande.id) {
+        console.log("Mise à jour de la demande");
+
+        console.log("demande à envoyer", this.visaDemande);
+
+        this.visaProjetService.update(this.visaDemande).subscribe({
+            next: (response) => {
+                console.log("Réponse de mise à jour :", response);
+
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'visa modifié avec succès' });
+            },
+            error: (error) => {
+                console.error("Erreur de mise à jour :", JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
+            }
         });
-      
+    } else {
+        console.log("Création de visa");
+
+    //    this.ampliationDemande.demande = this.demande;
+        console.log("visa à envoyer", this.visaDemande);
+
+        this.visaProjetService.create(this.visaDemande).subscribe({
+            next: (response) => {
+                console.log("Réponse de création :", response);
+
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'visa creer avec succès' });
+            },
+            error: (error) => {
+                console.error("Erreur de création :", JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
+            }
+        });
     }
+}
+
   
 
   }

@@ -9,7 +9,7 @@
     padding-bottom: 5px;">
     <i class="{{isEditing() ? 'pi-pencil' : 'pi-plus'}} pi p-mr-1 mr-2"></i>
     <h3 class="mr-auto">
-      {{visa.id ? 'Formulaire de modification' : 'Formulaire d\'ajout de'}} visa
+      {{visaDemande.id ? 'Formulaire de modification' : 'Formulaire d\'ajout de'}} visa
     </h3>
   </ng-template>
   <p-progressBar *ngIf="isDialogOpInProgress" mode="indeterminate" color="#1e88e0"></p-progressBar>
@@ -24,11 +24,11 @@
 
 <div class="field col-12 md:col-12">
     <label for="code">Code :</label>
-    <input type="number" id="code" name="code" #code="ngModel" [(ngModel)]="visa.code" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    <input type="number" id="code" name="code" #code="ngModel" [(ngModel)]="visaDemande.code" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 </div>
 <div class="field col-12 md:col-12">
     <label for="libelle">Libelle :</label>
-    <input type="text" id="libelle" name="libelle" #libelle="ngModel" [(ngModel)]="visa.libelle" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+    <input type="text" id="libelle" name="libelle" #libelle="ngModel" [(ngModel)]="visaDemande.libelle" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
 </div>
 </div>
 
