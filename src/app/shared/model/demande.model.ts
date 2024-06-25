@@ -54,7 +54,9 @@ export class Demande implements IDemande {
         public visaDemande?: IVisaDemande[]
         // public listDemande?: ITypeDemande[]
 
-    ){}
+    ){
+        
+    }
 
 }
 

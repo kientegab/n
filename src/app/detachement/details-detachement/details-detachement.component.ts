@@ -145,6 +145,8 @@ export class DetailsDetachementComponent {
             if (this.demande.statut === 'PROJET_SIGNE') {
                 this.disableExporterElaboration = false;
             }}
+
+        console.warn("OBJET DEMANDE:::::::::::::",this.demande)
       }
     });
   }

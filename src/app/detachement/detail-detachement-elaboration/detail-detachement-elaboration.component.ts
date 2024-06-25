@@ -21,9 +21,9 @@ import { AmpliationProjetComponent } from '../ampliation-projet/ampliation-proje
 import { VisaService } from 'src/app/shared/service/visa-service';
 import { ArticleService } from 'src/app/shared/service/article.service';
 import { AmpliationService } from 'src/app/shared/service/ampliation-service.service';
-import { VisaDemande } from 'src/app/shared/model/visaDemande.model';
+import { IVisaDemande, VisaDemande } from 'src/app/shared/model/visaDemande.model';
 import { VisaProjetService } from 'src/app/shared/service/visa-projet.service';
-import { ArticleDemande } from 'src/app/shared/model/articleDemande.model';
+import { ArticleDemande, IArticleDemande } from 'src/app/shared/model/articleDemande.model';
 import { AmpliationDemande, IAmpliationDemande } from 'src/app/shared/model/ampliationDemande.model';
 import { ArticleProjetService } from 'src/app/shared/service/article-projet.service';
 import { AmpliationProjetService } from 'src/app/shared/service/ampliation-projet.service';
@@ -146,6 +146,9 @@ export class DetailDetachementElaborationComponent {
 
       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 openModalVisa(demande:IDemande): void {
+    const demandeVisa = new VisaDemande();
+
+    demandeVisa.demande = demande;
     this.dialogService.open(VisaProjetComponent,
         {
             header: 'Ajouter un visa',
@@ -154,7 +157,7 @@ openModalVisa(demande:IDemande): void {
             baseZIndex: 10000,
             maximizable: true,
             closable: true,
-            data: demande
+            data: demandeVisa
         }).onClose.subscribe(result => {
         if(result){
             this.isDialogOpInProgress = false;
@@ -166,6 +169,9 @@ openModalVisa(demande:IDemande): void {
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 openModalArticle(demande:IDemande): void {
+    const demandeArticle = new ArticleDemande();
+
+    demandeArticle.demande = demande;
     this.dialogService.open(ArticleProjetComponent,
         {
             header: 'Ajouter un article',
@@ -174,7 +180,7 @@ openModalArticle(demande:IDemande): void {
             baseZIndex: 10000,
             maximizable: true,
             closable: true,
-            data: demande
+            data: demandeArticle
         }).onClose.subscribe(result => {
         if(result){
             this.isDialogOpInProgress = false;
@@ -283,7 +289,57 @@ getAmpliationDemande(id:number): void {
         }})
         console.log("contenu des ampliations demandes",this.ampliationDemande) 
        }
+       ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+       openModalVisaEdit(visaDemande: IVisaDemande): void {
+
+        console.log("=========VisaDemande=========",visaDemande)
+        this.dialogService.open(VisaProjetComponent,
+          {
+            header: 'Modifier un visa',
+            width: '60%',
+            contentStyle: { overflow: 'auto' },
+            baseZIndex: 10000,
+            maximizable: true,
+            closable: true,
+            data: visaDemande
+          }).onClose.subscribe(result => {
+            if(result){
+              this.isDialogOpInProgress = false;
+             // this.loadAmpliationsDemandes(this.idDmd!);
+              window.location.reload();
+              this.showMessage({ severity: 'success', summary: 'visa modifiée avec succès' });
+            }
+           
+          });
+    
+      }
+       
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+openModalArticleEdit(articleDemande: IArticleDemande): void {
+
+    console.log("=========ArticleDemande=========",articleDemande)
+    this.dialogService.open(ArticleProjetComponent,
+      {
+        header: 'Modifier un article',
+        width: '60%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        closable: true,
+        data: articleDemande
+      }).onClose.subscribe(result => {
+        if(result){
+          this.isDialogOpInProgress = false;
+        //  this.loadAmpliationsDemandes(this.idDmd!);
+          window.location.reload();
+          this.showMessage({ severity: 'success', summary: 'article modifiée avec succès' });
+        }
+       
+      });
+
+  }
        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
        openModalEdit(ampliationDemande: IAmpliationDemande): void {

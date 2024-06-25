@@ -340,6 +340,7 @@ this.router.navigate(['detachements','elaborer', demande.id]);
                 this.isOpInProgress = false;
                 this.showMessage({ severity: 'error', summary: error.error.message });
 
+        console.warn("OBJET DEMANDE",this.demande)
             }
         });
     }
