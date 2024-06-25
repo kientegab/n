@@ -130,7 +130,7 @@ export class DetachementComponent {
             if (result && result.body) {
                 this.totalRecords = Number(result.headers.get('X-Total-Count'));
                 this.demandes = result.body || [];
-                console.log("====== demandes personnelles =======", this.demandes);
+                console.log("====== demandes personnelles =======", result);
             }
         });
     }
