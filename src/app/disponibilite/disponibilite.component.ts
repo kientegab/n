@@ -70,6 +70,8 @@ export class DisponibiliteComponent {
 
       }
 
+
+
       ngOnDestroy(): void {
         if (this.routeData) {
           this.routeData.unsubscribe();

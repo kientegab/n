@@ -1,98 +1,113 @@
 <p-card>
-    <ng-template pTemplate="header">
-        <div class="card-header">
-            <h4 class="text-green text-center text-bold">{{demande.id ? 'Formulaire de modification' : 'Formulaire d\'ajout de'}} demande</h4>
-        </div>
+    <app-confirmation></app-confirmation>
+    <ng-template pTemplate="header" style="
+    background-color:#1e88e0;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;">
+        <h3 class="mr-auto">
+            {{demande.id? "Formulaire de modification" : "Formulaire  de "}} demande
+        </h3>
     </ng-template>
-    <form (ngSubmit)="saveEntity()" #dtf="ngForm" style="margin-top:20px;">
+    <p-progressBar *ngIf="isOpInProgress" mode="indeterminate" color="#1e88e0"></p-progressBar>
+    <p-message *ngIf="message" [severity]="message.severity" [text]="message.summary"></p-message>
+    <form  #dtf="ngForm" style="margin-top:20px;">
 
         <!--  -->
 
         <div class="formgrid grid">
-            <!-- <div class="field col-6 md:col-6">
+            <div class="field col-6 md:col-6">
                 <label for="typeDemandeur">Type demandeur</label>
-                <p-dropdown autoWidth="false" id="typeDemandeur" styleClass="mb-3" [style]="{'width':'100%'}"
-                            [options]="typeDemandeur"
-                            [(ngModel)]="demande.typeDemandeur" optionLabel="label" inputId="typeDemandeur"
-                            name="typeDemandeur" placeholder="Sélectionner le typeDemandeur..." [filter]="true" appendTo="body"
-                            [showClear]="true">
-                </p-dropdown>
-            </div> -->
+                <p-dropdown autoWidth="false" id="typeDemandeur" styleClass="mb-3" [style]="{ 'width': '100%' }"
+                            [(ngModel)]="selectedTypeDemandeur" optionLabel="libelle" inputId="typeDemandeur"
+                            name="typeDemandeur" placeholder="Sélectionner le typeDemandeur..." [options]="typeDemandeurs"
+                            [filter]="true" appendTo="body" [showClear]="true"
+                            (ngModelChange)="onTypeDemandeurChange()"></p-dropdown>
+            </div>
 
             <div class="field col-6 md:col-6">
-                <label for="typeDemande">Type Demande :</label>
-    <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" 
-                [options]="typeDemandes"
-                [(ngModel)]="demande.typeDemande" optionLabel="libelle" inputId="typeDemande"
-                name="typeDemande" placeholder="Sélectionner le type de Demande..." [filter]="true" appendTo="body"
-                (onChange)="onTypeDemandeChange()" [showClear]="true">
-    </p-dropdown>
+                <label for="typeDemandes">Type Demande  </label>
+                <p-dropdown autoWidth="false" id="typeDemandes" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="typeDemandes"
+                            [(ngModel)]="typeDemandeSelected" optionLabel="libelle"  inputId="typeDemandeSelected"
+                            name="typeDemandeSelected" [filter]="true" appendTo="body" [showClear]="true" >
+                </p-dropdown>
             </div>
+
 
             <div class="field col-6 md:col-6">
                 <label for="motif">Motif :</label>
-                <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" 
-                            [options]="motifs"
-                            [(ngModel)]="selectedMotif" optionLabel="libelle" inputId="motifDTOs"
-                            name="motifDTOs" placeholder="Sélectionner le motif..." [filter]="true" appendTo="body"
-                            [showClear]="true" (ngModelChange)="onMotifChange()">
-                </p-dropdown>
+                <p-dropdown autoWidth="false" id="motif" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="motifsFiltres"
+                            [(ngModel)]="selectedMotif" optionLabel="libelle" inputId="motif" name="motif"
+                            placeholder="Sélectionner le motif..." [filter]="true" appendTo="body" [showClear]="true"
+                            (ngModelChange)="onMotifChange()"></p-dropdown>
             </div>
-            
-            <div class="form-group col-md-4">
-                <label for="numeroMatricule">Numéro Matricule</label>
-                <input type="text" pInputText [(ngModel)]="numeroMatricule" class="form-control" name="numeroMatricule" id="numeroMatricule" (ngModelChange)="onChangeMatricule()">
-              </div>
-              
 
-           
-              <div class="field col-4 md-4">
+
+            <div class="form-group col-md-4">
+                <label for="matricule">Numéro Matricule</label>
+                <input type="text" pInputText [(ngModel)]="demande.agent!.matricule" class="form-control" name="matricule"
+                       id="matricule" (ngModelChange)="onChangeMatricule()">
+            </div>
+
+
+
+            <div class="field col-4 md-4">
                 <label for="Prenom">Prénom :</label>
-                <input type="text" id="Prenom" name="Prenom" [(ngModel)]="agent.prenom" [readonly]="true" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-              </div>
+                <input type="text" id="Prenom" name="Prenom" [(ngModel)]="agent.prenom" [readonly]="true" required
+                       class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+            </div>
 
             <div class="field col-4 md:col-4">
                 <label for="Nom">Nom :</label>
-                <input type="text" id="nom" name="nom" #libelle="ngModel" [(ngModel)]="agent.nom" [readonly]="true"    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                <input type="text" id="nom" name="nom" #libelle="ngModel" [(ngModel)]="agent.nom" [readonly]="true"
+                       required
+                       class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </div>
-          
-
-            <!-- <div class="field col-4 md:col-4">
-                <label for="Emploi">Emploi :</label>
-                <input type="text" id="Emploi" name="Emploi" #libelle="ngModel" [(ngModel)]="agent.fonction" [readonly]="true" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-            </div> -->
 
             <div class="field col-4 md:col-4">
                 <label for="Contact">Contact :</label>
-                <input type="text" id="contact" name="contact" #libelle="ngModel" [(ngModel)]="agent.telephone" [readonly]="true"   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                <input type="text" id="contact" name="contact" #libelle="ngModel" [(ngModel)]="agent.telephone"
+                       [readonly]="true" required
+                       class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </div>
-
-            <!-- <div class="field col-4 md:col-4">
-                <label for="Email">Email :</label>
-                <input type="text" id="Email" name="Email" #libelle="ngModel" [(ngModel)]="agent.email" [readonly]="true" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-            </div> -->
 
             <div class="field col-4 md:col-4">
                 <label for="structure">Structure :</label>
                 <input type="text" id="structure" name="structure" #libelle="ngModel"
-                       [(ngModel)]="agent.structure!.libelle" [readonly]="true" 
+                       [(ngModel)]="agent.structure!.libelle" [readonly]="true" required
                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
             </div>
-            
-            
-            
-            
+
+
+
+
 
             <div class="field col-4 md:col-4">
-                <label for="strucDestination">En service à :</label>
-                <input type="text" id="strucDestination" name="strucDestination" #libelle="ngModel" [(ngModel)]="demande.structure"    class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 <div class="p-field p-fluid">
-                    
-                    <label for="Ministère">Ministère</label>
-                    <input type="text" id="ministère" name="ministère" #libelle="ngModel" [(ngModel)]="agent.structure!.ministere!.libelle" [readonly]="true" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                    <label for="ministere">Ministère</label>
+                    <input type="text" id="ministere" name="ministere" #libelle="ngModel" optionLabel="libelle"
+                           [(ngModel)]="agent.structure!.ministere!.libelle" [readonly]="true"
+                           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 </div>
             </div>
 
+            <div class="field col-4 md:col-4">
+                <div class="p-field p-fluid">
+                    <label for="Email">Email</label>
+                    <input type="text" id="email" name="email" #libelle="ngModel" optionLabel="libelle"
+                           [(ngModel)]="agent.email" [readonly]="true"
+                           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                </div>
+            </div>
+            <div class="field col-4 md:col-4">
+                <div class="p-field p-fluid">
+                    <label for="superieur">Supérieur hiérarchique</label>
+                    <input [(ngModel)]="agent.superieurHierarchique!.nom" id="superieur" [readonly]="false"
+                           name="superieur"
+                           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                </div>
+            </div>
 
             <div class="field col-4 md:col-4">
                 <div class="p-field p-fluid">
@@ -101,67 +116,108 @@
                 </div>
             </div>
 
-          
 
-            <!-- <div class="field col-4 md:col-4">
-                <div class="p-field p-fluid">
-                    <label for="structDestination">structure de destination</label>
-                    <input [(ngModel)]="demande.strucDestination" id="strucDestination"  name="strucDestination" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
-                </div>
-            </div> -->
+            <div class="field col-6 md:col-6">
+                <label for="structDestination">Structure de destination :</label>
+                <p-dropdown autoWidth="false" id="structDestination" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="structures"
+                            [(ngModel)]="demande.destination" optionLabel="libelle" inputId="structDestination"
+                            name="structDestination" placeholder="Sélectionner la structure de destination..." [filter]="true"
+                            appendTo="body" [showClear]="true"></p-dropdown>
 
-            <!-- <div class="field col-4 md:col-4">
+            </div>
+
+
+
+
+            <div class="field col-4 md:col-4">
                 <div class="p-field p-fluid">
-                    <label for="superieur">Supérieur hiérarchique</label>
-                    <input [(ngModel)]="demande.agent" id="superieur" [readonly]="false" name="superieur" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                    <label for="annee">Nombre d'année</label>
+                    <input type="number" [(ngModel)]="duree.annee" id="annee" [readonly]="false" name="annee"
+                           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" min="0" max="5">
                 </div>
-            </div> -->
+            </div>
+
+
+            <div class="field col-4 md:col-4">
+                <div class="p-field p-fluid">
+                    <label for="mois">Nombre de mois</label>
+                    <input type="number" [(ngModel)]="duree.mois" id="mois" [readonly]="false" name="mois" min="0" max="12"
+                           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                </div>
+            </div>
+
+
+            <div class="field col-4 md:col-4">
+                <div class="p-field p-fluid">
+                    <label for="jours">Nombre de jours</label>
+                    <input type="number" [(ngModel)]="duree.jours" id="jours" [readonly]="false" name="jours" name="mois" min="0" max="31"
+                           class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                </div>
+            </div>
             <br>
-
-          
-            <div class="field col-12 md:col-12">
+            <div class="field col-12 md:col-12" *ngIf="demande.id" >
+                <p-fieldset legend="Liste des pièces existantes" [toggleable]="true">
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fichier</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of pieceJointes;let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{item.libelle}}</td>
+                            <td><button class="btn btn-success" (click)="voirPiece(item.url)">Visualiser</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-primary" (click)="display()">Modifier les pièces jointes </button>
+                </p-fieldset>
+            </div>
+            <div class="field col-12 md:col-12" *ngIf="isDisplay">
                 <div class="card">
                     <table class="table table-sm border-none">
                         <thead>
-                            <tr>
-                                <th scope="col">Libelle</th>
-                                <th scope="col">Fichier</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">Libelle</th>
+                            <th scope="col">Fichier</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <ng-container *ngFor="let piece of selectedPieces; let i=index">
-                              <tr>
+                        <ng-container *ngFor="let piece of piecesFilters; let i=index">
+                            <tr>
                                 <td>{{ piece.libelle }}</td>
                                 <td>
-                                  <p-fileUpload name="demo{{i}}[]"  (onUpload)="onUpload($event)"
-                                                [multiple]="false" accept=".pdf" [maxFileSize]="10000000">
-                                    <ng-template pTemplate="content">
-                                      <ul *ngIf="uploadedFiles.length">
-                                        <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
-                                      </ul>
-                                    </ng-template>
-                                  </p-fileUpload>
+                                    <p-fileUpload name="demo{{i}}" (onSelect)="onUpload($event,piece,i)"
+                                                  [multiple]="false" accept=".pdf" [maxFileSize]="10000000">
+                                    </p-fileUpload>
                                 </td>
-                              </tr>
-                            </ng-container>
-                          </tbody>
-                          
+                            </tr>
+                        </ng-container>
+                        </tbody>
+
                     </table>
                 </div>
             </div>
-            
+
 
         </div>
 
-  <!-- <p-divider></p-divider> -->
-  <div class="p-ml-auto text-right ">
-    <div class="p-ml-auto text-right">
-        <button type="reset" label="Effacer" class="p-button-filter mr-3 float-left" pButton icon="pi pi-trash"></button>
-        <button label="Annuler" (click)="clear()" class="p-button-filter mr-3" pButton icon="pi pi-times"></button>
-        <button type="submit" [disabled]="!dtf.form.valid" label="{{isEditing() ? 'Enregistrer' : 'Ajouter'}}" icon="pi {{isEditing() ? 'pi-save' : 'pi-plus'}}" class="  {{isEditing() ? 'p-button-primary' : 'p-button-success'}}" pButton>
-        </button>
-    </div>
-  </div>
-</form>
+        <!-- <p-divider></p-divider> -->
+        <div class="p-ml-auto text-right ">
+            <div class="p-ml-auto text-right">
+                <button type="reset" label="Effacer" class="p-button-filter mr-3 float-left" pButton
+                        icon="pi pi-trash"></button>
+                <button label="Annuler" (click)="clear()" class="p-button-filter mr-3" pButton
+                        icon="pi pi-times"></button>
+                <button (click)="saveEntity()" [disabled]="!dtf.form.valid" label="{{isEditing() ? 'Envoyer' : 'Envoyer'}}"
+                        icon="pi {{isEditing() ? 'pi-save' : 'pi-plus'}}"
+                        class="  {{isEditing() ? 'p-button-primary' : 'p-button-success'}}" pButton>
+                </button>
+            </div>
+        </div>
+    </form>
 
 </p-card>

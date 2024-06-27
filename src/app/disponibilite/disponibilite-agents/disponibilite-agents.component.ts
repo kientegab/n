@@ -11,6 +11,8 @@ import { environment } from 'src/environments/environment';
 import { CreerModifierDisponibiliteComponent } from '../creer-modifier-disponibilite/creer-modifier-disponibilite.component';
 import { DetailsDisponibiliteComponent } from '../details-disponibilite/details-disponibilite.component';
 import { AviserDisponibiliteComponent } from '../aviser-disponibilite/aviser-disponibilite.component';
+import {IMotif} from "../../shared/model/motif.model";
+import {ITypeDemandeur} from "../../shared/model/typeDemandeur.model";
 
 @Component({
   selector: 'app-disponibilite-agents',
@@ -43,6 +45,7 @@ export class DisponibiliteAgentsComponent {
   enableCreate = true;
   filtreNumero: string | undefined;
   items: MenuItem[] = [];
+
 
   constructor(
     private demandeService: DemandeService,
