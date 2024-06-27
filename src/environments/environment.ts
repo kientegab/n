@@ -9,7 +9,7 @@ export const environment = {
 
   // detachementUrl: 'http://10.53.218.146:8081/api',
   detachementUrl: 'http://localhost:8081/api/detachements',
-  disponibiliteUrl: 'http://localhost:8081/api/disponibilite',
+  disponibiliteUrl: 'http://localhost:8082/api',
   authentificationUrl: 'http://localhost:8080/api/auth',
 
   circuitUrl:commonAppURI + 'circuit',
