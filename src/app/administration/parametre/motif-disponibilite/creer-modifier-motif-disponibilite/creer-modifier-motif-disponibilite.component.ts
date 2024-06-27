@@ -1,12 +1,19 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { cloneDeep } from 'lodash';
+import { ConfirmationService, Message } from 'primeng/api';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Duree, IDuree } from 'src/app/shared/model/duree.model';
 import { IMotifDisponibilite, MotifDisponibilite } from 'src/app/shared/model/motifDisponibilite.model';
+import { IPieceDisponibilite, PieceDisponibilite } from 'src/app/shared/model/pieceDisponibilite.model';
+import { MotifDisponibiliteService } from 'src/app/shared/service/motif-disponibilite.service';
+import { PieceDisponibiliteService } from 'src/app/shared/service/piece-disponibilite.service';
 
 @Component({
-  selector: 'app-creer-modifier-motifDisponibilite-disponibilite',
-  templateUrl: './creer-modifier-motifDisponibilite-disponibilite.component.html',
-  styleUrls: ['./creer-modifier-motifDisponibilite-disponibilite.component.scss']
+  selector: 'app-creer-modifier-motif-disponibilite',
+  templateUrl: './creer-modifier-motif-disponibilite.component.html',
+  styleUrls: ['./creer-modifier-motif-disponibilite.component.scss']
 })
 export class CreerModifierMotifDisponibiliteComponent {
 
@@ -23,21 +30,14 @@ export class CreerModifierMotifDisponibiliteComponent {
   timeoutHandle: any;
   isOpInProgress!: boolean;
   pieces: IPieceDisponibilite[] = [];
-  pieceSelected: Piece[] = [];
+  pieceSelected: PieceDisponibilite[] = [];
     categSelected: any;
-    typeDemandeurs: ITypeDemandeur[]=[{
-      code:'AGENT',
-      libelle: 'AGENT'
-  },
-  {
-      code:'STRUCTURE',
-      libelle: 'STRUCTURE'
-  }];
+  
 
 
   constructor(
-    private motifService: MotifService,
-    private pieceService: PieceService,
+    private motifService: MotifDisponibiliteService,
+    private pieceService: PieceDisponibiliteService,
     private dialogRef: DynamicDialogRef,
     private dynamicDialog: DynamicDialogConfig,
     private confirmationService: ConfirmationService
@@ -88,7 +88,7 @@ export class CreerModifierMotifDisponibiliteComponent {
   }
   saveEntity(): void {
       this.motifDisponibilite.dureeMax = this.dure;
-      this.motifDisponibilite.typeDemandeur = this.motifDisponibilite.typeDemandeurDto?.libelle;
+      //this.motifDisponibilite.typeDemandeur = this.motifDisponibilite.typeDemandeurDto?.libelle;
       console.warn("MOTIF",this.motifDisponibilite);
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
