@@ -1,6 +1,6 @@
 import {Duree} from "./duree.model";
 
-export interface IMotif {
+export interface IMotifDisponibilite {
     id?: number,
     libelle?: string;
     plafondAnnee?: number;
@@ -10,14 +10,14 @@ export interface IMotif {
 
 }
 
-export class Motif implements IMotif {
+export class MotifDisponibilite implements IMotifDisponibilite {
     constructor(
         public id?: number,
         public libelle?: string,
         public plafondAnnee?: number,
         public dureeMax?: Duree,
     //    public typeDemandeur?: String,
-     //   public typeDemandeurDto?: ITypeDemandeur
+     //   public typeDemandeurDto?: ITypeDemandeur  
     ) { }
 
 
