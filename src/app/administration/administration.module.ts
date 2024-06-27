@@ -21,6 +21,7 @@ import {
     CreerModifierAmpliationComponent
 } from "./parametre/ampliation/creer-modifier-ampliation/creer-modifier-ampliation.component";
 import { MotifComponent } from './parametre/motif/motif.component';
+import { PieceDisponibiliteComponent } from './parametre/piece-disponibilite/piece-disponibilite.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { MotifComponent } from './parametre/motif/motif.component';
     DashboardAdministrationComponent,
     ActionsToolbarIudComponent,
     CrudToolbarComponent,
+    PieceDisponibiliteComponent,
   ],
   imports: [
   CommonModule,
