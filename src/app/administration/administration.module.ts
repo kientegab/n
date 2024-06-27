@@ -23,12 +23,14 @@ import {
 import { MotifComponent } from './parametre/motif/motif.component';
 import { CreerModifierMotifDisponibiliteComponent } from './parametre/motif-disponibilite/creer-modifier-motif-disponibilite/creer-modifier-motif-disponibilite.component';
 import { MotifDisponibiliteComponent } from './parametre/motif-disponibilite/motif-disponibilite.component';
+import { PieceDisponibiliteComponent } from './parametre/piece-disponibilite/piece-disponibilite.component';
 
 @NgModule({
   declarations: [
     DashboardAdministrationComponent,
     ActionsToolbarIudComponent,
-    CrudToolbarComponent
+    CrudToolbarComponent,
+    PieceDisponibiliteComponent,
   ],
   imports: [
   CommonModule,
