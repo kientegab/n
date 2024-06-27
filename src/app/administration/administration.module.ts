@@ -21,13 +21,14 @@ import {
     CreerModifierAmpliationComponent
 } from "./parametre/ampliation/creer-modifier-ampliation/creer-modifier-ampliation.component";
 import { MotifComponent } from './parametre/motif/motif.component';
+import { CreerModifierMotifDisponibiliteComponent } from './parametre/motif-disponibilite/creer-modifier-motif-disponibilite/creer-modifier-motif-disponibilite.component';
+import { MotifDisponibiliteComponent } from './parametre/motif-disponibilite/motif-disponibilite.component';
 
 @NgModule({
   declarations: [
-   
     DashboardAdministrationComponent,
     ActionsToolbarIudComponent,
-    CrudToolbarComponent,
+    CrudToolbarComponent
   ],
   imports: [
   CommonModule,
