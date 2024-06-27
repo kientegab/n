@@ -1,4 +1,4 @@
-const commonAppURI: string = 'http://localhost:8081/api/';
+const commonAppURI: string = 'http://localhost:8082/api/';
 const commonAuth: string = 'http://localhost:8088/api/auth/';
 const domaineUrl: string='localhost:4200'
 
@@ -8,8 +8,8 @@ export const environment = {
   recordsPerPage: 20,
 
   // detachementUrl: 'http://10.53.218.146:8081/api',
-  detachementUrl: 'http://localhost:8081/api/detachements',
-  authentificationUrl: 'http://localhost:8080/api/auth',
+  detachementUrl: 'http://localhost:8082/api/detachements',
+  authentificationUrl: 'http://localhost:8088/api/auth',
 
   circuitUrl:commonAppURI + 'circuit',
   communeUrl: commonAppURI +'communes',
