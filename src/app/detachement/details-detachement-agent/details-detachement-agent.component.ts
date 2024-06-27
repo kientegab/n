@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Message } from 'primeng/api';
+import { ConfirmationService, Message } from 'primeng/api';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
 import { IDemande, Demande } from 'src/app/shared/model/demande.model';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
@@ -8,9 +8,10 @@ import { AviserDetachementComponent } from '../aviser-detachement/aviser-detache
 import { ReceptionDetachementComponent } from '../reception-detachement/reception-detachement.component';
 import {IPieceJointe} from "../../shared/model/pieceJointe.model";
 import {PieceService} from "../../shared/service/piece.service";
-import { IHistorique } from 'src/app/shared/model/historique.model';
+import { Historique, IHistorique } from 'src/app/shared/model/historique.model';
 import { TokenService } from 'src/app/shared/service/token.service';
 import {saveAs} from "file-saver";
+import { AmpliationDemande, IAmpliationDemande } from 'src/app/shared/model/ampliationDemande.model';
 
 @Component({
   selector: 'app-details-detachement-agent',
@@ -21,6 +22,7 @@ export class DetailsDetachementAgentComponent {
 
   demande: IDemande = new Demande();
   @Input() data: IDemande = new Demande();
+  ampliationDemande: IAmpliationDemande = new AmpliationDemande();
   idDmd: number | undefined;
   isOpInProgress!: boolean;
   isDialogOpInProgress!: boolean;
@@ -34,6 +36,10 @@ export class DetailsDetachementAgentComponent {
   username!: string;
   profil!: string;
 
+  // historiques: IHistorique[] =[];
+  historique:IHistorique = new Historique();
+
+  
   disableVerifierSTDCMEF = true;
   diableViserDCMEF = true;
   disableAviserSH = true;
@@ -44,7 +50,8 @@ export class DetailsDetachementAgentComponent {
   disableValiderElaboration = true;
   disableSignerElaboration = true;
     disableExporterElaboration = true;
-
+    disableRejeterDemande = true;
+    disableRejeterProjet=true;
 
   constructor(
     private dialogRef: DynamicDialogRef,
@@ -53,7 +60,8 @@ export class DetailsDetachementAgentComponent {
     private tokenService: TokenService,
     private route: ActivatedRoute,
     private router: Router,
-    private pieceService: PieceService
+    private pieceService: PieceService,
+    private confirmationService: ConfirmationService
   ) {}
 
 
@@ -81,9 +89,7 @@ export class DetailsDetachementAgentComponent {
           window.location.reload();
           this.showMessage({ severity: 'success', summary: 'Demande receptionnée avec succès' });
         }
-
       });
-
   }
   /** Permet d'afficher un modal pour aviser une demande */
   openModalAviser(demande: IDemande): void {
@@ -105,6 +111,22 @@ export class DetailsDetachementAgentComponent {
 
     });
   }
+
+
+  showConfirmation() {
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: 'Êtes-vous sûr de vouloir rejeter cette demande?',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Oui',
+      rejectLabel: 'Non',
+      accept: () => {
+        // Logique à exécuter si l'utilisateur clique sur "Oui"
+        this.rejeterDemande();
+      }
+    });
+  }
+
 
   /** Permet d'afficher un modal pour aviser une demande */
    openModalValiderProjet(demande: IDemande): void {
@@ -241,17 +263,26 @@ this.router.navigate(['detachements','elaborer', demande.id]);
 
           if((this.demande.statut === 'AVIS_DRH' || this.demande.statut === 'AVIS_DGFP') && this.profil === 'SG') {
             this.disableAviserSG = false;
-          }
+            this.disableRejeterDemande = false;
+        }
 
           if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGF')) {
             this.disableElaborer = false;
           }
+
+
             if (this.demande.statut === 'PROJET_ELABORE' && (this.profil === 'DRH')) {
                 this.disableValiderElaboration = false;
             }
+
+            if (this.demande.statut === 'PROJET_REJETE' && (this.profil === 'STDRH')) {
+              this.disableElaborer = false;
+          }
             if (this.demande.statut === 'PROJET_VALIDE' && (this.profil === 'SG')) {
                 this.disableSignerElaboration = false;
+                this.disableRejeterProjet = false;
             }
+
             if (this.demande.statut === 'PROJET_SIGNE') {
                 this.disableExporterElaboration = false;
             }
@@ -309,6 +340,7 @@ this.router.navigate(['detachements','elaborer', demande.id]);
                 this.isOpInProgress = false;
                 this.showMessage({ severity: 'error', summary: error.error.message });
 
+        console.warn("OBJET DEMANDE",this.demande)
             }
         });
     }
@@ -344,6 +376,50 @@ this.router.navigate(['detachements','elaborer', demande.id]);
     openModalSignatureProjet(demande:IDemande): void {
         this.router.navigate(['detachements','elaborer', demande.id]);
     }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+rejeterDemande(): void {
+  this.confirmationService.confirm({
+    header: 'Confirmation',
+    message: 'Êtes-vous sûr de vouloir rejeter cette demande?',
+    accept: () => {
+      // Code à exécuter si l'utilisateur clique sur le bouton "Accepter" dans la boîte de dialogue de confirmation
+      this.isDialogOpInProgress = true;
 
+      if (this.demande) {
+        this.demande.historique = this.historique;
+        this.demandeService.rejeterSG(this.demande).subscribe({
+          // ...
+        });
+        window.location.reload();
+      }
+    },
+    reject: () => {
+      // Code à exécuter si l'utilisateur clique sur le bouton "Annuler" dans la boîte de dialogue de confirmation
+      // Vous pouvez ne rien faire ici si vous ne souhaitez pas exécuter d'action spécifique lors du rejet
+    },
+  });
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+rejeterElaboration(): void {
+  this.isDialogOpInProgress = true;
+  if (this.demande) {
+      this.demande.historique = this.historique;
+      this.demandeService.rejeterElaborationSG(this.demande).subscribe(
+          {
+              // next: (response: any) => {
+              //     this.print();
+              // },
+              error: (error: { error: { message: any; }; }) => {
+                  console.error("error" + JSON.stringify(error));
+                  this.isOpInProgress = false;
+                  this.showMessage({ severity: 'error', summary: error.error.message });
+
+              }
+          });
+
+  }
+}
 
 }

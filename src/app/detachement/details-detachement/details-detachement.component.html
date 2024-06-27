@@ -209,6 +209,12 @@
   </p-fieldset>
 
   <p-divider></p-divider>
+
+  <div class="p-ml-auto text-right">
+    <button description="telecharger" icon="pi pi-pencil" [hidden]="disableExporterElaboration" label="Exporter l'arrete signé" (click)="exporter()" class="p-button-success mr-2"
+            pButton></button>
+</div>
+
   <div class="row justify-content-center">
     <div class="p-ml-auto text-right">
       <button description="reset" icon="pi pi-times" label="Fermer" (click)="fermer()" class="p-button-danger mr-2" pButton></button>

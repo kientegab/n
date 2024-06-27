@@ -6,8 +6,10 @@ export const environment = {
   production: false,
   domaine:`${domaineUrl}`,
   recordsPerPage: 20,
-  detachementUrl: 'http://localhost:8081/api',
-  authentificationUrl: 'http://localhost:8081/api/auth',
+
+  // detachementUrl: 'http://10.53.218.146:8081/api',
+  detachementUrl: 'http://localhost:8081/api/detachements',
+  authentificationUrl: 'http://localhost:8080/api/auth',
 
   circuitUrl:commonAppURI + 'circuit',
   communeUrl: commonAppURI +'communes',
@@ -32,6 +34,7 @@ export const environment = {
   motifUrl: commonAppURI + 'motifs',
   ministereUrl: commonAuth + 'ministeres',
   ampliationUrl:commonAuth + 'ampliations',
+  ampliationProjetUrl:commonAuth + 'ampliation-demandes',
   demandeUrl:commonAppURI + 'demandes',
   arrondissementUrl: commonAppURI +'arrondissements',
   categorieEmployeurUrl: commonAppURI +'categorieemployeurs',

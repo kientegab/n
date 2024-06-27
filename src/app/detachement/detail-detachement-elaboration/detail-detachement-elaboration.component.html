@@ -60,9 +60,40 @@
                         </tr>
                         </tbody>
                     </table>
+
                 </div>
+
+                <table class="table table-sm no-border">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Libelle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of visaDemandes;let i = index">
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{item.code}}</td>
+                        <td>{{item.libelle}}</td>
+                        <td class="actionsStyle">
+                            <app-actions-toolbar-iud 
+                            (edit)="openModalVisaEdit(item)" [enableBtnEdit]="enableBtnEdit"
+                            >
+                          </app-actions-toolbar-iud>
+                          </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
             </div>
         </div>
+        <div class="p-ml-auto text-right">
+            <button description="ajout visa" icon="pi pi-pencil" label="Visa" [hidden]="disableVisaProjet"  (click)="openModalVisa(demande)" class="p-button-success mr-2"
+                    pButton></button>
+        </div>
+
     </p-fieldset>
     <br>
     <p-fieldset legend="Liste des articles" [toggleable]="true">
@@ -86,7 +117,37 @@
                         </tbody>
                     </table>
                 </div>
+                <table class="table table-sm no-border">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Libelle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of articleDemandes;let i = index">
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{item.code}}</td>
+                        <td>{{item.libelle}}</td>
+
+
+                        <td class="actionsStyle">
+                            <app-actions-toolbar-iud 
+                            (edit)="openModalArticleEdit(item)" [enableBtnEdit]="enableBtnEdit"
+                            >
+                          </app-actions-toolbar-iud>
+                          </td>
+
+
+                    </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
+        <div class="p-ml-auto text-right">
+            <button description="ajout article" icon="pi pi-pencil" label="Article" [hidden]="disableArticleProjet"  (click)="openModalArticle(demande)" class="p-button-success mr-2"
+                    pButton></button>
         </div>
     </p-fieldset>
     <br>
@@ -111,7 +172,37 @@
                         </tbody>
                     </table>
                 </div>
+
+                <table class="table table-sm no-border">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Code</th>
+                        <th scope="col">Libelle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let item of ampliationDemandes;let i = index">
+                        <th scope="row">{{i+1}}</th>
+                        <td>{{item.code}}</td>
+                        <td>{{item.libelle}}</td>
+
+                        <td class="actionsStyle">
+                            <app-actions-toolbar-iud 
+                            (edit)="openModalEdit(item)" [enableBtnEdit]="enableBtnEdit"
+                            >
+                          </app-actions-toolbar-iud>
+                          </td>
+                    </tr>
+                    </tbody>
+                </table>
+
             </div>
+        </div>
+
+        <div class="p-ml-auto text-right">
+            <button description="ajout ampliation" icon="pi pi-pencil" [hidden]="disableAmpliationProjet" label="Ampliation"  (click)="openModalAmpliation(demande)" class="p-button-success mr-2"
+                    pButton></button>
         </div>
     </p-fieldset>
     <br>
@@ -135,12 +226,26 @@
         </div>
 
         <div class="p-ml-auto text-right">
+            <button description="rejeter demande sg" icon="pi pi-pencil" label="Rejeter demande" [hidden]="disableRejeterDemande" (click)="rejeterDemande()" class="p-button-success mr-2"
+                    pButton></button>
+        </div>
+        <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+        <div class="p-ml-auto text-right">
+            <button description="rejeter projet sg" icon="pi pi-times" label="Rejeter projet" [hidden]="disableRejeterProjet" (click)="rejeterElaboration()" class="p-button p-button-danger mr-2"
+                    pButton></button>
+        </div>
+        
+
+
+        
+        <div class="p-ml-auto text-right">
             <button description="receptionner" icon="pi pi-folder-open" label="Receptionner" [hidden]="disableReceptionner" (click)="openModalReceptionner(demande)" class="p-button-primary mr-2"
                     pButton></button>
         </div>
 
         <div class="p-ml-auto text-right">
-            <button description="elaborer" icon="pi pi-pencil" label="Declencher processus Elaboration" [hidden]="disableElaborer" (click)="elaborer()" class="p-button-success mr-2"
+            <button description="elaborer" icon="pi pi-pencil" label="Déclencher processus Elaboration" [hidden]="disableElaborer" (click)="elaborer()" class="p-button-success mr-2"
                     pButton></button>
         </div>
 
@@ -158,18 +263,19 @@
 
 
         <div class="p-ml-auto text-right">
-            <button description="valider le projet" icon="pi pi-pencil" label="Valider Elaboration" [hidden]="disableValiderElaboration" (click)="openModalValiderElaborerProjet(demande)" class="p-button-success mr-2"
+            <button description="valider le projet" icon="pi pi-pencil" label="Valider projet d'arreté" [hidden]="disableValiderElaboration" (click)="openModalValiderElaborerProjet(demande)" class="p-button-success mr-2"
                     pButton></button>
         </div>
 
         <div class="p-ml-auto text-right">
-            <button description="signer le projet" icon="pi pi-pencil" label="Signer Elaboration" [hidden]="disableSignerElaboration" (click)="signerElaboration()" class="p-button-success mr-2"
+            <button description="signer le projet" icon="pi pi-pencil" label="Signer projet d'arreté" [hidden]="disableSignerElaboration" (click)="signerElaboration()" class="p-button-success mr-2"
                     pButton></button>
         </div>
 
         <div class="p-ml-auto text-right">
-            <button description="reset" icon="pi pi-times" label="Fermer" (click)="fermer()" class="p-button-danger mr-2"
+            <button description="reset" icon="pi pi-times" label="Fermer" (click)="fermer()" class="p-button-danger p-button-custom-red mr-2"
                     pButton></button>
         </div>
+        
     </div>
 </p-card>

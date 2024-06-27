@@ -10,6 +10,8 @@ import { ValiderProjetComponent } from '../valider-projet/valider-projet.compone
 import { IHistorique } from 'src/app/shared/model/historique.model';
 import { IPieceJointe } from 'src/app/shared/model/pieceJointe.model';
 import { PieceService } from 'src/app/shared/service/piece.service';
+import {saveAs} from "file-saver";
+import { TokenService } from 'src/app/shared/service/token.service';
 
 @Component({
   selector: 'app-details-detachement',
@@ -25,9 +27,11 @@ export class DetailsDetachementComponent {
   isDialogOpInProgress!: boolean;
   showDialog = false;
   message: any;
+  isLoggedIn = false;
   timeoutHandle: any;
   pieceJointes: IPieceJointe[] =[];
   historiques: IHistorique[] =[];
+  disableExporterElaboration = true;
 
   constructor(
     private dialogRef: DynamicDialogRef,
@@ -35,7 +39,9 @@ export class DetailsDetachementComponent {
     private demandeService: DemandeService,
     private pieceService: PieceService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private tokenService: TokenService
+
   ) {}
 
 
@@ -134,6 +140,13 @@ export class DetailsDetachementComponent {
         console.log("DEMANDE ========", this.demande);
         this.getPieceByDmd(this.demande.id!);
         this.getHistoriquesByDmd(this.demande.id!)
+        this.isLoggedIn = !!this.tokenService.getToken();
+        if (this.isLoggedIn) {
+            if (this.demande.statut === 'PROJET_SIGNE') {
+                this.disableExporterElaboration = false;
+            }}
+
+        console.warn("OBJET DEMANDE:::::::::::::",this.demande)
       }
     });
   }
@@ -165,5 +178,39 @@ getHistoriquesByDmd(dmdId: number){
       }
   });
 }
+
+
+
+
+
+
+exporter(){
+  this.demandeService.printArrete(this.demande.id!,false).subscribe({
+      next: (response) => {
+          saveAs(response, 'Arrete' + this.demande.numero + '.pdf')
+          this.showMessage({
+              severity: 'success',
+              summary: 'Document telechargé avec succès',
+          });
+      },
+      error: (error) => {
+          console.error("error" + JSON.stringify(error));
+          this.isOpInProgress = false;
+          this.showMessage({ severity: 'error', summary: error.error.message });
+
+      }
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
 
 }

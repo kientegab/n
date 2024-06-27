@@ -34,6 +34,9 @@ import { DetailDetachementElaborationComponent } from './detail-detachement-elab
 import { ValiderElaborationModalComponent } from './valider-elaboration-modal/valider-elaboration-modal.component';
 import { VerifierProjetComponent } from './verifier-projet/verifier-projet.component';
 import { ViserProjetComponent } from './viser-projet/viser-projet.component';
+import { VisaProjetComponent } from './visa-projet/visa-projet.component';
+import { ArticleProjetComponent } from './article-projet/article-projet.component';
+import { AmpliationProjetComponent } from './ampliation-projet/ampliation-projet.component';
 
 
 @NgModule({
@@ -50,7 +53,12 @@ import { ViserProjetComponent } from './viser-projet/viser-projet.component';
     DetailDetachementElaborationComponent,
     ValiderElaborationModalComponent,
     VerifierProjetComponent,
-    ViserProjetComponent
+    ViserProjetComponent,
+    AmpliationProjetComponent,
+    ArticleProjetComponent,
+    VisaProjetComponent
+ 
+
   ],
     imports: [
         CommonModule,

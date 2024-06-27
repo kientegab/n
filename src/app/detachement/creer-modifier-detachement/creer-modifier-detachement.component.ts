@@ -64,6 +64,7 @@ export class CreerModifierDetachementComponent {
 
     typeDemandes: ITypeDemande [] = [];
 
+    typeDemandeSelected: ITypeDemande = new TypeDemande(); 
 
     // typeDemande?: number;
     typeDemandeurs: ITypeDemandeur[] = [{
@@ -263,7 +264,7 @@ export class CreerModifierDetachementComponent {
     loadTypeDemande() {
         this.typeDemandeService.findAll().subscribe(response => {
             this.typeDemandes = response.body!;
-           console.warn("TYPE DEMANDE",this.typeDemandes);
+           console.warn("TYPE DEMANDE=================\n:",this.typeDemandes);
         }, error => {
             this.message = {severity: 'error', summary: error.error};
             console.error(JSON.stringify(error));
@@ -340,6 +341,7 @@ console.warn("ALERT ICI",this.demande);
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             this.demande.duree = this.duree;
             this.demande.motif = this.selectedMotif;
+            this.demande.typeDemande = this.typeDemandeSelected;
             if (this.demande.id) {
                 console.warn("ALERT ICI",this.demande);
                 this.demandeService.update(this.demande).subscribe(
@@ -419,7 +421,10 @@ console.warn("ALERT ICI",this.demande);
             if (result && result.body) {
                 this.demande = result.body;
                 this.isDisplay = false;
-                console.warn("DEMANDE",this.demande);
+                console.warn("DEMANDE::::::::::::::::::::::::::::::::::::::",this.demande);
+                this.typeDemandeSelected = this.demande.typeDemande!;
+                console.warn("======================== ma demande :\n",this.typeDemandeSelected);
+               // this.demande.typeDemande = this.typeDemandeSelected;
                 this.onChangeMatricule();
                 this.duree = this.demande.duree!;
                 if (this.demande.dateEffet) {
@@ -435,7 +440,7 @@ console.warn("ALERT ICI",this.demande);
                 this.agent = this.demande.agent!;
                 this.onMotifChange();
             }
-        });
+        }); 
     }
 
     getPieceByDmd(dmdId: number){

@@ -1,9 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Agent, IAgent } from 'src/app/shared/model/agent.model';
 import { ChangePasswordDTO, IChangePasswordDTO } from 'src/app/shared/model/change-password-dto';
 import { IUser, User } from 'src/app/shared/model/user';
+import { AgentService } from 'src/app/shared/service/agent.service';
 import { AuthenticationService } from 'src/app/shared/service/auth.service';
+import { TokenService } from 'src/app/shared/service/token.service';
 import { UserService } from 'src/app/shared/service/user.service';
 
 @Component({
@@ -13,10 +16,14 @@ import { UserService } from 'src/app/shared/service/user.service';
 })
 export class InfosUserComponent {
 
-  user: IUser = new User();
+
+  
+
+  user: IAgent = new Agent();
   oldPassword: string | undefined;
   newPassword: string | undefined;
   confirmPassword: string | undefined;
+  
 
   changePasswordDTO: IChangePasswordDTO = new ChangePasswordDTO();
   
@@ -35,16 +42,37 @@ export class InfosUserComponent {
   constructor(
     private authService: AuthenticationService,
     private userService: UserService,
-    private router: Router,
+    private tokenService: TokenService,
+    private agentService: AgentService,
+    private router: Router
   ) {}
 
+  // getUser(): any {
+  //   const user = window.sessionStorage.getItem(USER_KEY);
+  //   if(user) {
+  //     console.log("======= get user saved json========= : ", JSON.parse(user));
+  //     console.log("======= get user saved ========= : ", user);
+  //     return JSON.parse(user);
+  //   }
+  //   return {};
+  // }
+
   ngOnInit(): void {
-    this.authService.findInfosUser().subscribe(account => {
-      if (account) {
-        this.user = account.body!;
-      }
-    });
+    this.user = this.tokenService.getUser();
+    
+    console.log("user connecté::::::::::",this.user)
+
   }
+
+//   getUser(): void {
+
+//   this.tokenService.getUser().subscribe((account: { body: IUser; }) => {
+//     if (account) {
+//       this.user = account.body!;
+//     }
+//     console.log("user::::::::::::::::::::::",this.user)
+//   });
+// }
 
   changePassword(): void {
     // if (this.newPassword !== this.confirmPassword) {

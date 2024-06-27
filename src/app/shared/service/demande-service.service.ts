@@ -99,6 +99,11 @@ export class DemandeService {
     return this.http.post<IDemande>(`${demandeUrl}/valider-demande/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
 
+  rejeterSG(groupe: IDemande): Observable<EntityResponseType> {
+    return this.http.post<IDemande>(`${demandeUrl}/rejet-new/${groupe.id}`, groupe.historique, { observe: 'response' });
+  }
+
+
   statDemande(){
     return this.http.get<IDemande[]>(reportUrl+'/check-total-globale', { observe: 'response' });
   }
@@ -136,6 +141,11 @@ export class DemandeService {
     validerElaborationDRH(demande: IDemande): Observable<EntityResponseType> {
         return this.http.post<IDemande>(`${demandeUrl}/valider-projet/${demande.id}`, demande.historique, { observe: 'response' });
     }
+    
+
+    rejeterElaborationSG(demande: IDemande): Observable<EntityResponseType> {
+      return this.http.post<IDemande>(`${demandeUrl}/rejeter-projet/${demande.id}`, demande.historique, { observe: 'response' });
+  }
 
     signerElaborationSG(demande: IDemande): Observable<EntityResponseType> {
         return this.http.post<IDemande>(`${demandeUrl}/signer-projet/${demande.id}`, demande.historique, { observe: 'response' });

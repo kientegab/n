@@ -146,6 +146,14 @@
   <p-divider></p-divider>
   <div class="row justify-content-center">
 
+    <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+    <div class="p-ml-auto text-right">
+      <button description="rejeter demande sg" icon="pi pi-times" label="Rejeter demande" [hidden]="disableRejeterDemande" (click)="rejeterDemande()" class="p-button p-button-danger mr-2"
+              pButton></button>
+    </div>
+
+    
     <div class="p-ml-auto text-right">
       <button description="aviser sh" icon="pi pi-pencil" label="Aviser" [hidden]="disableAviserSH" (click)="openModalAviser(demande)" class="p-button-success mr-2"
       pButton></button>
@@ -168,13 +176,13 @@
 
 
     <div class="p-ml-auto text-right">
-      <button description="elaborer" icon="pi pi-pencil" label="Procéder a l'élaboration" [hidden]="disableElaborer" (click)="openModalElaborerProjet(demande)" class="p-button-success mr-2"
+      <button description="elaborer" icon="pi pi-pencil" label="Procéder à l'élaboration" [hidden]="disableElaborer" (click)="openModalElaborerProjet(demande)" class="p-button-success mr-2"
       pButton></button>
   </div>
 
 
   <div class="p-ml-auto text-right">
-    <button description="verifier" icon="pi pi-pencil" label="Procéder a la vérification" [hidden]="disableVerifierSTDCMEF" (click)="openModalVerifierProjet(demande)" class="p-button-success mr-2"
+    <button description="verifier" icon="pi pi-pencil" label="Procéder à la vérification" [hidden]="disableVerifierSTDCMEF" (click)="openModalVerifierProjet(demande)" class="p-button-success mr-2"
     pButton></button>
 </div>
 
@@ -183,6 +191,11 @@
   <button description="viser" icon="pi pi-pencil" label="Viser projet" [hidden]="diableViserDCMEF" (click)="openModalViserProjet(demande)" class="p-button-success mr-2"
   pButton></button>
 </div>
+
+
+<!-- <div class="p-ml-auto text-right">
+  <button description="rejeter projet sg" icon="pi pi-times" label="Rejeter projet" [hidden]="disableRejeterProjet" (click)="rejeterElaboration()" class="p-button-success mr-2 rejet-button" pButton></button>
+</div> -->
 
 
 
@@ -197,6 +210,8 @@
           <button description="signer" icon="pi pi-pencil" [hidden]="disableSignerElaboration" label="Procéder à la signature" (click)="openModalSignatureProjet(demande)" class="p-button-success mr-2"
                   pButton></button>
       </div>
+
+  
 
       <div class="p-ml-auto text-right">
           <button description="telecharger" icon="pi pi-pencil" [hidden]="disableExporterElaboration" label="Exporter l'arrete signé" (click)="exporter()" class="p-button-success mr-2"

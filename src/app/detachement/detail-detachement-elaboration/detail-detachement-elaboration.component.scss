@@ -1,0 +1,25 @@
+.text-right button {
+    background-color: #4CAF50; /* Couleur de fond verte (changez-la selon vos préférences) */
+    color: #ffffff; /* Couleur du texte blanc */
+    border: 1px solid #4CAF50; /* Bordure de couleur verte */
+    padding: 8px 16px; /* Ajustez la taille du bouton selon vos besoins */
+}
+
+.text-right button:hover {
+    background-color: #45a049; /* Couleur de fond verte plus sombre au survol */
+}
+
+/* Your global styles or component styles */
+.p-button.p-button-danger.p-button-custom-red {
+    background-color: #D31A1E !important; /* Red color with !important */
+    color: #ffffff !important; /* Text color, adjust as needed */
+    /* Add any other styling properties as needed */
+}
+
+
+/* Your global styles or component styles */
+.p-button.p-button-danger {
+    background-color: #ff0000!important; /* Red color */
+    color: #ffffff!important; /* Text color, adjust as needed */
+    /* Add any other styling properties as needed */
+}
