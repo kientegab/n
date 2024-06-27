@@ -27,7 +27,7 @@ import { MotifComponent } from './parametre/motif/motif.component';
    
     DashboardAdministrationComponent,
     ActionsToolbarIudComponent,
-    CrudToolbarComponent
+    CrudToolbarComponent,
   ],
   imports: [
   CommonModule,

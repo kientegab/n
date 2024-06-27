@@ -7,7 +7,7 @@ import { IUser } from '../model/user';
 import { LazyLoadEvent } from 'primeng/api';
 import { IValidationCompte } from '../model/validationCompte';
 import { IChangePasswordDTO } from '../model/change-password-dto';
-import { CanActivateRequest } from '../model/can-activate-request';
+import { CanActivateRequest, ICanActivateRequest } from '../model/can-activate-request';
 import { ILoginVM } from '../model/login-vm';
 
 type EntityResponseType = HttpResponse<IUser>;
@@ -28,8 +28,12 @@ export class UserService {
   
   constructor(protected http: HttpClient) {}
 
-  create(user: IUser): Observable<EntityResponseType> {
-    return this.http.post<IUser>(resourceUrl, user, { observe: 'response' });
+  // create(user: IUser): Observable<EntityResponseType> {
+  //   return this.http.post<IUser>(resourceUrl, user, { observe: 'response' });
+  // }
+
+  create(user: ICanActivateRequest): Observable<any> {
+    return this.http.post<ICanActivateRequest>(resourceUrl, user, { observe: 'response' });
   }
 
   canActivate(request: CanActivateRequest): Observable<any> {

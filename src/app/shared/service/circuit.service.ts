@@ -9,7 +9,7 @@ import { LazyLoadEvent } from 'primeng/api';
 type EntityResponseType = HttpResponse<ICircuit>;
 type EntityArrayResponseType = HttpResponse<ICircuit[]>;
 // const circuitUrl = environment.communeUrl;
-const circuitUrl = environment.circuitUrl;
+const circuitUrl = environment.detachementUrl + '/circuit';
 @Injectable({
   providedIn: 'root'
 })

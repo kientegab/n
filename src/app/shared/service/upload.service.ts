@@ -3,6 +3,7 @@ import {HttpClient, HttpEvent, HttpRequest, HttpResponse} from '@angular/common/
 import { Observable } from 'rxjs';
 import {environment} from "../../../environments/environment";
 import {IPiece} from "../model/piece.model";
+import { pieceJointe } from '../model/pieceJointe.model';
 
 @Injectable({
     providedIn: 'root'
@@ -24,11 +25,11 @@ export class UploadFileService {
 
         return this.http.request(req);
     }
-    create(file: File): Observable<HttpResponse<any>> {
+    create(file: File): Observable<HttpResponse<pieceJointe>> {
         const formData: FormData = new FormData();
 
         formData.append('file', file);
-        return this.http.post<any>(`${environment.detachementUrl}/files/upload-piece`, formData, { observe: 'response' });
+        return this.http.post<pieceJointe>(`${environment.detachementUrl}/files/upload-piece`, formData, { observe: 'response' });
     }
 
 }

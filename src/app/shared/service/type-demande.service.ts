@@ -11,6 +11,9 @@ type EntityArrayResponseType = HttpResponse<ITypeDemande[]>;
 
 
 const typeDemandeUrl = environment.detachementUrl+"/type-demandes";
+// const agentUrl = "assets/data/agents.json";
+
+// const typeDemandeUrl = environment.detachementUrl+"/type-demandes";
 
 @Injectable({
   providedIn: 'root'

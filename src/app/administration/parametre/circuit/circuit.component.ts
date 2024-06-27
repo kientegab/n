@@ -152,6 +152,7 @@ export class CircuitComponent {
       ).onClose.subscribe(result => {
         if(result) {
         this.circuits.push(result);
+        this.loadAll();
         this.isDialogOpInProgress = false;
         this.showMessage({ severity: 'success', summary: 'Circuit créée avec succès' });
         }
@@ -171,8 +172,8 @@ export class CircuitComponent {
           data: circuit
         }).onClose.subscribe(result => {
           if(result){
-            this.isDialogOpInProgress = false;
             this.loadAll();
+            this.isDialogOpInProgress = false;
             this.showMessage({ severity: 'success', summary: 'Circuit modifiée avec succès' });
           }
          

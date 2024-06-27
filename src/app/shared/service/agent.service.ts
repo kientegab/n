@@ -10,6 +10,9 @@ import { LazyLoadEvent } from 'primeng/api';
 type EntityResponseType = HttpResponse<IAgent>;
 type EntityArrayResponseType = HttpResponse<IAgent[]>;
 
+
+//const agentUrl = environment.authentificationUrl;
+
 const agentUrl = environment.detachementUrl+'/agents';
 // const agentUrl = "assets/data/agents.json";
 

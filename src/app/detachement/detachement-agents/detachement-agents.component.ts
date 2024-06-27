@@ -11,6 +11,8 @@ import { IDemande, Demande } from 'src/app/shared/model/demande.model';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
 import { environment } from 'src/environments/environment';
 import { ValiderProjetComponent } from '../valider-projet/valider-projet.component';
+import { TokenService } from 'src/app/shared/service/token.service';
+import { Historique, IHistorique } from 'src/app/shared/model/historique.model';
 
 @Component({
   selector: 'app-detachement-agents',
@@ -29,7 +31,7 @@ export class DetachementAgentsComponent {
   enableBtnInfo = true;
   enableBtnEdit = true;
   enableBtnDelete = true;
-  enableBtnValider=true;
+  enableBtnValider=false;
   isLoading!: boolean;
   isOpInProgress!: boolean;
   isDialogOpInProgress!: boolean;
@@ -38,7 +40,6 @@ export class DetachementAgentsComponent {
   message: any;
   dialogErrorMessage: any;
   enableCreate = true;
-
   page = CURRENT_PAGE;
   previousPage?: number;
   maxSize = MAX_SIZE_PAGE;
@@ -46,28 +47,42 @@ export class DetachementAgentsComponent {
   predicate!: string;
   ascending!: boolean;
   reverse: any;
-
   filtreNumero: string | undefined;
   items: MenuItem[] = [];
+  matricule?:string;
+  profil!: string;
+  isLoggedIn = false;
 
+ 
 
 
   constructor(
     private demandeService: DemandeService,
     private activatedRoute: ActivatedRoute,
     private dialogService: DialogService,
-    private router: Router
-    ){}
+    private tokenService: TokenService,
+    private router: Router,
+    private tokenStorage: TokenService,
+  ){}
 
 
-   ngOnInit(): void {
-        this.activatedRoute.data.subscribe(
-          () => {
-            this.loadAll();
-          }
-        );
+  ngOnInit(): void {
 
+    this.isLoggedIn = !!this.tokenService.getToken();
+
+    if (this.isLoggedIn) {
+      const user = this.tokenService.getUser();
+      this.matricule = user.username;
+      // console.log("========= user matricule ==========", this.matricule);
+    }
+
+    this.activatedRoute.data.subscribe(
+      () => {
+       // this.loadAll();
+          this.loadAgentDmds();
       }
+    );
+  }
 
       ngOnDestroy(): void {
         if (this.routeData) {
@@ -79,7 +94,8 @@ export class DetachementAgentsComponent {
       }
 
       filtrer(): void {
-        this.loadAll();
+       // this.loadAll();
+          this.loadAgentDmds();
       }
 
       resetFilter(): void {
@@ -103,10 +119,11 @@ export class DetachementAgentsComponent {
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc'),
           },
         });
-        this.loadAll();
+      //  this.loadAll();
+          this.loadAgentDmds();
       }
 
-      loadAll(): void {
+      /*loadAll(): void {
         const req = this.buildReq();
         this.demandeService.query(req).subscribe(result => {
           if (result && result.body) {
@@ -114,7 +131,35 @@ export class DetachementAgentsComponent {
             this.demandes = result.body || [];
           }
         });
-      }
+      }*/
+
+    loadAgentDmds(): void {
+      const req = this.buildReq();
+      this.isLoggedIn = !!this.tokenService.getToken();
+
+        if (this.isLoggedIn) {
+          const user = this.tokenService.getUser();
+          this.profil = user.profil;
+
+          if(this.profil === 'STDRH' || this.profil === 'STDGFP' || this.profil === 'DRH' || 
+                this.profil === 'DGFP' || this.profil === 'SG' || this.profil === 'DCMEF' || this.profil === 'STDCMEF') {
+            this.demandeService.findMinistereDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
+                if (result && result.body) {
+                    this.totalRecords = Number(result.headers.get('X-Total-Count'));
+                    this.demandes = result.body || [];
+                }
+            });
+          }
+          else {
+            this.demandeService.findAgentDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
+              if (result && result.body) {
+                  this.totalRecords = Number(result.headers.get('X-Total-Count'));
+                  this.demandes = result.body || [];
+              }
+            });
+          }
+        }
+    }
 
 
       sortMethod(): string[] {
@@ -153,7 +198,8 @@ export class DetachementAgentsComponent {
           }).onClose.subscribe(result => {
             if(result){
               this.isDialogOpInProgress = false;
-              this.loadAll();
+            //  this.loadAll();
+                this.loadAgentDmds();
               this.showMessage({ severity: 'success', summary: 'Demande modifiée avec succès' });
             }
 
@@ -164,8 +210,8 @@ export class DetachementAgentsComponent {
       openModalDetailAgent(demande:IDemande): void {
         this.router.navigate(['detachements','details-ags', demande.id]);
       }
-      
-     
+
+
 
       // Errors
       handleError(error: HttpErrorResponse) {
@@ -189,9 +235,9 @@ export class DetachementAgentsComponent {
             this.isDialogOpInProgress = false;
             this.showMessage({ severity: 'success', summary: 'Projet validé avec succès' });
           }
-    
+
         });
-    
+
       }
       // Messages
       clearDialogMessages() {
@@ -205,5 +251,5 @@ export class DetachementAgentsComponent {
         }, 5000);
       }
 
-      
+
 }

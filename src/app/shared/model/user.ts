@@ -1,5 +1,5 @@
 import { IPrivilege } from "./privilege";
-import { IProfil } from "./profil";
+import { IProfil } from "./profil-old";
 
 export interface IUser {
     id?: number;

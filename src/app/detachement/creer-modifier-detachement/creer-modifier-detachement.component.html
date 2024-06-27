@@ -9,8 +9,7 @@
     padding-bottom: 5px;">
         <!-- <i class="{{isEditing() ? 'pi-pencil' : 'pi-plus'}} pi p-mr-1 mr-2"></i> -->
         <h3 class="mr-auto">
-            {{demande.id ? 'Formulaire de modification' : 'Formulaire
-            d\'ajout de'}} demande
+            {{demande.id? "Formulaire de modification" : "Formulaire  de "}} demande
         </h3>
     </ng-template>
     <p-progressBar *ngIf="isOpInProgress" mode="indeterminate" color="#1e88e0"></p-progressBar>
@@ -21,7 +20,7 @@
                 d\'ajout de'}} demande</h4>
         </div>
     </ng-template> -->
-    <form (ngSubmit)="saveEntity()" #dtf="ngForm" style="margin-top:20px;">
+    <form  #dtf="ngForm" style="margin-top:20px;">
 
         <!--  -->
 
@@ -36,13 +35,14 @@
             </div>
 
             <div class="field col-6 md:col-6">
-                <label for="typeDemande">Type Demande :</label>
-                <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" [options]="typeDemandes"
-                    [(ngModel)]="demande.typeDemande" optionLabel="libelle" inputId="typeDemande" name="typeDemande"
-                    placeholder="Sélectionner le type de Demande..." [filter]="true" appendTo="body" [showClear]="true">
+                <label for="typeDemandes">Type Demande {{ typeDemandeSelected.libelle}} </label>
+                <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="typeDemandes"
+                    [(ngModel)]="typeDemandeSelected" optionLabel="libelle"  inputId="typeDemandeSelected"
+                     name="typeDemandeSelected" [filter]="true" appendTo="body" [showClear]="true" >
                 </p-dropdown>
             </div>
 
+           
             <div class="field col-6 md:col-6">
                 <label for="motif">Motif :</label>
                 <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="motifsFiltres"
@@ -54,7 +54,7 @@
 
             <div class="form-group col-md-4">
                 <label for="matricule">Numéro Matricule</label>
-                <input type="text" pInputText [(ngModel)]="matricule" class="form-control" name="matricule"
+                <input type="text" pInputText [(ngModel)]="demande.agent!.matricule" class="form-control" name="matricule"
                     id="matricule" (ngModelChange)="onChangeMatricule()">
             </div>
 
@@ -161,7 +161,7 @@
                 <div class="p-field p-fluid">
                     <label for="annee">Nombre d'année</label>
                     <input type="number" [(ngModel)]="duree.annee" id="annee" [readonly]="false" name="annee"
-                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+                        class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full" min="0" max="5">
                 </div>
             </div>
 
@@ -169,7 +169,7 @@
             <div class="field col-4 md:col-4">
                 <div class="p-field p-fluid">
                     <label for="mois">Nombre de mois</label>
-                    <input type="number" [(ngModel)]="duree.mois" id="mois" [readonly]="false" name="mois"
+                    <input type="number" [(ngModel)]="duree.mois" id="mois" [readonly]="false" name="mois" min="0" max="12"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 </div>
             </div>
@@ -178,16 +178,33 @@
             <div class="field col-4 md:col-4">
                 <div class="p-field p-fluid">
                     <label for="jours">Nombre de jours</label>
-                    <input type="number" [(ngModel)]="duree.jours" id="jours" [readonly]="false" name="jours"
+                    <input type="number" [(ngModel)]="duree.jours" id="jours" [readonly]="false" name="jours" name="mois" min="0" max="31"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 </div>
             </div>
-
-
             <br>
-
-
-            <div class="field col-12 md:col-12">
+            <div class="field col-12 md:col-12" *ngIf="demande.id" >
+                <p-fieldset legend="Liste des pièces existantes" [toggleable]="true">
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Fichier</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let item of pieceJointes;let i = index">
+                            <th scope="row">{{i+1}}</th>
+                            <td>{{item.libelle}}</td>
+                            <td><button class="btn btn-success" (click)="voirPiece(item.url)">Visualiser</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-primary" (click)="display()">Modifier les pièces jointes </button>
+                </p-fieldset>
+            </div>
+            <div class="field col-12 md:col-12" *ngIf="isDisplay">
                 <div class="card">
                     <table class="table table-sm border-none">
                         <thead>
@@ -201,7 +218,7 @@
                                 <tr>
                                     <td>{{ piece.libelle }}</td>
                                     <td>
-                                        <p-fileUpload name="demo{{i}}" (onSelect)="onUpload($event,piece)"
+                                        <p-fileUpload name="demo{{i}}" (onSelect)="onUpload($event,piece,i)"
                                             [multiple]="false" accept=".pdf" [maxFileSize]="10000000">
                                             <!-- <ng-template pTemplate="content">
                                                 <ul *ngIf="uploadedFiles.length">
@@ -229,7 +246,7 @@
                     icon="pi pi-trash"></button>
                 <button label="Annuler" (click)="clear()" class="p-button-filter mr-3" pButton
                     icon="pi pi-times"></button>
-                <button type="submit" [disabled]="!dtf.form.valid" label="{{isEditing() ? 'Enregistrer' : 'Ajouter'}}"
+                <button (click)="saveEntity()" [disabled]="!dtf.form.valid" label="{{isEditing() ? 'Envoyer' : 'Envoyer'}}"
                     icon="pi {{isEditing() ? 'pi-save' : 'pi-plus'}}"
                     class="  {{isEditing() ? 'p-button-primary' : 'p-button-success'}}" pButton>
                 </button>

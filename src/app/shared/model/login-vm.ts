@@ -1,5 +1,5 @@
 export interface ILoginVM {
-    username?:string;
+    matricule?:string;
     password?:string;
     rememberMe?:boolean;
 }
@@ -7,7 +7,7 @@ export interface ILoginVM {
 export class LoginVM implements ILoginVM {
 
     constructor(
-        public username?:string, 
+        public matricule?:string, 
         public password?:string,
         public rememberMe?:boolean,
         ) {}

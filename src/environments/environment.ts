@@ -1,12 +1,16 @@
 const commonAppURI: string = 'http://localhost:8081/api/';
-const commonAuth: string = 'http://localhost:8081/api/auth/';
+const commonAuth: string = 'http://localhost:8090/api/auth/';
 const domaineUrl: string='localhost:4200'
 
 export const environment = {
   production: false,
   domaine:`${domaineUrl}`,
   recordsPerPage: 20,
-  detachementUrl: 'http://localhost:8081/api',
+
+  // detachementUrl: 'http://10.53.218.146:8081/api',
+  detachementUrl: 'http://localhost:8081/api/detachements',
+  authentificationUrl: 'http://localhost:8090/api/auth',
+
   circuitUrl:commonAppURI + 'circuit',
   communeUrl: commonAppURI +'communes',
   pieceUrl: commonAppURI +'pieces',
@@ -20,16 +24,17 @@ export const environment = {
   divisionUrl: commonAppURI +'divisions',
   sectionUrl : commonAppURI +'sections',
   secteurActiviteUrl: commonAppURI +'secteur-activites',
-  secteurVillageUrl: commonAppURI +'secteur-villages',
-  userUrl: commonAuth +'utilisateurs',
-  profilUrl: commonAuth +'profiles',
+  // secteurVillageUrl: commonAppURI +'secteur-villages',
+  userUrl: commonAuth +'register',
+  profilUrl: commonAuth +'profils',
   privilegeUrl: commonAuth +'privileges',
-  authResource: commonAuth +'utilisateurs/signin',
+  authResource: commonAuth +'authenticate',
   accountResource: commonAuth +'utilisateurs/validate',
   visaUrl: commonAuth + 'visas',
   motifUrl: commonAppURI + 'motifs',
   ministereUrl: commonAuth + 'ministeres',
   ampliationUrl:commonAuth + 'ampliations',
+  ampliationProjetUrl:commonAuth + 'ampliation-demandes',
   demandeUrl:commonAppURI + 'demandes',
    // typeEmployeurUrl: commonAppURI +'typeEmployeur',
 
@@ -109,7 +114,22 @@ export const environment = {
   signataireUrl: commonAppURI + 'signataires',
 
   // === reporting, statistiques === //
-  reportingUrl: commonAppURI +'reports'
+  reportingUrl: commonAppURI +'reports',
 
+
+
+
+  authorize_uri: 'http://localhost:9000/oauth2/authorize?',
+  client_id : 'client',
+  redirect_uri: 'http://localhost:4200/authorized',
+  scope: 'openid',
+  response_type: 'code',
+  response_mode: 'form_post',
+  code_challenge_method: 'S256',
+  token_url: 'http://localhost:9000/oauth2/token',
+  grant_type: 'authorization_code',
+  resource_url: 'http://localhost:8080/resource/',
+  logout_url: 'http://localhost:9000/oauth2/logout',
+  secret_pkce: 'secret'
 };
 /****** */

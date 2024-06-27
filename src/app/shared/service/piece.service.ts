@@ -1,9 +1,9 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { LazyLoadEvent } from 'primeng/api';
-import { Observable } from 'rxjs';
-import { createRequestOption } from '../util/request-util';
-import { environment } from 'src/environments/environment';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {LazyLoadEvent} from 'primeng/api';
+import {Observable} from 'rxjs';
+import {createRequestOption} from '../util/request-util';
+import {environment} from 'src/environments/environment';
 import {IPiece} from "../model/piece.model";
 
 type EntityResponseType = HttpResponse<IPiece>;
@@ -11,6 +11,7 @@ type EntityArrayResponseType = HttpResponse<IPiece[]>;
 
 // const pieceUrl = "assets/data/piece.json";
 const pieceUrl = environment.detachementUrl+'/pieces';
+const pieceShowUrl = environment.detachementUrl+'/files/recuperer-piece';
 
 @Injectable({
   providedIn: 'root'
@@ -18,12 +19,12 @@ const pieceUrl = environment.detachementUrl+'/pieces';
 export class PieceService {
 
   constructor(private http:HttpClient) { }
-  create(pays: IPiece): Observable<EntityResponseType> {
-    return this.http.post<IPiece>(pieceUrl+'/new', pays, { observe: 'response' });
+  create(piece: IPiece): Observable<EntityResponseType> {
+    return this.http.post<IPiece>(pieceUrl+'/new', piece, { observe: 'response' });
   }
 
-  update(pays: IPiece): Observable<EntityResponseType> {
-    return this.http.put<IPiece>(pieceUrl+'/update', pays, { observe: 'response' });
+  update(piece: IPiece): Observable<EntityResponseType> {
+    return this.http.put<IPiece>(pieceUrl+'/update', piece, { observe: 'response' });
   }
 
 
@@ -47,5 +48,27 @@ export class PieceService {
 
   findListe(): Observable<EntityArrayResponseType> {
     return this.http.get<IPiece[]>(pieceUrl+'/list', { observe: 'response' });
+  }
+
+  async visualiser(fileName: string):Promise<string>{
+      const resp = await this.getFile(fileName).toPromise().catch(e=>{
+          console.warn("ERROR",e.message());
+      });
+      if(resp){
+          const file = new Blob([resp],{type: 'application/pdf'});
+          return URL.createObjectURL(file);
+      }else{
+          return  '';
+      }
+  }
+
+  private getFile(fileName: string):Observable<any>{
+      const httpOptions = {
+          responseType: 'arraybuffer' as 'json'
+      };
+
+      const formData: FormData = new FormData();
+      formData.append('fileName',fileName);
+      return this.http.post(pieceShowUrl,formData,httpOptions);
   }
 }

@@ -52,17 +52,13 @@
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <!-- <th pSortableColumn="id">Id<p-sortIcon field="id"></p-sortIcon></th>-->
-                <th pSortableColumn="code">Code<p-sortIcon field="code"></p-sortIcon></th>
                 <th pSortableColumn="libelle">Libelle<p-sortIcon field="libelle"></p-sortIcon></th>
-                <th pSortableColumn="libelle">Plafond Annee<p-sortIcon field="plafondAnnee"></p-sortIcon></th>
                 <th class="actionsStyle">Action</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-typeDmd>
             <tr>
-                <td>{{ typeDmd.code }}</td>
                 <td>{{ typeDmd.libelle }}</td>
-                <td>{{ typeDmd.plafondAnnee }}</td>
 
                 <td class="actionsStyle">
                     <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(typeDmd)"

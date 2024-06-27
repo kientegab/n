@@ -1,4 +1,6 @@
 import { IAgent } from "./agent.model";
+import { IAmpliationDemande } from "./ampliationDemande.model";
+import { IArticleDemande } from "./articleDemande.model";
 import { IDuree } from "./duree.model";
 import { IHistorique } from "./historique.model";
 import { IMotif } from "./motif.model";
@@ -6,6 +8,7 @@ import { IPieceJointe } from "./pieceJointe.model";
 import { IPiecesFourniesDTO } from "./piecesFourniesDTO.model";
 import { IStructure } from "./structure.model";
 import { ITypeDemande } from "./typeDemande.model";
+import { IVisaDemande } from "./visaDemande.model";
 
 export interface IDemande {
     id?: number;
@@ -16,13 +19,17 @@ export interface IDemande {
     dateDemande?: Date;
     destination?: IStructure;
     statut?: String;
-    pieceJointe?: IPieceJointe[];
+    pieceJointes?: IPieceJointe[];
     agent?: IAgent;
     historique?: IHistorique;
     motif?: IMotif,
-    piecesFourniesDTO?: IPiecesFourniesDTO[],
+    // piecesFourniesDTO?: IPiecesFourniesDTO[],
     duree?: IDuree,
-    structure?: IStructure[]
+    structure?: IStructure[],
+    ampliationDemande?: IAmpliationDemande[],
+    articleDemande?: IArticleDemande[],
+    visaDemande?: IVisaDemande[]
+    // listDemande?: ITypeDemande[]
 }
 
 export class Demande implements IDemande {
@@ -35,15 +42,21 @@ export class Demande implements IDemande {
         public dateDemande?: Date,
         public destination?: IStructure, 
         public statut?: String,
-        public pieceJointe?: IPieceJointe[],
+        public pieceJointes?: IPieceJointe[],
         public agent?: IAgent,
         public historique?: IHistorique,
         public motif?: IMotif,
-        public piecesFourniesDTO?: IPiecesFourniesDTO[],
+        // public piecesFourniesDTO?: IPiecesFourniesDTO[],
         public duree?: IDuree,
-        public structure?: IStructure[]
+        public structure?: IStructure[],
+        public ampliationDemande?: IAmpliationDemande[],
+        public articleDemande?: IArticleDemande[],
+        public visaDemande?: IVisaDemande[]
+        // public listDemande?: ITypeDemande[]
 
-    ){}
+    ){
+        
+    }
 
 }
 

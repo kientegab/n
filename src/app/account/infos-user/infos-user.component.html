@@ -25,6 +25,8 @@
                                     <td>: {{ user.nom }}</td>
                                     <th scope="col">Prenom</th>
                                     <td>: {{ user.prenom }}</td>
+                                    <th scope="col">Matricule</th>
+                                    <td>: {{ user.matricule }}</td>
                                 </tr>
                                 <!-- <tr>
                                     <th scope="col">Matricule</th>
@@ -40,12 +42,7 @@
                                 </tr>
                                 <tr>
                                 </tr>
-                                <tr *ngFor="let profils of user.profile?.privilegeCollection!">
-                                    <th scope="col">Profil</th>
-                                    <td>: <span class="badge badge-warning"> {{profils.libelle}}</span></td>
-                                    <!-- <th scope="col">Compte crée le</th>
-                                    <td>: {{ user.createdDate | date: 'medium' }}</td> -->
-                                </tr>
+                     
                                 </tbody>
                             </table>
                         </div>

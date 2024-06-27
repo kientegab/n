@@ -1,0 +1,42 @@
+<!-- formulaire d'affichage du détail -->
+<ng-template pTemplate="header">
+    <span class="p-mr-auto"> <b>DETAILS Agent</b></span>
+  </ng-template>
+  <!-- <p-divider></p-divider> -->
+  <hr>
+  <div class="row">
+
+    <div class="col-md-12 details-item">
+        <span class="va-m"><span class="font-bold">Matricule:</span> {{agent.matricule}}</span>
+      </div>
+    <div class="col-md-12 details-item">
+      <span class="va-m"><span class="font-bold">Nom:</span> {{agent.nom}}</span>
+    </div>
+    
+    <div class="col-md-12 details-item">
+      <span class="va-m"><span class="font-bold">Prenom:</span> {{agent.prenom}}</span>
+    </div>
+
+    <div class="col-md-12 details-item">
+        <span class="va-m"><span class="font-bold">Adresse email:</span> {{agent.email}}</span>
+      </div>
+
+    <div class="col-md-12 details-item">
+        <span class="va-m"><span class="font-bold">Telephone:</span> {{agent.telephone}}</span>
+
+    </div>
+
+    <div class="col-md-12 details-item">
+        <span class="va-m"><span class="font-bold">Ministère:</span> {{agent.structure?.ministere?.libelle}}</span>
+    </div>
+
+    <div class="col-md-12 details-item">
+        <span class="va-m"><span class="font-bold">Structure:</span> {{agent.structure?.libelle}}</span>
+    </div>
+
+  </div>
+  <!-- <p-divider></p-divider> -->
+  <div class="p-ml-auto text-right">
+    <button description="reset" icon="pi pi-times" label="Fermer" (click)="clear()" class="p-button-filter mr-2"
+      pButton></button>
+  </div>

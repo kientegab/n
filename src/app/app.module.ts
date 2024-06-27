@@ -29,6 +29,8 @@ import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { MenubarModule } from 'primeng/menubar';
 import { MessageModule } from 'primeng/message';
+import { ResourceInterceptor } from './shared/interceptors/resource.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 
@@ -40,7 +42,7 @@ import { MessageModule } from 'primeng/message';
     ],
     imports: [
         AppRoutingModule,
-        PublicModule,
+       // PublicModule,
         AccountModule,
         AppLayoutModule,
         ComonModule,
@@ -56,12 +58,13 @@ import { MessageModule } from 'primeng/message';
     ],
     providers: [
        // { provide: LocationStrategy, useClass: HashLocationStrategy },
+       {provide: HTTP_INTERCEPTORS, useClass: ResourceInterceptor, multi: true},
         DialogService,
         ConfirmationService,
         MessageService,
         DynamicDialogRef,
         CdkStepper,
-        AuthInterceptorProviders
+       // AuthInterceptorProviders
     ],
     exports: [
         // ActionToolBarIudComponent

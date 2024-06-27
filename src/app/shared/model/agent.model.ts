@@ -1,4 +1,5 @@
 import { IMinistere } from "./ministere.model";
+import { IProfil } from "./profil.model";
 import { IStructure } from "./structure.model";
 
 export interface IAgent {
@@ -23,6 +24,9 @@ export interface IAgent {
     fonction?: string;
     position?: string;
     superieurHierarchique?: IAgent;
+    profil?: IProfil;
+    ministere?: IMinistere;
+
     // actif?: boolean;
 }
 export class Agent implements IAgent {
@@ -47,7 +51,10 @@ export class Agent implements IAgent {
         public structure?: IStructure,
         public fonction?: string,
         public position?: string,
-        public superieurHierarchique?: IAgent
+        public superieurHierarchique?: IAgent,
+        public profil?: IProfil,
+        public ministere?: IMinistere
+
         // public actif?: boolean
     ) { }
 

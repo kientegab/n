@@ -29,6 +29,14 @@ import { ConfirmationService } from 'primeng/api';
 import { ValiderProjetComponent } from './valider-projet/valider-projet.component';
 import { ElaborerProjetComponent } from './elaborer-projet/elaborer-projet.component';
 import { DetailsDetachementAgentComponent } from './details-detachement-agent/details-detachement-agent.component';
+import {FieldsetModule} from "primeng/fieldset";
+import { DetailDetachementElaborationComponent } from './detail-detachement-elaboration/detail-detachement-elaboration.component';
+import { ValiderElaborationModalComponent } from './valider-elaboration-modal/valider-elaboration-modal.component';
+import { VerifierProjetComponent } from './verifier-projet/verifier-projet.component';
+import { ViserProjetComponent } from './viser-projet/viser-projet.component';
+import { VisaProjetComponent } from './visa-projet/visa-projet.component';
+import { ArticleProjetComponent } from './article-projet/article-projet.component';
+import { AmpliationProjetComponent } from './ampliation-projet/ampliation-projet.component';
 
 
 @NgModule({
@@ -41,7 +49,16 @@ import { DetailsDetachementAgentComponent } from './details-detachement-agent/de
     ReceptionDetachementComponent,
     ValiderProjetComponent,
     ElaborerProjetComponent,
-    DetailsDetachementAgentComponent
+    DetailsDetachementAgentComponent,
+    DetailDetachementElaborationComponent,
+    ValiderElaborationModalComponent,
+    VerifierProjetComponent,
+    ViserProjetComponent,
+    AmpliationProjetComponent,
+    ArticleProjetComponent,
+    VisaProjetComponent
+ 
+
   ],
     imports: [
         CommonModule,
@@ -64,7 +81,8 @@ import { DetailsDetachementAgentComponent } from './details-detachement-agent/de
         PaginatorModule,
         CalendarModule,
         FileUploadModule,
-        DropdownModule
+        DropdownModule,
+        FieldsetModule
     ],
     providers: [ConfirmationService],
 })

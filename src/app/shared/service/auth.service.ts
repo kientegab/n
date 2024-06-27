@@ -1,5 +1,5 @@
 import { environment } from '../../../environments/environment';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, map, mergeMap, shareReplay, tap } from 'rxjs/operators';
@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 
 const authRessourceUrl = environment.authResource;
 const accountRessourceUrl = environment.accountResource;
+
+const tokne_url = environment.token_url;
 
 type EntityResponseType = HttpResponse<IUser>;
 
@@ -34,9 +36,13 @@ export class AuthenticationService {
     private router: Router
   ) { }
 
-  // login(request: ILoginVM): Observable<ILoginVM> {
-  //   return this.http.post(authRessourceUrl, request);
+  // login(request: ILoginVM): Observable<any> {
+  //   return this.http.post(authRessourceUrl, request,{ observe: 'response' });
   // }
+
+  login(request: ILoginVM): Observable<any> {
+    return this.http.post(authRessourceUrl,request,{ observe: 'response' });
+  }
 
   storeUrl(url: string): void {
     window.sessionStorage.setItem(this.previousUrlKey, url);
@@ -50,9 +56,9 @@ export class AuthenticationService {
     window.sessionStorage.removeItem(this.previousUrlKey);
   }
 
-  login(credentials: ILoginVM): Observable<ILoginVM | null> {
-    return this.loginNext(credentials).pipe(mergeMap(() => this.identity(true)));
-  }
+  // login(credentials: ILoginVM): Observable<ILoginVM | null> {
+  //   return this.loginNext(credentials).pipe(mergeMap(() => this.identity(true)));
+  // }
 
   loginNext(credentials: ILoginVM): Observable<void> {
     return this.http
@@ -62,6 +68,7 @@ export class AuthenticationService {
 
   private authenticateSuccess(response: any, rememberMe: boolean): void {
     const jwt = response.accessToken;
+    this.getUserInfo(jwt);
     if (rememberMe) {
       this.saveToken(jwt);
     } else {
@@ -70,10 +77,41 @@ export class AuthenticationService {
 
   }
 
+     getUserInfo(token: string) {
+        let payload;
+        if (token) {
+            payload = token.split(".")[1];
+            payload = window.atob(payload);
+            console.warn("user",payload);
+            return JSON.parse(payload);
+        } else {
+            return null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
   authenticate(identity: User | null): void {
     this.userIdentity = identity;
     this.authenticationState.next(this.userIdentity);
   }
+
+
+
+
+
+
+
+
+
+
 
   hasAnyAuthority(authorities: string[] | string): boolean {
     if (!this.userIdentity || !this.userIdentity.profile?.privilegeCollection) {
@@ -249,6 +287,27 @@ export class AuthenticationService {
       privilege = privilege.additionalInfo.privileges;
     }
     return privilege;
+  }
+
+
+  findToken(code: string, code_verifier: string): Observable<any> {
+    let body = new URLSearchParams();
+    body.set('grant_type', environment.grant_type);
+    body.set('client_id', environment.client_id);
+    body.set('redirect_uri', environment.redirect_uri);
+    body.set('scope', environment.scope);
+    body.set('code_verifier', code_verifier);
+    body.set('code', code);
+    body.set('username', "admin");
+    body.set('password', "admin");
+    const basic_auth = 'Basic '+ btoa('client:secret');
+    const headers_object = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': '*/*',
+      'Authorization': basic_auth
+    });
+    const httpOptions = { headers: headers_object};
+    return this.http.post<any>(tokne_url, body, httpOptions);
   }
 }
 

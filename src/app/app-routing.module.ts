@@ -5,6 +5,8 @@ import { DashboardPublicComponent } from './public/dashboard-public.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { Authority } from './shared/constants/authority.constants';
 import { AccountComponent } from './public/account/account.component';
+import { AuthorizedComponent } from './public/authorized/authorized.component';
+import { LogoutComponent } from './public/logout/logout.component';
 
 const routerOptions: ExtraOptions = {
     anchorScrolling: 'enabled'
@@ -31,6 +33,8 @@ const routes: Routes = [
             { path: 'public/RE_disponibilite', data: { breadcrumb: 'rectification disponibilite' }, loadChildren: () => import('./public/disponibilite/rectification-disponibilite/rectification-disponibilite.module').then(m => m.RectificationDisponibiliteModule) },
             { path: 'public/A_disponibilite', data: { breadcrumb: 'annulation disponibilite' }, loadChildren: () => import('./public/disponibilite/annulation-disponibilite/annulation-disponibilite.module').then(m => m.AnnulationDisponibiliteModule) },
             { path: 'public/contact', data: { breadcrumb: 'contactez nous' }, loadChildren: () => import('./public/contactez-nous/contactez-nous.module').then(m => m.ContactezNousModule) },
+            { path: 'authorized', component: AuthorizedComponent },
+            { path: 'oauth2/logout', component: LogoutComponent },
            
         ]
     },
