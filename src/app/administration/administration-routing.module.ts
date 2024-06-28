@@ -19,6 +19,7 @@ const routes: Routes = [
   { path: 'ampliations', data: {breadcrumb: 'Gestion des ampliations'}, loadChildren: () => import('./parametre/ampliation/ampliation.module').then(m => m.AmpliationModule) },
   { path: 'profils', data: {breadcrumb: 'Gestion des profils'}, loadChildren: () => import('./parametre/profil/profil.module').then(m => m.ProfilModule) },
   { path: 'agents', data: {breadcrumb: 'Gestion des agents'}, loadChildren: () => import('./parametre/nouveau-agent/nouveau-agent.module').then(m => m.NouveauAgentModule) },
+  { path: 'type-demandes-dis', data: {breadcrumb: 'Gestion des types de demandes de disponibilité'}, loadChildren: () => import('./parametre/type-demande-dis/type-demande-dis.module').then(m => m.TypeDemandeDisModule) },
   { path: '**', redirectTo: '/notfound' }
 ];
 
