@@ -37,7 +37,7 @@ export class CreerModifierMotifDisponibiliteComponent {
 
   constructor(
     private motifService: MotifDisponibiliteService,
-    private pieceService: PieceDisponibiliteService,
+    private pieceServiceDisponibilite: PieceDisponibiliteService,
     private dialogRef: DynamicDialogRef,
     private dynamicDialog: DynamicDialogConfig,
     private confirmationService: ConfirmationService
@@ -66,7 +66,7 @@ export class CreerModifierMotifDisponibiliteComponent {
   }
 
   loadPieces() {
-    this.pieceService.findListe().subscribe(response => {
+    this.pieceServiceDisponibilite.findListe().subscribe(response => {
         this.pieces = response.body!;
     }, error => {
         this.message = { severity: 'error', summary: error.error };
