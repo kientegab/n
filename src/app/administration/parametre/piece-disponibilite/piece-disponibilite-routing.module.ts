@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PieceDisponibiliteComponent } from './piece-disponibilite.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '', component: PieceDisponibiliteComponent,
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -29,7 +29,7 @@ import { PieceDisponibiliteComponent } from './parametre/piece-disponibilite/pie
     DashboardAdministrationComponent,
     ActionsToolbarIudComponent,
     CrudToolbarComponent,
-    PieceDisponibiliteComponent,
+   // PieceDisponibiliteComponent,
   ],
   imports: [
   CommonModule,
