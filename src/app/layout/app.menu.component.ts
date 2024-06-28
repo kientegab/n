@@ -25,7 +25,7 @@ export class AppMenuComponent implements OnInit {
         if (this.isLoggedIn) {
             const user = this.tokenService.getUser();
             this.profil = user.profil;
-        
+
             if(this.profil === "ADMIN") {
                 this.model = [
                 {
@@ -109,6 +109,10 @@ export class AppMenuComponent implements OnInit {
                                             label: 'motif',
                                             icon: 'pi pi-fw pi-eye-slash',
                                             routerLink: ['/admin/motifs']
+                                        },{
+                                            label: 'motif disponibilite',
+                                            icon: 'pi pi-fw pi-eye-slash',
+                                            routerLink: ['/admin/motif-disponibilte']
                                         },
                                         {
                                             label: 'ampliations',
@@ -149,7 +153,7 @@ export class AppMenuComponent implements OnInit {
                                 icon: 'pi pi-fw pi-home',
                                 routerLink: ['/admin']
                             },
-                            
+
                             {
                                 label: 'Détachements',
                                 icon: 'pi pi-fw pi-eye-slash',
@@ -197,13 +201,13 @@ export class AppMenuComponent implements OnInit {
                                 icon: 'pi pi-lock',
                                 //visible: this.authService.checkPermission([Authority.ADMIN, Authority.VIEW_USER], AuthenticationService.privileges),
                                 items: [
-                                    
+
                                     {
                                         label: 'Mes demandes',
                                         icon: 'pi pi-fw pi-eye-slash',
                                         routerLink: ['/detachements']
                                     },
-                                    
+
                                     {
                                         label: 'Demandes agents',
                                         icon: 'pi pi-fw pi-eye-slash',
@@ -216,13 +220,13 @@ export class AppMenuComponent implements OnInit {
                                 icon: 'pi pi-lock',
                                 //visible: this.authService.checkPermission([Authority.ADMIN, Authority.VIEW_USER], AuthenticationService.privileges),
                                 items: [
-                                
+
                                     {
                                         label: 'Mes demandes',
                                         icon: 'pi pi-fw pi-eye-slash',
                                         routerLink: ['/disponibilites']
                                     },
-                                    
+
                                     {
                                         label: 'Demandes agents',
                                         icon: 'pi pi-fw pi-eye-slash',
@@ -232,7 +236,7 @@ export class AppMenuComponent implements OnInit {
                             },
                         ]
                     },
-    
+
                 ]
             }
         }

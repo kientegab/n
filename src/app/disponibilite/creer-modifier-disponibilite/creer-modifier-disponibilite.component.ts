@@ -256,6 +256,9 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
     }
 
     onChangeMatricule() {
+        this.numeroMatricule = this.demande.agent!.matricule!;
+        console.warn("Matr================================================", this.numeroMatricule)
+
         if (this.numeroMatricule) {
             this.isFetchingAgentInfo = true; // Activez l'indicateur de chargement
             console.warn("agent================================================", this.agent)
