@@ -1,5 +1,5 @@
 const commonAppURI: string = 'http://localhost:8081/api/';
-const commonAuth: string = 'http://localhost:8080/api/auth/';
+const commonAuth: string = 'http://localhost:8090/api/auth/';
 const domaineUrl: string='localhost:4200'
 
 export const environment = {

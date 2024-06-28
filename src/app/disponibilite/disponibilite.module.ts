@@ -26,6 +26,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ReceptionDisponibiliteComponent } from './reception-disponibilite/reception-disponibilite.component';
+import {FieldsetModule} from "primeng/fieldset";
 
 
 
@@ -40,32 +41,33 @@ import { ReceptionDisponibiliteComponent } from './reception-disponibilite/recep
     DisponibiliteAgentsComponent,
     ReceptionDisponibiliteComponent
   ],
-  imports: [
-    CommonModule,
-    DisponibiliteRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
-    ButtonModule,
-    DynamicDialogModule,
-    TableModule,
-    CardModule,
-    InputTextModule,
-    DialogModule,
-    DividerModule,
-    ProgressBarModule,
-    MessageModule,
-    DropdownModule,
-    AppCommonModule,
-    ConfirmDialogModule,
-    ProgressSpinnerModule,
-    PaginatorModule,
-    CalendarModule,
+    imports: [
+        CommonModule,
+        DisponibiliteRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        ButtonModule,
+        DynamicDialogModule,
+        TableModule,
+        CardModule,
+        InputTextModule,
+        DialogModule,
+        DividerModule,
+        ProgressBarModule,
+        MessageModule,
+        DropdownModule,
+        AppCommonModule,
+        ConfirmDialogModule,
+        ProgressSpinnerModule,
+        PaginatorModule,
+        CalendarModule,
 
-    MultiSelectModule,
+        MultiSelectModule,
 
- 
-    FileUploadModule
 
-  ]
+        FileUploadModule,
+        FieldsetModule
+
+    ]
 })
 export class DisponibiliteModule { }
