@@ -14,6 +14,7 @@ const routes: Routes = [
 
   { path: 'motifs', data: {breadcrumb: 'Gestion des motifs'}, loadChildren: () => import('./parametre/motif/motif.module').then(m => m.MotifModule) },
   { path: 'pieces', data: {breadcrumb: 'Gestion des pieces'}, loadChildren: () => import('./parametre/piece/piece.module').then(m => m.PieceModule) },
+  { path: 'pieceDisponibilites', data: {breadcrumb: 'Gestion des pieces de Disponilites'}, loadChildren: () => import('./parametre/piece-disponibilite/piece-disponibilite.module').then(m => m.PieceDisponibiliteModule) },
   { path: 'articles', data: {breadcrumb: 'Gestion des articles'}, loadChildren: () => import('./parametre/article/article.module').then(m => m.ArticleModule) },
   { path: 'corps', data: {breadcrumb: 'Gestion des corps'}, loadChildren: () => import('./parametre/corps/corps.module').then(m => m.CorpsModule) },
   { path: 'ampliations', data: {breadcrumb: 'Gestion des ampliations'}, loadChildren: () => import('./parametre/ampliation/ampliation.module').then(m => m.AmpliationModule) },

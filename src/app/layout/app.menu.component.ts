@@ -127,6 +127,11 @@ export class AppMenuComponent implements OnInit {
                                             routerLink: ['/admin/pieces']
                                         },
                                         {
+                                            label: 'Pieces-Disponibilite',
+                                            icon: 'pi pi-fw pi-eye-slash',
+                                            routerLink: ['/admin/pieceDisponibilites']
+                                        },
+                                        {
                                             label: 'Articles',
                                             icon: 'pi pi-fw pi-eye-slash',
                                             routerLink: ['/admin/articles']
