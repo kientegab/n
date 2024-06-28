@@ -16,6 +16,8 @@ const motifUrl = environment.disponibiliteUrl+'/motifs';
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class MotifDisponibiliteService {
 
   constructor(private http:HttpClient) { }
