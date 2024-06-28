@@ -19,16 +19,18 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TableModule } from 'primeng/table';
 import { AppCommonModule } from 'src/app/shared/common/app-common.module';
-import { MotifRoutingModule } from '../motif/motif-routing.module';
-import { CreerModifierMotifDisponibiliteComponent } from './creer-modifier-motif-disponibilite/creer-modifier-motif-disponibilite.component';
+import { CreerModifierMotifComponent } from '../motif/creer-modifier-motif/creer-modifier-motif.component';
 import { DetailsMotifDisponibiliteComponent } from './details-motif-disponibilite/details-motif-disponibilite.component';
+import { CreerModifierMotifDisponibiliteComponent } from './creer-modifier-motif-disponibilite/creer-modifier-motif-disponibilite.component';
+
 
 
 @NgModule({
   declarations: [
-    MotifDisponibiliteComponent,
-    CreerModifierMotifDisponibiliteComponent,
-    DetailsMotifDisponibiliteComponent  ],
+ MotifDisponibiliteComponent,
+CreerModifierMotifDisponibiliteComponent,
+DetailsMotifDisponibiliteComponent
+],
   imports: [
     CommonModule,
     MotifDisponibiliteRoutingModule,
