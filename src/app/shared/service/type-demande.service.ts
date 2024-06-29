@@ -11,7 +11,7 @@ type EntityArrayResponseType = HttpResponse<ITypeDemande[]>;
 
 
 const typeDemandeUrl = environment.detachementUrl+"/type-demandes";
-const typeDemandeDisUrl= environment.disponibilitetUrl+"/type-demandes";
+const typeDemandeDisUrl= environment.disponibiliteUrl+"/type-demandes";
 // const agentUrl = "assets/data/agents.json";
 
 // const typeDemandeUrl = environment.detachementUrl+"/type-demandes";
