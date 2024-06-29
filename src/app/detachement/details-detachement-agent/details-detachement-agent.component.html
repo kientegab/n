@@ -160,6 +160,11 @@
     </div>
 
     <div class="p-ml-auto text-right">
+      <button description="Imputer " icon="pi pi-pencil" label="Imputer demande"  [hidden]="disableImputerDemande" (click)="openModalImputerDemande(demande)" class="p-button-success mr-2"
+      pButton></button>
+    </div>
+
+    <div class="p-ml-auto text-right">
       <button description="aviser drh" icon="pi pi-pencil" label="Aviser" [hidden]="disableAviserDRH" (click)="openModalAviser(demande)" class="p-button-success mr-2"
       pButton></button>
     </div>
@@ -191,6 +196,7 @@
   <button description="viser" icon="pi pi-pencil" label="Viser projet" [hidden]="diableViserDCMEF" (click)="openModalViserProjet(demande)" class="p-button-success mr-2"
   pButton></button>
 </div>
+
 
 
 <!-- <div class="p-ml-auto text-right">
