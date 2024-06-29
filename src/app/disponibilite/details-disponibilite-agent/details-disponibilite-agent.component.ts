@@ -1,26 +1,25 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as saveAs from 'file-saver';
 import { ConfirmationService, Message } from 'primeng/api';
 import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
+import { AviserDetachementComponent } from 'src/app/detachement/aviser-detachement/aviser-detachement.component';
+import { ReceptionDetachementVComponent } from 'src/app/detachement/reception-detachement-v/reception-detachement-v.component';
+import { ReceptionDetachementComponent } from 'src/app/detachement/reception-detachement/reception-detachement.component';
+import { IAmpliationDemande, AmpliationDemande } from 'src/app/shared/model/ampliationDemande.model';
 import { IDemande, Demande } from 'src/app/shared/model/demande.model';
+import { IHistorique, Historique } from 'src/app/shared/model/historique.model';
+import { IPieceJointe } from 'src/app/shared/model/pieceJointe.model';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
-import { AviserDetachementComponent } from '../aviser-detachement/aviser-detachement.component';
-import { ReceptionDetachementComponent } from '../reception-detachement/reception-detachement.component';
-import {IPieceJointe} from "../../shared/model/pieceJointe.model";
-import {PieceService} from "../../shared/service/piece.service";
-import { Historique, IHistorique } from 'src/app/shared/model/historique.model';
+import { PieceService } from 'src/app/shared/service/piece.service';
 import { TokenService } from 'src/app/shared/service/token.service';
-import {saveAs} from "file-saver";
-import { AmpliationDemande, IAmpliationDemande } from 'src/app/shared/model/ampliationDemande.model';
-import { ReceptionDetachementVComponent } from '../reception-detachement-v/reception-detachement-v.component';
 
 @Component({
-  selector: 'app-details-detachement-agent',
-  templateUrl: './details-detachement-agent.component.html',
-  styleUrls: ['./details-detachement-agent.component.scss']
+  selector: 'app-details-disponibilite-agent',
+  templateUrl: './details-disponibilite-agent.component.html',
+  styleUrls: ['./details-disponibilite-agent.component.scss']
 })
-export class DetailsDetachementAgentComponent {
-
+export class DetailsDisponibiliteAgentComponent {
   demande: IDemande = new Demande();
   @Input() data: IDemande = new Demande();
   ampliationDemande: IAmpliationDemande = new AmpliationDemande();
@@ -445,4 +444,5 @@ rejeterElaboration(): void {
   }
 }
 
+  
 }
