@@ -10,6 +10,8 @@ import { TypeDemandeService } from 'src/app/shared/service/type-demande.service'
 import { environment } from 'src/environments/environment';
 import { CreerModifierTypeDemandeComponent } from '../type-demande/creer-modifier-type-demande/creer-modifier-type-demande.component';
 import { DetailTypeDemandeComponent } from '../type-demande/detail-type-demande/detail-type-demande.component';
+import { CreerModifierTdemandeDisComponent } from './creer-modifier-tdemande-dis/creer-modifier-tdemande-dis.component';
+import { DetailTdemandeDisComponent } from './detail-tdemande-dis/detail-tdemande-dis.component';
 
 @Component({
   selector: 'app-type-demande-dis',
@@ -106,7 +108,7 @@ export class TypeDemandeDisComponent {
 
   loadAll(): void {
       const req = this.buildReq();
-      this.typeDemandeService.query(req).subscribe(result => {
+      this.typeDemandeService.queryDis(req).subscribe(result => {
           if (result && result.body) {
               this.totalRecords = Number(result.headers.get('X-Total-Count'));
               this.typeDemandes = result.body || [];
@@ -138,7 +140,7 @@ export class TypeDemandeDisComponent {
   }
   /** Permet d'afficher un modal pour l'ajout */
   openModalCreate(): void {
-      this.dialogService.open(CreerModifierTypeDemandeComponent,
+      this.dialogService.open(CreerModifierTdemandeDisComponent,
           {
               header: 'Ajouter une type Demande',
               width: '60%',
@@ -151,14 +153,14 @@ export class TypeDemandeDisComponent {
           if(result) {
               this.typeDemandes.push(result);
               this.isDialogOpInProgress = false;
-              this.showMessage({ severity: 'success', summary: 'Structure créée avec succès' });
+              this.showMessage({ severity: 'success', summary: 'type de demande créée avec succès' });
           }
       });
   }
 
   /** Permet d'afficher un modal pour la modification */
   openModalEdit(typeDemande: ITypeDemande): void {
-      this.dialogService.open(CreerModifierTypeDemandeComponent,
+      this.dialogService.open(CreerModifierTdemandeDisComponent,
           {
               header: 'Modifier un type demande',
               width: '60%',
@@ -171,7 +173,7 @@ export class TypeDemandeDisComponent {
           if(result){
               this.isDialogOpInProgress = false;
               this.loadAll();
-              this.showMessage({ severity: 'success', summary: 'Structure modifiée avec succès' });
+              this.showMessage({ severity: 'success', summary: 'type de demande modifiée avec succès' });
           }
 
       });
@@ -180,7 +182,7 @@ export class TypeDemandeDisComponent {
 
   /** Permet d'afficher un modal pour voir les détails */
   openModalDetail(typeDemande:ITypeDemande): void {
-      this.dialogService.open(DetailTypeDemandeComponent,
+      this.dialogService.open(DetailTdemandeDisComponent,
           {
               header: 'Details de typeDemande',
               width: '60%',
@@ -195,7 +197,7 @@ export class TypeDemandeDisComponent {
   // Deletion
   onDelete(typeDemande: ITypeDemande) {
       this.confirmationService.confirm({
-          message: 'Etes-vous sur de vouloir supprimer ce typeDemande?',
+          message: 'Etes-vous sur de vouloir supprimer ce type de demande?',
           accept: () => {
               this.delete(typeDemande);
           }
