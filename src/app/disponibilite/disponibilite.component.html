@@ -44,7 +44,7 @@
       </div>
   </div>
     <p-table #dtf [value]="demandes" [paginator]="true" [rows]="recordsPerPage"  (onPage)="loadPage($event)" 
-      [totalRecords]="totalRecords"  (onLazyLoad)="loadAll()" [lazy]="true"
+      [totalRecords]="totalRecords"  (onLazyLoad)="loadMesDemandes()" [lazy]="true"
       [globalFilterFields]="['numero','dateDemande','structDestination']"
       currentPageReportTemplate="Affichage {first} à {last} de {totalRecords} élements" 
       [showCurrentPageReport]=true
