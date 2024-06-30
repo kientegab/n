@@ -13,6 +13,7 @@ import { IPieceJointe } from 'src/app/shared/model/pieceJointe.model';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
 import { PieceService } from 'src/app/shared/service/piece.service';
 import { TokenService } from 'src/app/shared/service/token.service';
+import { ReceptionDisponibiliteVComponent } from '../reception-disponibilite-v/reception-disponibilite-v.component';
 
 @Component({
   selector: 'app-details-disponibilite-agent',
@@ -95,7 +96,7 @@ export class DetailsDisponibiliteAgentComponent {
 
     /** Permet d'afficher un modal pour aviser une demande */
     openModalReceptionnerV(demande: IDemande): void {
-      this.dialogService.open(ReceptionDetachementVComponent,
+      this.dialogService.open(ReceptionDisponibiliteVComponent,
       {
         header: 'Receptionner une demande',
         width: '40%',
