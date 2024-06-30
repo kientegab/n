@@ -245,6 +245,11 @@
         </div>
 
         <div class="p-ml-auto text-right">
+            <button description="receptionner" icon="pi pi-folder-open" label="Receptionner" [hidden]="disableReceptionner2" (click)="openModalReceptionner(demande)" class="p-button-primary mr-2"
+                    pButton></button>
+        </div>
+
+        <div class="p-ml-auto text-right">
             <button description="elaborer" icon="pi pi-pencil" label="Déclencher processus Elaboration" [hidden]="disableElaborer" (click)="elaborer()" class="p-button-success mr-2"
                     pButton></button>
         </div>

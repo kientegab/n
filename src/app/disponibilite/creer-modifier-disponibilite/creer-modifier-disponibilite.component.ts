@@ -20,6 +20,9 @@ import {PieceService} from "../../shared/service/piece.service";
 import {IStructure} from "../../shared/model/structure.model";
 import {UploadFileService} from "../../shared/service/upload.service";
 import {cloneDeep} from "lodash";
+import {DemandeDisponibiliteService} from "../../shared/service/demande-disponibilite-service.service";
+import {TypeDmdDisponibilite} from "../../shared/model/type-dmd-disponibilite";
+import {Router} from "@angular/router";
 
 interface UploadEvent {
     originalEvent: Event;
@@ -45,7 +48,6 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
     dialogErrorMessage: any;
     timeoutHandle: any;
     isOpInProgress!: boolean;
-    typeDemandes: ITypeDemande[] = [];
     pieces: IPiece[] = [];
     file: Blob | string = '';
     motifs: IMotif[] = [];
@@ -72,8 +74,18 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
     idDmd?:number;
 
 
+    typeDemandes: TypeDmdDisponibilite[] = [
+        new TypeDmdDisponibilite("NOUVELLE_DEMANDE", "NOUVELLE_DEMANDE"),
+        new TypeDmdDisponibilite("RENOUVELLEMENT", "RENOUVELLEMENT"),
+        new TypeDmdDisponibilite("ANNULATION", "ANNULATION"),
+        new TypeDmdDisponibilite("RECTIFICATIF", "RECTIFICATIF"),
+        new TypeDmdDisponibilite("FIN", "FIN"),
+    ];
+
+
     constructor(
         private demandeService: DemandeService,
+        private demandeDisponibiliteService: DemandeDisponibiliteService,
         private dialogRef: DynamicDialogRef,
         private typeDemandeService: TypeDemandeService,
         private motifService: MotifService,
@@ -81,6 +93,7 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
         private structureService: StructureService,
         private pieceService: PieceService,
         private uploadService: UploadFileService,
+        private router: Router
     ) {
     }
 
@@ -95,7 +108,7 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
         if (!this.agent.structure.libelle) {
             this.agent.structure.libelle = '';
         }
-        this.loadTypeDemande();
+       // this.loadTypeDemande();
         this.loadPieces();
         this.loadMotif();
         this.loadStructure();
@@ -118,21 +131,21 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
                         }else{
                             response.body!.libelle = piece.libelle
                             this.piecesJointes[index] = response.body!;
+                            console.warn("UPLOAD",this.piecesJointes);
                         }
 
                     },
                     error: (error) => {
                         console.error("error" + JSON.stringify(error));
-
                         this.showMessage({severity: 'error', summary: error.error.message});
                     }
                 });
             }
         }
-        console.warn("UPLOAD",this.pieceJointes);
+
     }
     onMotifChange() {
-
+        this.isDisplay = true;
     }
 
     onFileChange(event: any, pieceJointe: string) {
@@ -151,7 +164,7 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
 
 
     getDemande(): void {
-        this.demandeService.find(this.idDmd!).subscribe(result => {
+        this.demandeDisponibiliteService.find(this.idDmd!).subscribe(result => {
             if (result && result.body) {
                 this.demande = result.body;
                 this.isDisplay = false;
@@ -211,8 +224,9 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
     }
 
     loadPieces() {
-        this.pieceService.findAll().subscribe(response => {
-            this.pieces = cloneDeep(response.body!)
+        this.pieceService.findListeDisponibilite().subscribe(response => {
+            this.pieces = cloneDeep(response.body!);
+            this.piecesFilters = this.pieces;
         }, error => {
             this.message = {severity: 'error', summary: error.error};
             console.error(JSON.stringify(error));
@@ -221,10 +235,8 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
 
 
     loadTypeDemande() {
-        this.typeDemandeService.findAll().subscribe(response => {
-
+        this.typeDemandeService.findListeDisponibilite().subscribe(response => {
             this.typeDemandes = response.body!;
-            console.warn("================", this.typeDemandes)
         }, error => {
             this.message = {severity: 'error', summary: error.error};
             console.error(JSON.stringify(error));
@@ -233,8 +245,9 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
 
 
     loadMotif() {
-        this.motifService.findAll().subscribe(response => {
+        this.motifService.findListeDisponibilite().subscribe(response => {
             this.motifs = response.body!;
+            console.warn("motifs",this.motifs);
 
             this.motifWithPieces = this.motifs.map((motif: IMotif) => ({
                 motif: motif.libelle!,
@@ -255,19 +268,15 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
         });
     }
 
+
     onChangeMatricule() {
+        this.numeroMatricule = this.demande.agent!.matricule!;
         if (this.numeroMatricule) {
             this.isFetchingAgentInfo = true; // Activez l'indicateur de chargement
-            console.warn("agent================================================", this.agent)
-            console.warn("agent================================================", this.agentInfo)
             // Faites une requête au service pour obtenir les informations de l'agent en utilisant this.numeroMatricule
             this.agentService.getAgentInfoByMatricule(this.numeroMatricule)
                 .subscribe(
                     (response) => {
-
-                        console.warn("agent================================================", this.agent)
-                        console.warn("agent================================================", this.agentInfo)
-
                         // Vérifiez que la réponse est réussie
                         if (response && response.body) {
                             this.agent = response.body;
@@ -286,9 +295,6 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
                     }
                 );
         } else {
-            console.warn("agent================================================", this.agent)
-            console.warn("agent================================================", this.agentInfo)
-            // Réinitialisez les informations de l'agent si le numéro matricule est vide
             this.agent = new Agent();
         }
     }
@@ -328,7 +334,7 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
         this.isDialogOpInProgress = true;
         if (this.demande) {
             if (this.demande.id) {
-                this.demandeService.update(this.demande).subscribe(
+                this.demandeDisponibiliteService.update(this.demande).subscribe(
                     {
                         next: (response) => {
                             this.dialogRef.close(response);
@@ -344,14 +350,19 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
                         }
                     });
             } else {
-                this.demandeService.create(this.demande).subscribe({
+                console.warn("demande",this.demande);
+                this.demande.pieceJointes = this.piecesJointes;
+                this.demande.typeDemande = this.typeDemandeSelected ;
+                this.demande.agent = this.agent;
+                this.demande.duree = this.duree;
+                this.demande.motif = this.selectedMotif;
+                this.demandeDisponibiliteService.create(this.demande).subscribe({
                     next: (response) => {
-                        this.dialogRef.close(response);
-                        this.dialogRef.destroy();
                         this.showMessage({
                             severity: 'success',
                             summary: 'demande creer avec succès',
                         });
+                        this.router.navigate(['disponibilites']);
                     },
                     error: (error) => {
                         console.error("error" + JSON.stringify(error));

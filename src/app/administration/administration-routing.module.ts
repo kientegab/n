@@ -14,11 +14,14 @@ const routes: Routes = [
 
   { path: 'motifs', data: {breadcrumb: 'Gestion des motifs'}, loadChildren: () => import('./parametre/motif/motif.module').then(m => m.MotifModule) },
   { path: 'pieces', data: {breadcrumb: 'Gestion des pieces'}, loadChildren: () => import('./parametre/piece/piece.module').then(m => m.PieceModule) },
+  { path: 'pieceDisponibilites', data: {breadcrumb: 'Gestion des pieces de Disponilites'}, loadChildren: () => import('./parametre/piece-disponibilite/piece-disponibilite.module').then(m => m.PieceDisponibiliteModule) },
   { path: 'articles', data: {breadcrumb: 'Gestion des articles'}, loadChildren: () => import('./parametre/article/article.module').then(m => m.ArticleModule) },
   { path: 'corps', data: {breadcrumb: 'Gestion des corps'}, loadChildren: () => import('./parametre/corps/corps.module').then(m => m.CorpsModule) },
   { path: 'ampliations', data: {breadcrumb: 'Gestion des ampliations'}, loadChildren: () => import('./parametre/ampliation/ampliation.module').then(m => m.AmpliationModule) },
   { path: 'profils', data: {breadcrumb: 'Gestion des profils'}, loadChildren: () => import('./parametre/profil/profil.module').then(m => m.ProfilModule) },
   { path: 'agents', data: {breadcrumb: 'Gestion des agents'}, loadChildren: () => import('./parametre/nouveau-agent/nouveau-agent.module').then(m => m.NouveauAgentModule) },
+  { path: 'type-demandes-dis', data: {breadcrumb: 'Gestion des types de demandes de disponibilité'}, loadChildren: () => import('./parametre/type-demande-dis/type-demande-dis.module').then(m => m.TypeDemandeDisModule) },
+  { path: 'motif-disponibilte', data: {breadcrumb: 'Gestion des motifs de disponibilité'}, loadChildren: () => import('./parametre/motif-disponibilite/motif-disponibilite.module').then(m => m.MotifDisponibiliteModule) },
   { path: '**', redirectTo: '/notfound' }
 ];
 

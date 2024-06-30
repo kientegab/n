@@ -17,19 +17,19 @@
         <!--  -->
 
         <div class="formgrid grid">
-            <div class="field col-6 md:col-6">
+            <!--<div class="field col-6 md:col-6">
                 <label for="typeDemandeur">Type demandeur</label>
                 <p-dropdown autoWidth="false" id="typeDemandeur" styleClass="mb-3" [style]="{ 'width': '100%' }"
                             [(ngModel)]="selectedTypeDemandeur" optionLabel="libelle" inputId="typeDemandeur"
                             name="typeDemandeur" placeholder="Sélectionner le typeDemandeur..." [options]="typeDemandeurs"
                             [filter]="true" appendTo="body" [showClear]="true"
                             (ngModelChange)="onTypeDemandeurChange()"></p-dropdown>
-            </div>
+            </div>-->
 
             <div class="field col-6 md:col-6">
                 <label for="typeDemandes">Type Demande  </label>
                 <p-dropdown autoWidth="false" id="typeDemandes" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="typeDemandes"
-                            [(ngModel)]="typeDemandeSelected" optionLabel="libelle"  inputId="typeDemandeSelected"
+                            [(ngModel)]="typeDemandeSelected" optionLabel="libelle"  inputId="typeDemandeSelected" optionValue="code"
                             name="typeDemandeSelected" [filter]="true" appendTo="body" [showClear]="true" >
                 </p-dropdown>
             </div>
@@ -37,7 +37,7 @@
 
             <div class="field col-6 md:col-6">
                 <label for="motif">Motif :</label>
-                <p-dropdown autoWidth="false" id="motif" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="motifsFiltres"
+                <p-dropdown autoWidth="false" id="motif" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="motifs"
                             [(ngModel)]="selectedMotif" optionLabel="libelle" inputId="motif" name="motif"
                             placeholder="Sélectionner le motif..." [filter]="true" appendTo="body" [showClear]="true"
                             (ngModelChange)="onMotifChange()"></p-dropdown>
@@ -201,8 +201,6 @@
                     </table>
                 </div>
             </div>
-
-
         </div>
 
         <!-- <p-divider></p-divider> -->

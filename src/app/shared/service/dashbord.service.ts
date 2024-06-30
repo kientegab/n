@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { StatDemande } from '../model/statDemande';
 
 
 const dashbordUrl = environment.dashbordUrl;
+
 @Injectable({
     providedIn: 'root'
 })
@@ -11,6 +13,17 @@ const dashbordUrl = environment.dashbordUrl;
 export class DashbordService {
 
     constructor(private http: HttpClient) { }
+
+    getNbDemande() {
+        
+        return this.http.get<any>(`${dashbordUrl}/check-total-globale/`, { observe: 'response' });
+        }
+
+        getNbDemande2() {
+        
+            return this.http.get<any>(`${dashbordUrl}/check-total-globale/`, { observe: 'response' });
+            }
+    
 
     getCards() {
         /*return this.http.get<any>(`${dashbordUrl}/total-global/`)
