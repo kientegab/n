@@ -12,6 +12,7 @@ type EntityArrayResponseType = HttpResponse<IMotif[]>;
 
 //const motifUrl = "assets/data/motif.json";
 const motifUrl = environment.detachementUrl+'/motifs';
+const motifDisponibiliteUrl = environment.disponibiliteUrl+'/motifs';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,10 @@ export class MotifService {
   findListe(): Observable<EntityArrayResponseType> {
     return this.http.get<IMotif[]>(motifUrl+'/list', { observe: 'response' });
   }
+
+    findListeDisponibilite(): Observable<EntityArrayResponseType> {
+        return this.http.get<IMotif[]>(motifDisponibiliteUrl+'/list', { observe: 'response' });
+    }
 
 
 }
