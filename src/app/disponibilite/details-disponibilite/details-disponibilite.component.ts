@@ -4,6 +4,7 @@ import { DynamicDialogRef, DynamicDialogConfig, DialogService } from 'primeng/dy
 import { IDemande, Demande } from 'src/app/shared/model/demande.model';
 import { AviserDisponibiliteComponent } from '../aviser-disponibilite/aviser-disponibilite.component';
 import { Message } from 'primeng/api';
+import { ReceptionDisponibiliteVComponent } from '../reception-disponibilite-v/reception-disponibilite-v.component';
 
 @Component({
   selector: 'app-details-disponibilite',
@@ -90,4 +91,6 @@ export class DetailsDisponibiliteComponent {
       }
     });
   }
+
+
 }

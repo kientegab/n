@@ -1,5 +1,5 @@
 const commonAppURI: string = 'http://localhost:8081/api/';
-const commonAuth: string = 'http://localhost:8090/api/auth/';
+const commonAuth: string = 'http://localhost:8080/api/auth/';
 const domaineUrl: string='localhost:4200'
 
 export const environment = {
@@ -9,8 +9,8 @@ export const environment = {
 
   // detachementUrl: 'http://10.53.218.146:8081/api',
   detachementUrl: 'http://localhost:8081/api/detachements',
+  authentificationUrl: 'http://localhost:8080/api/auth',
   disponibiliteUrl: 'http://localhost:8082/api',
-  authentificationUrl: 'http://localhost:8090/api/auth',
 
   circuitUrl:commonAppURI + 'circuit',
   communeUrl: commonAppURI +'communes',
@@ -49,7 +49,7 @@ export const environment = {
   // province: commonAppURI +'province ',
   // situationMatrimonial: commonAppURI +'situation-matrimoniale ',
   // affiliation: commonAppURI +'employeurs',
-  categorieEmployeurUrl: commonAppURI +'categorieemployeurs',
+  //categorieEmployeurUrl: commonAppURI +'categorieemployeurs',
   // banqueUrl: commonAppURI +'banque ',
   // caisseUrl: commonAppURI +'caisse ',
   // paysUrl: commonAppURI +'pays ',
@@ -57,45 +57,45 @@ export const environment = {
   // typesCotisationUrl:commonAppURI+'types-cotisations',
 
 
-  formesJuridique: commonAppURI +'formes-juridiques ',
+  //formesJuridique: commonAppURI +'formes-juridiques ',
   // situationMatrimonialeUrl: commonAppURI +'situation-matrimoniales ',
   //secteurVillage: commonAppURI +'secteur-villages ',
 
-  regionUrl: commonAppURI +'regions',
-  province: commonAppURI +'province',
-  banqueUrl: commonAppURI +'banques',
+  // regionUrl: commonAppURI +'regions',
+  // province: commonAppURI +'province',
+  // banqueUrl: commonAppURI +'banques',
 
   // caisseUrl: commonAppCOT +'caisses',
 
-  paysUrl: commonAppURI +'pays',
-  roleUrl: commonAppURI +'role',
+  // paysUrl: commonAppURI +'pays',
+  // roleUrl: commonAppURI +'role',
 
 
-  formesJuridiqueUrl: commonAppURI +'forme-juridiques',
-  fournisseurURL: commonAppURI + "fournisseurs",
+  // formesJuridiqueUrl: commonAppURI +'forme-juridiques',
+  // fournisseurURL: commonAppURI + "fournisseurs",
 
-  situationMatrimonial: commonAppURI +'situation-matrimoniale',
-  affiliation: commonAppURI +'employeurs',
-  affiliationValider: commonAppURI +'valider',
-  tAssureTCotisationUrl: commonAppURI+ 'tassure-tcotisation',
+  // situationMatrimonial: commonAppURI +'situation-matrimoniale',
+  // affiliation: commonAppURI +'employeurs',
+  // affiliationValider: commonAppURI +'valider',
+  // tAssureTCotisationUrl: commonAppURI+ 'tassure-tcotisation',
 
-  tAssureTCotisation:commonAppURI+ 'tassure-tcotisation',
-  situationMatrimonialeUrl: commonAppURI +'situation-matrimoniales',
-  classeUrl: commonAppURI +'classe',
-  activiteUrl: commonAppURI +'activites',
+  // tAssureTCotisation:commonAppURI+ 'tassure-tcotisation',
+  // situationMatrimonialeUrl: commonAppURI +'situation-matrimoniales',
+  // classeUrl: commonAppURI +'classe',
+  // activiteUrl: commonAppURI +'activites',
 
-  groupeURL: commonAppURI +'groupes',
+  // groupeURL: commonAppURI +'groupes',
 
-  entreeSortieUrl: commonAppURI +'entree-sorties',
+  // entreeSortieUrl: commonAppURI +'entree-sorties',
 
 
-  typeEmployeurUrl: commonAppURI +'type-employeurs',
-  emploiUrl: commonAppURI+'emplois',
-  professionUrl: commonAppURI+'professions ',
+  // typeEmployeurUrl: commonAppURI +'type-employeurs',
+  // emploiUrl: commonAppURI+'emplois',
+  // professionUrl: commonAppURI+'professions ',
 
 
   //pays: commonAppURI +'pays ',
-  region: commonAppURI +'regions',
+  //region: commonAppURI +'regions',
   //resourceUrl: commonAppURI +'taux-forfait-cotisations',
   //sectionUrl: commonAppURI +'sections',
 
@@ -104,22 +104,18 @@ export const environment = {
 
   // tauxCotisationUrl: '',
  //  entreeSortieUrl: commonAppURI +'entreeSorties',
-  declaration: commonAppURI+ 'declarations',
-  employeur: commonAppURI+ 'employeurs',
-  tauxByTypeEmployeurUrl: commonAppURI+ 'taux-type-employeur',
-  tauxByTypeAssureUrl: commonAppURI+ 'taux-type-assure',
-  resourceUploadFile: commonAppURI+ 'file/upload',
-  resourceRetrieveFile: commonAppURI+ 'file/recuperer',
-  resourceListeAssureByDeclaration: commonAppURI + 'declarations-Assure',
-  typeActeGeneratedUrl: commonAppURI + 'type-actes-generes',
-  signataireUrl: commonAppURI + 'signataires',
+  // declaration: commonAppURI+ 'declarations',
+  // employeur: commonAppURI+ 'employeurs',
+  // tauxByTypeEmployeurUrl: commonAppURI+ 'taux-type-employeur',
+  // tauxByTypeAssureUrl: commonAppURI+ 'taux-type-assure',
+  // resourceUploadFile: commonAppURI+ 'file/upload',
+  // resourceRetrieveFile: commonAppURI+ 'file/recuperer',
+  // resourceListeAssureByDeclaration: commonAppURI + 'declarations-Assure',
+  // typeActeGeneratedUrl: commonAppURI + 'type-actes-generes',
+  // signataireUrl: commonAppURI + 'signataires',
 
   // === reporting, statistiques === //
   reportingUrl: commonAppURI +'reports',
-
-
-
-
   authorize_uri: 'http://localhost:9000/oauth2/authorize?',
   client_id : 'client',
   redirect_uri: 'http://localhost:4200/authorized',
