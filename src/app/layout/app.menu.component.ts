@@ -114,6 +114,7 @@ export class AppMenuComponent implements OnInit {
                                             icon: 'pi pi-fw pi-eye-slash',
                                             routerLink: ['/admin/motif-disponibilte']
                                         },
+    
                                         {
                                             label: 'ampliations',
                                             icon: 'pi pi-fw pi-eye-slash',
@@ -124,6 +125,11 @@ export class AppMenuComponent implements OnInit {
                                             label: 'Pieces',
                                             icon: 'pi pi-fw pi-eye-slash',
                                             routerLink: ['/admin/pieces']
+                                        },
+                                        {
+                                            label: 'Pieces-Disponibilite',
+                                            icon: 'pi pi-fw pi-eye-slash',
+                                            routerLink: ['/admin/pieceDisponibilites']
                                         },
                                         {
                                             label: 'Articles',

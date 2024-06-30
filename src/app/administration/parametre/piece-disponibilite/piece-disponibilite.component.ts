@@ -5,23 +5,23 @@ import { MenuItem, ConfirmationService, Message } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { CURRENT_PAGE, MAX_SIZE_PAGE } from 'src/app/shared/constants/pagination.constants';
-import { IMotifDisponibilite, MotifDisponibilite } from 'src/app/shared/model/motifDisponibilite.model';
-import { MotifDisponibiliteService } from 'src/app/shared/service/motif-disponibilite.service';
+import { IPieceDisponibilite, PieceDisponibilite } from 'src/app/shared/model/pieceDisponibilite.model';
+import { PieceDisponibiliteService } from 'src/app/shared/service/piece-disponibilite.service';
 import { environment } from 'src/environments/environment';
-import { CreerModifierMotifDisponibiliteComponent } from './creer-modifier-motif-disponibilite/creer-modifier-motif-disponibilite.component';
-import { DetailsMotifDisponibiliteComponent } from './details-motif-disponibilite/details-motif-disponibilite.component';
+import { CreerModifierPieceDisponibiliteComponent } from './creer-modifier-piece-disponibilite/creer-modifier-piece-disponibilite.component';
+import { DetailsPieceDisponibiliteComponent } from './details-piece-disponibilite/details-piece-disponibilite.component';
+
 
 @Component({
-  selector: 'app-motif-disponibilite',
-  templateUrl: './motif-disponibilite.component.html',
-  styleUrls: ['./motif-disponibilite.component.scss']
+  selector: 'app-piece-disponibilite',
+  templateUrl: './piece-disponibilite.component.html',
+  styleUrls: ['./piece-disponibilite.component.scss']
 })
-export class MotifDisponibiliteComponent {
- 
+export class PieceDisponibiliteComponent {
   routeData: Subscription | undefined;
-  MotifListSubscription: Subscription | undefined;
-  MotifsDisponibilite: IMotifDisponibilite[] = [];
-  MotifDisponibilite: IMotifDisponibilite = new MotifDisponibilite();
+  pieceListSubscription: Subscription | undefined;
+  pieceDisponibilites: IPieceDisponibilite[] = [];
+  pieceDisponibilite: IPieceDisponibilite = new PieceDisponibilite();
   timeoutHandle: any;
   totalRecords: number = 0;
   recordsPerPage = environment.recordsPerPage;
@@ -51,7 +51,7 @@ export class MotifDisponibiliteComponent {
 
 
   constructor(
-    private motifDisponibiliteService: MotifDisponibiliteService,
+    private pieceService: PieceDisponibiliteService,
     private activatedRoute: ActivatedRoute,
     private dialogService: DialogService,
     private dialogRef: DynamicDialogRef,
@@ -72,8 +72,8 @@ export class MotifDisponibiliteComponent {
       ngOnDestroy(): void {
         if (this.routeData) {
           this.routeData.unsubscribe();
-          if (this.MotifListSubscription) {
-            this.MotifListSubscription.unsubscribe();
+          if (this.pieceListSubscription) {
+            this.pieceListSubscription.unsubscribe();
           }
         }
       }
@@ -108,11 +108,10 @@ export class MotifDisponibiliteComponent {
 
       loadAll(): void {
         const req = this.buildReq();
-        this.motifDisponibiliteService.query(req).subscribe(result => {
+        this.pieceService.query(req).subscribe(result => {
           if (result && result.body) {
             this.totalRecords = Number(result.headers.get('X-Total-Count'));
-            this.MotifsDisponibilite = result.body || [];
-            console.warn("X-Total-Count",this.MotifsDisponibilite);
+            this.pieceDisponibilites = result.body || [];
           }
         });
       }
@@ -140,28 +139,11 @@ export class MotifDisponibiliteComponent {
         return req;
       }
 
-      // load(event?: LazyLoadEvent): void {
-      //   this.isLoading = true;
-      //   this.MotifService.findAll(event).subscribe(
-      //     {
-      //       next: (result) => {
-      //         if (result && result.body) {
-      //           this.isLoading = false;
-      //           this.MotifsDisponibilite = result.body!;
-      //         }
-      //       },
-      //       error: (reason) => {
-      //         this.message = { severity: 'error', summary: reason.error };
-      //         console.error(JSON.stringify(reason));
-      //       }
-      //     });
-      // }
-
       /** Permet d'afficher un modal pour l'ajout */
       openModalCreate(): void {
-        this.dialogService.open(CreerModifierMotifDisponibiliteComponent,
+        this.dialogService.open(CreerModifierPieceDisponibiliteComponent,
           {
-            header: 'Ajouter une MotifDisponibilite',
+            header: 'Ajouter une piece',
             width: '60%',
             contentStyle: { overflow: 'auto', },
             baseZIndex: 10000,
@@ -170,30 +152,30 @@ export class MotifDisponibiliteComponent {
           }
         ).onClose.subscribe(result => {
           if(result) {
-          this.MotifsDisponibilite.push(result);
+          this.pieceDisponibilites.push(result);
           this.loadAll();
           this.isDialogOpInProgress = false;
-          this.showMessage({ severity: 'success', summary: 'MotifDisponibilite créée avec succès' });
+          this.showMessage({ severity: 'success', summary: 'Piece créée avec succès' });
           }
         });
       }
 
       /** Permet d'afficher un modal pour la modification */
-      openModalEdit(MotifDisponibilite: IMotifDisponibilite): void {
-        this.dialogService.open(CreerModifierMotifDisponibiliteComponent,
+      openModalEdit(piece: IPieceDisponibilite): void {
+        this.dialogService.open(CreerModifierPieceDisponibiliteComponent,
           {
-            header: 'Modifier un MotifDisponibilite',
+            header: 'Modifier une piece',
             width: '60%',
             contentStyle: { overflow: 'auto' },
             baseZIndex: 10000,
             maximizable: true,
             closable: true,
-            data: MotifDisponibilite
+            data: piece
           }).onClose.subscribe(result => {
             if(result){
               this.isDialogOpInProgress = false;
               this.loadAll();
-              this.showMessage({ severity: 'success', summary: 'MotifDisponibilite modifiée avec succès' });
+              this.showMessage({ severity: 'success', summary: 'Piece modifiée avec succès' });
             }
 
           });
@@ -201,42 +183,42 @@ export class MotifDisponibiliteComponent {
       }
 
       /** Permet d'afficher un modal pour voir les détails */
-      openModalDetail(MotifDisponibilite:IMotifDisponibilite): void {
-        this.dialogService.open(DetailsMotifDisponibiliteComponent,
+      openModalDetail(piece:IPieceDisponibilite): void {
+        this.dialogService.open(DetailsPieceDisponibiliteComponent,
           {
-            header: 'Details de MotifDisponibilite',
+            header: 'Details de la piece',
             width: '60%',
             contentStyle: { overflow: 'auto' },
             baseZIndex: 10000,
             maximizable: true,
-            data: MotifDisponibilite
+            data: piece
           });
       }
 
 
       // Deletion
-      onDelete(MotifDisponibilite: IMotifDisponibilite) {
+      onDelete(piece: IPieceDisponibilite) {
         this.confirmationService.confirm({
-          message: 'Etes-vous sur de vouloir supprimer ce MotifDisponibilite?',
+          message: 'Etes-vous sur de vouloir supprimer cette piece?',
           accept: () => {
-            this.delete(MotifDisponibilite);
+            this.delete(piece);
           }
         });
       }
 
       delete(selection: any) {
         this.isOpInProgress = true;
-        this.motifDisponibiliteService.delete(selection.id).subscribe(() => {
-          this.MotifsDisponibilite = this.MotifsDisponibilite.filter(MotifDisponibilite => MotifDisponibilite.id !== selection.id);
+        this.pieceService.delete(selection.id).subscribe(() => {
+          this.pieceDisponibilites = this.pieceDisponibilites.filter(piece => piece.id !== selection.id);
           selection = null;
           this.isOpInProgress = false;
           this.totalRecords--;
           this.showMessage({
             severity: 'success',
-            summary: 'MotifDisponibilite supprimée avec succès',
+            summary: 'Piece supprimée avec succès',
           });
         }, (error) => {
-          console.error("MotifDisponibilite " + JSON.stringify(error));
+          console.error("piece " + JSON.stringify(error));
           this.isOpInProgress = false;
           this.showMessage({ severity: 'error', summary: error.error.message });
         });
@@ -259,4 +241,5 @@ export class MotifDisponibiliteComponent {
           this.message = null;
         }, 5000);
       }
+
 }
