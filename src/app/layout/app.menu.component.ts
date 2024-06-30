@@ -85,16 +85,21 @@ export class AppMenuComponent implements OnInit {
                                             routerLink: ['/admin/type-structures']
                                         },
                                         {
-                                            label: 'Type Demande',
+                                            label: 'Type Demande Det',
                                             icon: 'pi pi-fw pi-eye-slash',
                                             routerLink: ['/admin/type-demandes']
                                         },
-
                                         {
-                                            label: 'visa',
+                                            label: 'Type Demande Dis',
                                             icon: 'pi pi-fw pi-eye-slash',
-                                            routerLink: ['/admin/visas']
+                                            routerLink: ['/admin/type-demandes-dis']
                                         },
+
+                                        // {
+                                        //     label: 'visa',
+                                        //     icon: 'pi pi-fw pi-eye-slash',
+                                        //     routerLink: ['/admin/visas']
+                                        // },
                                         {
                                             label: 'ministere',
                                             icon: 'pi pi-fw pi-eye-slash',
@@ -114,17 +119,21 @@ export class AppMenuComponent implements OnInit {
                                             icon: 'pi pi-fw pi-eye-slash',
                                             routerLink: ['/admin/motif-disponibilte']
                                         },
-    
-                                        {
-                                            label: 'ampliations',
-                                            icon: 'pi pi-fw pi-eye-slash',
-                                            routerLink: ['/admin/ampliations']
-                                        },
+                                        // {
+                                        //     label: 'ampliations',
+                                        //     icon: 'pi pi-fw pi-eye-slash',
+                                        //     routerLink: ['/admin/ampliations']
+                                        // },
 
                                         {
                                             label: 'Pieces',
                                             icon: 'pi pi-fw pi-eye-slash',
                                             routerLink: ['/admin/pieces']
+                                        },
+                                        {
+                                            label: 'Pieces-Disponibilite',
+                                            icon: 'pi pi-fw pi-eye-slash',
+                                            routerLink: ['/admin/pieceDisponibilites']
                                         },
                                         {
                                             label: 'Articles',

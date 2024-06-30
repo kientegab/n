@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PieceDisponibiliteComponent } from './piece-disponibilite.component';
+import { TypeDemandeDisComponent } from './type-demande-dis.component';
 
 const routes: Routes = [
   {
-    path: '', component: PieceDisponibiliteComponent,
+      path:"",
+      component: TypeDemandeDisComponent
   }
 ];
 
@@ -12,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PieceDisponibiliteRoutingModule { }
+export class TypeDemandeDisRoutingModule { }

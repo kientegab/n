@@ -11,6 +11,7 @@ type EntityArrayResponseType = HttpResponse<ITypeDemande[]>;
 
 
 const typeDemandeUrl = environment.detachementUrl+"/type-demandes";
+const typeDemandeDisUrl= environment.disponibiliteUrl+"/type-demandes";
 // const agentUrl = "assets/data/agents.json";
 
 // const typeDemandeUrl = environment.detachementUrl+"/type-demandes";
@@ -22,12 +23,12 @@ export class TypeDemandeService {
 
   constructor(private http:HttpClient) { }
 
-  create(structure: ITypeDemande): Observable<EntityResponseType> {
-    return this.http.post<ITypeDemande>(`${typeDemandeUrl}/new`, structure, { observe: 'response' });
+  create(typeDemande: ITypeDemande): Observable<EntityResponseType> {
+    return this.http.post<ITypeDemande>(`${typeDemandeUrl}/new`, typeDemande, { observe: 'response' });
   }
 
-  update(structure: ITypeDemande): Observable<EntityResponseType> {
-    return this.http.put<ITypeDemande>(`${typeDemandeUrl}/update`, structure, { observe: 'response' });
+  update(typeDemande: ITypeDemande): Observable<EntityResponseType> {
+    return this.http.put<ITypeDemande>(`${typeDemandeUrl}/update`, typeDemande, { observe: 'response' });
   }
 
   find(id: number): Observable<EntityResponseType> {
@@ -38,6 +39,27 @@ export class TypeDemandeService {
     const options = createRequestOption(req);
     return this.http.get<ITypeDemande[]>(`${typeDemandeUrl}/list-page`, { params: options, observe: 'response' });
   }
+
+
+  ///////////////////service disponibilité///////////////////////
+
+  createDis(typeDemande: ITypeDemande): Observable<EntityResponseType> {
+    return this.http.post<ITypeDemande>(`${typeDemandeDisUrl}/new`, typeDemande, { observe: 'response' });
+  }
+
+  updateDis(typeDemande: ITypeDemande): Observable<EntityResponseType> {
+    return this.http.put<ITypeDemande>(`${typeDemandeDisUrl}/update`, typeDemande, { observe: 'response' });
+  }
+
+  findDis(id: number): Observable<EntityResponseType> {
+    return this.http.get<ITypeDemande>(`${typeDemandeDisUrl}/${id}`, { observe: 'response' });
+  }
+
+  queryDis(req?: any): Observable<EntityArrayResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<ITypeDemande[]>(`${typeDemandeDisUrl}/list-page`, { params: options, observe: 'response' });
+  }
+
 
    findAll(event?: LazyLoadEvent): Observable<EntityArrayResponseType> {
     return this.http.get<ITypeDemande[]>(`${typeDemandeUrl}/list-page`, { observe: 'response' });

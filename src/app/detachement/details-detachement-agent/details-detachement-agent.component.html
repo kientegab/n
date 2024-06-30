@@ -179,6 +179,10 @@
       pButton></button>
     </div>
 
+    <div class="p-ml-auto text-right">
+      <button description="receptionner après validation" icon="pi pi-folder-open" label="Receptionner validation" [hidden]="disableReceptionnerV" (click)="openModalReceptionnerV(demande)" class="p-button-primary mr-2"
+      pButton></button>
+    </div>
 
     <div class="p-ml-auto text-right">
       <button description="elaborer" icon="pi pi-pencil" label="Procéder à l'élaboration" [hidden]="disableElaborer" (click)="openModalElaborerProjet(demande)" class="p-button-success mr-2"

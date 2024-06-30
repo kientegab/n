@@ -16,20 +16,14 @@ import {ArchwizardModule} from "angular-archwizard";
 import { CircuitComponent } from './parametre/circuit/circuit.component';
 import { CardModule } from 'primeng/card';
 
-import { AmpliationComponent } from './parametre/ampliation/ampliation.component';
-import {
-    CreerModifierAmpliationComponent
-} from "./parametre/ampliation/creer-modifier-ampliation/creer-modifier-ampliation.component";
-import { MotifComponent } from './parametre/motif/motif.component';
 
-import { PieceDisponibiliteComponent } from './parametre/piece-disponibilite/piece-disponibilite.component';
 
 @NgModule({
   declarations: [
     DashboardAdministrationComponent,
     ActionsToolbarIudComponent,
     CrudToolbarComponent,
-    PieceDisponibiliteComponent,
+   // PieceDisponibiliteComponent,
   ],
   imports: [
   CommonModule,

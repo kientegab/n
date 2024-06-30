@@ -1,20 +1,23 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { cloneDeep } from 'lodash';
-import { ConfirmationService, Message } from 'primeng/api';
-import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { IDuree, Duree } from 'src/app/shared/model/duree.model';
-import { IMotifDisponibilite, MotifDisponibilite } from 'src/app/shared/model/motifDisponibilite.model';
-import { IPieceDisponibilite, PieceDisponibilite } from 'src/app/shared/model/pieceDisponibilite.model';
-import { MotifDisponibiliteService } from 'src/app/shared/service/motif-disponibilite.service';
-import { PieceDisponibiliteService } from 'src/app/shared/service/piece-disponibilite.service';
+import { HttpErrorResponse } from "@angular/common/http";
+import { Component, ViewChild, Input } from "@angular/core";
+import { NgForm } from "@angular/forms";
+import { cloneDeep } from "lodash";
+import { ConfirmationService, Message } from "primeng/api";
+import { DynamicDialogRef, DynamicDialogConfig } from "primeng/dynamicdialog";
+import { IDuree, Duree } from "src/app/shared/model/duree.model";
+import { IMotifDisponibilite, MotifDisponibilite } from "src/app/shared/model/motifDisponibilite.model";
+import { IPieceDisponibilite, PieceDisponibilite } from "src/app/shared/model/pieceDisponibilite.model";
+import { MotifDisponibiliteService } from "src/app/shared/service/motif-disponibilite.service";
+import { PieceDisponibiliteService } from "src/app/shared/service/piece-disponibilite.service";
+
 
 @Component({
   selector: 'app-creer-modifier-motif-disponibilite',
   templateUrl: './creer-modifier-motif-disponibilite.component.html',
   styleUrls: ['./creer-modifier-motif-disponibilite.component.scss']
 })
+
+
 export class CreerModifierMotifDisponibiliteComponent {
 
 

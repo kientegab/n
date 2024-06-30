@@ -27,6 +27,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ReceptionDisponibiliteComponent } from './reception-disponibilite/reception-disponibilite.component';
 import {FieldsetModule} from "primeng/fieldset";
+import { ReceptionDisponibiliteVComponent } from './reception-disponibilite-v/reception-disponibilite-v.component';
+import { DetailsDisponibiliteAgentComponent } from './details-disponibilite-agent/details-disponibilite-agent.component';
 
 
 
@@ -39,7 +41,9 @@ import {FieldsetModule} from "primeng/fieldset";
     DetailsDisponibiliteComponent,
     AviserDisponibiliteComponent,
     DisponibiliteAgentsComponent,
-    ReceptionDisponibiliteComponent
+    ReceptionDisponibiliteComponent,
+    ReceptionDisponibiliteVComponent,
+    DetailsDisponibiliteAgentComponent
   ],
     imports: [
         CommonModule,
