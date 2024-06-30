@@ -11,6 +11,7 @@ type EntityArrayResponseType = HttpResponse<IPiece[]>;
 
 // const pieceUrl = "assets/data/piece.json";
 const pieceUrl = environment.detachementUrl+'/pieces';
+const pieceDisponibiliteUrl = environment.disponibiliteUrl+'/pieces';
 const pieceShowUrl = environment.detachementUrl+'/files/recuperer-piece';
 
 @Injectable({
@@ -50,6 +51,9 @@ export class PieceService {
     return this.http.get<IPiece[]>(pieceUrl+'/list', { observe: 'response' });
   }
 
+    findListeDisponibilite(): Observable<EntityArrayResponseType> {
+        return this.http.get<IPiece[]>(pieceDisponibiliteUrl+'/list', { observe: 'response' });
+    }
   async visualiser(fileName: string):Promise<string>{
       const resp = await this.getFile(fileName).toPromise().catch(e=>{
           console.warn("ERROR",e.message());

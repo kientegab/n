@@ -11,6 +11,7 @@ type EntityArrayResponseType = HttpResponse<ITypeDemande[]>;
 
 
 const typeDemandeUrl = environment.detachementUrl+"/type-demandes";
+const typeDemandeDisponibiliteUrl = environment.disponibiliteUrl+"/type-demandes";
 // const agentUrl = "assets/data/agents.json";
 
 // const typeDemandeUrl = environment.detachementUrl+"/type-demandes";
@@ -50,6 +51,10 @@ export class TypeDemandeService {
   findListe(): Observable<EntityArrayResponseType> {
     return this.http.get<ITypeDemande[]>(`${typeDemandeUrl}/list`, { observe: 'response' });
   }
+
+    findListeDisponibilite(): Observable<EntityArrayResponseType> {
+        return this.http.get<ITypeDemande[]>(`${typeDemandeDisponibiliteUrl}/list`, { observe: 'response' });
+    }
 
   getAll(event?: LazyLoadEvent): Observable<any> {
     return this.http.get(typeDemandeUrl, { observe: 'response' })
