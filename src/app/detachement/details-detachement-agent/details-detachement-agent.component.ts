@@ -13,6 +13,7 @@ import { TokenService } from 'src/app/shared/service/token.service';
 import {saveAs} from "file-saver";
 import { AmpliationDemande, IAmpliationDemande } from 'src/app/shared/model/ampliationDemande.model';
 import { ReceptionDetachementVComponent } from '../reception-detachement-v/reception-detachement-v.component';
+import { ImputerDemandeComponent } from '../imputer-demande/imputer-demande.component';
 
 @Component({
   selector: 'app-details-detachement-agent',
