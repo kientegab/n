@@ -11,6 +11,7 @@ import { DemandeService } from '../shared/service/demande-service.service';
 import { CreerModifierDisponibiliteComponent } from './creer-modifier-disponibilite/creer-modifier-disponibilite.component';
 import { DetailsDisponibiliteComponent } from './details-disponibilite/details-disponibilite.component';
 import { IAgent } from '../shared/model/agent.model';
+import {DemandeDisponibiliteService} from "../shared/service/demande-disponibilite-service.service";
 
 @Component({
   selector: 'app-disponibilite',
@@ -52,7 +53,7 @@ export class DisponibiliteComponent {
 
 
   constructor(
-    private demandeService: DemandeService,
+    private demandeService: DemandeDisponibiliteService,
     private activatedRoute: ActivatedRoute,
     private dialogService: DialogService,
     private dialogRef: DynamicDialogRef,
@@ -113,6 +114,7 @@ export class DisponibiliteComponent {
         const req = this.buildReq();
         this.demandeService.query(req).subscribe(result => {
           if (result && result.body) {
+              console.warn("liste des demandes",result.body);
             this.totalRecords = Number(result.headers.get('X-Total-Count'));
             this.demandes = result.body || [];
             console.log("=============", this.demandes);

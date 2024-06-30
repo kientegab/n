@@ -13,6 +13,7 @@ import { DetailsDisponibiliteComponent } from '../details-disponibilite/details-
 import { AviserDisponibiliteComponent } from '../aviser-disponibilite/aviser-disponibilite.component';
 import {IMotif} from "../../shared/model/motif.model";
 import {ITypeDemandeur} from "../../shared/model/typeDemandeur.model";
+import {DemandeDisponibiliteService} from "../../shared/service/demande-disponibilite-service.service";
 
 @Component({
   selector: 'app-disponibilite-agents',
@@ -48,7 +49,7 @@ export class DisponibiliteAgentsComponent {
 
 
   constructor(
-    private demandeService: DemandeService,
+    private demandeService: DemandeDisponibiliteService,
     private activatedRoute: ActivatedRoute,
     private dialogService: DialogService,
     private router: Router
