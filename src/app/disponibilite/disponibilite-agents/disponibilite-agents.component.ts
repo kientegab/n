@@ -14,6 +14,7 @@ import { AviserDisponibiliteComponent } from '../aviser-disponibilite/aviser-dis
 import {IMotif} from "../../shared/model/motif.model";
 import {ITypeDemandeur} from "../../shared/model/typeDemandeur.model";
 import {DemandeDisponibiliteService} from "../../shared/service/demande-disponibilite-service.service";
+import { TokenService } from 'src/app/shared/service/token.service';
 
 @Component({
   selector: 'app-disponibilite-agents',
@@ -30,6 +31,9 @@ export class DisponibiliteAgentsComponent {
   totalRecords: number = 0;
   recordsPerPage = environment.recordsPerPage;
   enableBtnInfo = true;
+  enableBtnEdit = true;
+  enableBtnDelete = true;
+  enableBtnValider=false;
   isLoading!: boolean;
   isOpInProgress!: boolean;
   isDialogOpInProgress!: boolean;
@@ -37,28 +41,34 @@ export class DisponibiliteAgentsComponent {
   regionDetail: boolean=false;
   message: any;
   dialogErrorMessage: any;
+  enableCreate = true;
   page = CURRENT_PAGE;
   previousPage?: number;
   maxSize = MAX_SIZE_PAGE;
+  //itemsPerPage = ITEMS_PER_PAGE2;
   predicate!: string;
   ascending!: boolean;
   reverse: any;
-  enableCreate = true;
   filtreNumero: string | undefined;
   items: MenuItem[] = [];
+  matricule?:string;
+  profil!: string;
+  isLoggedIn = false;
 
 
   constructor(
     private demandeService: DemandeDisponibiliteService,
     private activatedRoute: ActivatedRoute,
     private dialogService: DialogService,
-    private router: Router
+    private tokenService: TokenService,
+    private router: Router,
+    private tokenStorage: TokenService,
     ){}
 
    ngOnInit(): void {
         this.activatedRoute.data.subscribe(
           () => {
-            this.loadAll();
+            this.loadAgentDmds();
           }
         );
 
@@ -103,13 +113,45 @@ export class DisponibiliteAgentsComponent {
 
       loadAll(): void {
         const req = this.buildReq();
-        this.demandeService.findDemandesAgents(req).subscribe(result => {
+        this.demandeService.findAgentDmds(req).subscribe(result => {
           if (result && result.body) {
+            
             this.totalRecords = Number(result.headers.get('X-Total-Count'));
             this.demandes = result.body || [];
+            
           }
         });
       }
+
+
+      loadAgentDmds(): void {
+        const req = this.buildReq();
+        this.isLoggedIn = !!this.tokenService.getToken();
+  
+          if (this.isLoggedIn) {
+            const user = this.tokenService.getUser();
+            this.profil = user.profil;
+  
+            if(this.profil === 'STDRH' || this.profil === 'STDGFP' || this.profil === 'DRH' || 
+                  this.profil === 'DGFP' || this.profil === 'SG' || this.profil === 'DCMEF' || this.profil === 'STDCMEF' || this.profil === 'CSTDRH') {
+              this.demandeService.findMinistereDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
+                  if (result && result.body) {
+                      this.totalRecords = Number(result.headers.get('X-Total-Count'));
+                      this.demandes = result.body || [];
+                  }
+              });
+            }
+            else {
+              this.demandeService.findAgentDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
+                if (result && result.body) {
+                    this.totalRecords = Number(result.headers.get('X-Total-Count'));
+                    this.demandes = result.body || [];
+                }
+              });
+            }
+          }
+      }
+
 
       sortMethod(): string[] {
         this.predicate = 'id';
@@ -134,16 +176,9 @@ export class DisponibiliteAgentsComponent {
       }
 
       /** Permet d'afficher un modal pour voir les détails */
-      openModalDetail(demande:IDemande): void {
-        this.dialogService.open(DetailsDisponibiliteComponent,
-          {
-            header: 'Details de demande',
-            width: '60%',
-            contentStyle: { overflow: 'auto' },
-            baseZIndex: 10000,
-            maximizable: true,
-            data: demande
-          });
+      
+      openModalDetailAgent(demande:IDemande): void {
+        this.router.navigate(['disponibilites','details-ags', demande.id]);
       }
 
       // Errors
@@ -164,5 +199,8 @@ export class DisponibiliteAgentsComponent {
           this.message = null;
         }, 5000);
       }
+
+
+      
 
 }

@@ -30,6 +30,7 @@ export interface IDemande {
     articleDemande?: IArticleDemande[],
     visaDemande?: IVisaDemande[]
     // listDemande?: ITypeDemande[]
+    imputerA?:string;
 }
 
 export class Demande implements IDemande {
@@ -51,7 +52,8 @@ export class Demande implements IDemande {
         public structure?: IStructure[],
         public ampliationDemande?: IAmpliationDemande[],
         public articleDemande?: IArticleDemande[],
-        public visaDemande?: IVisaDemande[]
+        public visaDemande?: IVisaDemande[],
+        public imputerA?:string
         // public listDemande?: ITypeDemande[]
 
     ){
