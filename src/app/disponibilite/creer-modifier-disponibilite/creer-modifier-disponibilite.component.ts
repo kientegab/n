@@ -1,7 +1,7 @@
 import {HttpErrorResponse} from '@angular/common/http';
 import {Component, Input, OnInit} from '@angular/core';
 import {Message} from 'primeng/api';
-import {DynamicDialogRef} from 'primeng/dynamicdialog';
+import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {Agent, IAgent} from 'src/app/shared/model/agent.model';
 import {Demande, IDemande} from 'src/app/shared/model/demande.model';
 import {IMotif} from 'src/app/shared/model/motif.model';
@@ -22,7 +22,7 @@ import {UploadFileService} from "../../shared/service/upload.service";
 import {cloneDeep} from "lodash";
 import {DemandeDisponibiliteService} from "../../shared/service/demande-disponibilite-service.service";
 import {TypeDmdDisponibilite} from "../../shared/model/type-dmd-disponibilite";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 interface UploadEvent {
     originalEvent: Event;
@@ -93,12 +93,31 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
         private structureService: StructureService,
         private pieceService: PieceService,
         private uploadService: UploadFileService,
-        private router: Router
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+        private dynamicDialog: DynamicDialogConfig,
+
     ) {
     }
 
 
     ngOnInit(): void {
+        if (this.dynamicDialog.data) {
+          this.demande = cloneDeep(this.dynamicDialog.data);
+          this.duree.id = this.demande.duree?.id;
+          this.duree.annee = this.demande.duree?.annee;
+          this.duree.annee = this.demande.duree?.annee;
+          this.duree.jours = this.demande.duree?.jours;
+          this.duree.mois = this.demande.duree?.mois;
+          this.selectedMotif = this.demande.motif;
+          this.onChangeMatricule();
+          this.loadPieces();
+         this.findDmd(this.demande);
+        }
+        this.idDmd = +this.activatedRoute.snapshot.paramMap.get('id')!;
+        if(this.idDmd){
+            this.getDemande();
+        }
 
         if (!this.agent.structure) {
             this.agent.structure = {libelle: ''};
@@ -146,6 +165,16 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
     }
     onMotifChange() {
         this.isDisplay = true;
+    }
+
+    findDmd(demande: IDemande) {
+        this.demandeDisponibiliteService.find(demande.id!).subscribe(response => {
+          //  this.demande = response.body!;
+            console.warn("DMD SERVER",response.body);
+        }, error => {
+            this.message = {severity: 'error', summary: error.error};
+            console.error(JSON.stringify(error));
+        });
     }
 
     onFileChange(event: any, pieceJointe: string) {

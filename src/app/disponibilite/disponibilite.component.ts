@@ -112,7 +112,7 @@ export class DisponibiliteComponent {
         this.loadMesDemandes();
       }
 
- 
+
 
 
       loadMesDemandes(): void {
@@ -156,6 +156,7 @@ export class DisponibiliteComponent {
 
       /** Permet d'afficher un modal pour la modification */
       openModalEdit(demande: IDemande): void {
+          console.warn("demande send to modif",demande);
         this.dialogService.open(CreerModifierDisponibiliteComponent,
           {
             header: 'Modifier un demande',
