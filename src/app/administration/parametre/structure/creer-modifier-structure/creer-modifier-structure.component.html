@@ -17,23 +17,23 @@
 <form (ngSubmit)="saveEntity()" #dtf="ngForm" style="margin-top:20px;">
     <div class="formgrid grid">
 
-        <div class="field col-6 md:col-6">
+        <div class="col-12 md:col-6">
             <label for="code">Code :</label>
             <input type="text" id="code" name="code" #code="ngModel" [(ngModel)]="structure.code" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
-        <div class="field col-6 md:col-6">
+        <div class="col-12 md:col-6">
             <label for="libelle">Libelle :</label>
             <input type="text" id="libelle" name="libelle" #libelle="ngModel" [(ngModel)]="structure.libelle" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
-        <div class="field col-12 md:col-12">
+        <div class="col-12 md:col-6">
             <label for="libelle">Sigle :</label>
             <input type="text" id="sigle" name="sigle" #sigle="ngModel" [(ngModel)]="structure.sigle" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
-        <div class="field col-6 md:col-6">
+        <div class="col-12 md:col-6">
             <label for="libelle">Responsable :</label>
             <input type="text" id="responsable" name="responsable" #responsable="ngModel" [(ngModel)]="structure.responsable" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
-        <div class="col-6 md:col-6">
+        <div class="col-12 md:col-6">
             <label for="ministere">Ministère :</label>
             <div>
                 <p-dropdown autoWidth="false"  id="ministere" styleClass="mb-3" [style]="{'width':'100%'}" [options]="ministeres"  [(ngModel)]="structure.ministere" optionLabel="libelle" inputId="libelle"
@@ -41,7 +41,7 @@
                 </p-dropdown>
             </div>
         </div>
-        <div class="col-6 md:col-6">
+        <div class="col-12 md:col-6">
             <label for="TypeStructure">Type structure :</label>
             <div>
                 <p-dropdown autoWidth="false"  id="TypeStructure" styleClass="mb-3" [style]="{'width':'100%'}" [options]="typeStructures"  [(ngModel)]="structure.type" optionLabel="libelle" inputId="province"
@@ -49,7 +49,7 @@
                 </p-dropdown>
             </div>
         </div>
-        <div class="col-6 md:col-6">
+        <div class="col-12 md:col-6">
             <label for="structureParent">Structure parent :</label>
             <div>
                 <p-dropdown autoWidth="false"  id="structureParent" styleClass="mb-3" [style]="{'width':'100%'}" [options]="structures"  [(ngModel)]="structure.parent" optionLabel="libelle"
