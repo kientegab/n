@@ -21,6 +21,9 @@ const routes: Routes = [
     path: 'details',  component: DetailsDisponibiliteComponent
   },
   { path: 'details-ags/:id',  component: DetailsDisponibiliteAgentComponent },
+    {
+        path: 'edit/:id',  component: CreerModifierDisponibiliteComponent
+    },
 
 ];
 
