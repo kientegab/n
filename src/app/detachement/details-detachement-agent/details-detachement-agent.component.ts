@@ -12,6 +12,8 @@ import { Historique, IHistorique } from 'src/app/shared/model/historique.model';
 import { TokenService } from 'src/app/shared/service/token.service';
 import {saveAs} from "file-saver";
 import { AmpliationDemande, IAmpliationDemande } from 'src/app/shared/model/ampliationDemande.model';
+import { ReceptionDetachementVComponent } from '../reception-detachement-v/reception-detachement-v.component';
+import { ImputerDemandeComponent } from '../imputer-demande/imputer-demande.component';
 
 @Component({
   selector: 'app-details-detachement-agent',
@@ -46,10 +48,12 @@ export class DetailsDetachementAgentComponent {
   disableAviserDRH = true;
   disableAviserSG = true;
   disableReceptionner = true;
+  disableReceptionnerV=true;
   disableElaborer = true;
   disableValiderElaboration = true;
   disableSignerElaboration = true;
     disableExporterElaboration = true;
+    disableImputerDemande = true;
     disableRejeterDemande = true;
     disableRejeterProjet=true;
 
@@ -91,6 +95,28 @@ export class DetailsDetachementAgentComponent {
         }
       });
   }
+
+    /** Permet d'afficher un modal pour aviser une demande */
+    openModalReceptionnerV(demande: IDemande): void {
+      this.dialogService.open(ReceptionDetachementVComponent,
+      {
+        header: 'Receptionner une demande',
+        width: '40%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        closable: true,
+        data: demande
+      }).onClose.subscribe(result => {
+        if(result){
+          this.isDialogOpInProgress = false;
+          window.location.reload();
+          this.showMessage({ severity: 'success', summary: 'Demande Receptionné avec succès' });
+        }
+  
+      });
+    }
+  
   /** Permet d'afficher un modal pour aviser une demande */
   openModalAviser(demande: IDemande): void {
     this.dialogService.open(AviserDetachementComponent,
@@ -217,6 +243,25 @@ this.router.navigate(['detachements','elaborer', demande.id]);
 
 
 
+openModalImputerDemande(demande: IDemande): void {
+  this.dialogService.open(ImputerDemandeComponent,
+  {
+    header: 'Imputer une demande',
+    width: '40%',
+    contentStyle: { overflow: 'auto' },
+    baseZIndex: 10000,
+    maximizable: true,
+    closable: true,
+    data: demande
+  }).onClose.subscribe(result => {
+    if(result){
+      this.isDialogOpInProgress = false;
+      window.location.reload();
+      this.showMessage({ severity: 'success', summary: 'Demande imputée avec succès' });
+    }
+
+  });
+}
 
 
   showMessage(message: Message) {
@@ -286,6 +331,11 @@ this.router.navigate(['detachements','elaborer', demande.id]);
             if (this.demande.statut === 'PROJET_SIGNE') {
                 this.disableExporterElaboration = false;
             }
+
+
+            if (this.demande.statut === 'RECEPTIONEE' && (this.profil === 'CSTDRH')) {
+              this.disableImputerDemande = false;
+          }
 
 //////////////////////////////////////////////////////////////////Renouvellement&Fin///////////////////////////////////////////////////////////////////////////////////
 

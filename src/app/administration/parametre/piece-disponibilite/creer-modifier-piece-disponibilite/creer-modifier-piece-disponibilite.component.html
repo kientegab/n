@@ -1,0 +1,46 @@
+<!-- Confirmation -->
+<app-confirmation></app-confirmation>
+<!-- <p-divider></p-divider> -->
+<ng-template pTemplate="header" style="
+    background-color:#1e88e0;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;">
+    <i class="{{isEditing() ? 'pi-pencil' : 'pi-plus'}} pi p-mr-1 mr-2"></i>
+    <h3 class="mr-auto">
+      {{pieceDisponibilite.id ? 'Formulaire de modification' : 'Formulaire d\'ajout de'}} pieceDisponibilite
+    </h3>
+  </ng-template>
+  <p-progressBar *ngIf="isDialogOpInProgress" mode="indeterminate" color="#1e88e0"></p-progressBar>
+  <p-message *ngIf="message" [severity]="message.severity" [text]="message.summary"></p-message>
+  <!-- <p-message severity="info" text="Message Content"></p-message> -->
+<!-- Form -->
+<form (ngSubmit)="saveEntity()" #dtf="ngForm" style="margin-top:20px;">
+
+  <div class="formgrid grid">
+      <div class="field col-12 md:col-12">
+          <label for="libelle">Libelle :</label>
+          <input type="text" id="libelle" name="libelle" #libelle="ngModel" [(ngModel)]="pieceDisponibilite.libelle" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+      </div>
+      <div class="col-12 md:col-12">
+        <label for="motif">Motif :</label>
+        <div>
+            <p-dropdown autoWidth="false"  id="motif" styleClass="mb-3" [style]="{'width':'100%'}" [options]="motifDisponibilites"  [(ngModel)]="pieceDisponibilite.motif" optionLabel="libelle" inputId="motif"
+                        name="motif" placeholder="Selectionner le motif..." [filter]="true" appendTo="body" [showClear]="true">
+            </p-dropdown>
+        </div>
+    </div>
+  </div>
+
+  <!-- <p-divider></p-divider> -->
+  <div class="p-ml-auto text-right ">
+      <div class="p-ml-auto text-right">
+          <button type="reset" label="Effacer" class="p-button-filter mr-3 float-left" pButton icon="pi pi-trash"></button>
+          <button label="Annuler" (click)="clear()" class="p-button-filter mr-3" pButton icon="pi pi-times"></button>
+          <button type="submit" [disabled]="!dtf.form.valid" label="{{isEditing() ? 'Enregistrer' : 'Ajouter'}}" icon="pi {{isEditing() ? 'pi-save' : 'pi-plus'}}" class="  {{isEditing() ? 'p-button-primary' : 'p-button-success'}}" pButton>
+          </button>
+      </div>
+  </div>
+</form>
+

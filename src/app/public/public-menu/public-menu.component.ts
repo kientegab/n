@@ -92,7 +92,7 @@ export class PublicMenuComponent implements  OnInit {
       this.items = [
         {
           label: 'Accueil',
-          icon: 'pi pi-home',
+          //icon: 'pi pi-home',
           routerLink: ['']
         },
         {
@@ -226,6 +226,7 @@ export class PublicMenuComponent implements  OnInit {
 
      download(){
         window.open(environment.domaine+'/assets/img/manuel.pdf','_blank');
+        window.location.reload()
       }
 
 

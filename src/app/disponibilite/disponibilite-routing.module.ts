@@ -4,6 +4,7 @@ import { DisponibiliteComponent } from './disponibilite.component';
 import { DisponibiliteAgentsComponent } from './disponibilite-agents/disponibilite-agents.component';
 import { CreerModifierDisponibiliteComponent } from './creer-modifier-disponibilite/creer-modifier-disponibilite.component';
 import { DetailsDisponibiliteComponent } from './details-disponibilite/details-disponibilite.component';
+import { DetailsDisponibiliteAgentComponent } from './details-disponibilite-agent/details-disponibilite-agent.component';
 
 const routes: Routes = [
   {
@@ -18,7 +19,9 @@ const routes: Routes = [
   },
   {
     path: 'details',  component: DetailsDisponibiliteComponent
-  }
+  },
+  { path: 'details-ags/:id',  component: DetailsDisponibiliteAgentComponent },
+
 ];
 
 @NgModule({

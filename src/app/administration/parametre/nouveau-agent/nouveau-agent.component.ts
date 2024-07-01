@@ -145,7 +145,7 @@ export class NouveauAgentComponent {
         this.dialogService.open(CreerModifierAgentComponent,
           {
             header: 'Ajouter un agent',
-            width: '60%',
+            width: '70%',
             contentStyle: { overflow: 'auto', },
             baseZIndex: 10000,
             maximizable: true,
@@ -166,7 +166,7 @@ export class NouveauAgentComponent {
         this.dialogService.open(CreerModifierAgentComponent,
           {
             header: 'Modifier un agent',
-            width: '60%',
+            width: '70%',
             contentStyle: { overflow: 'auto' },
             baseZIndex: 10000,
             maximizable: true,
@@ -188,7 +188,7 @@ export class NouveauAgentComponent {
         this.dialogService.open(DetailsAgentComponent,
           {
             header: 'Details du agent',
-            width: '60%',
+            width: '70%',
             contentStyle: { overflow: 'auto' },
             baseZIndex: 10000,
             maximizable: true,

@@ -61,7 +61,8 @@ export class DetailDetachementElaborationComponent {
     disableSignerElaboration = true;
     disableVerifierSTDCMEF = true;
     diableViserDCMEF = true;
-    disableExporterElaboration = true
+    disableReceptionner2=true;
+    disableExporterElaboration = true;
     disableRejeterDemande = true;
     disableRejeterProjet = true;
     disableVisaProjet = true;

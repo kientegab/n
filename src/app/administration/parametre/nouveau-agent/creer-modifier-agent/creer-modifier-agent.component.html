@@ -1,5 +1,5 @@
 <div>
-    <p-card>
+    <!-- <p-card> -->
         <!-- <app-panel-header header="Creation d'un compte d'utilisateur" icon="fa fa-2x fa-user-plus"></app-panel-header> -->
         <div style="max-width: 60vw;margin: auto;">
             <!-- <p-steps [model]="stepItems" [activeIndex]="activeStep"></p-steps> -->
@@ -24,12 +24,20 @@
                                 <span>Veillez renseigner votre nom</span>
                             </div>
                         </div>
-                        <div class="field col-6 md:col-6">
+                        <div class="col-12 md:col-6">
                             <label for="prenom">Prenom</label>
                             <input id="prenom" name="prenom" #prenom="ngModel" [(ngModel)]="request.prenom" pInputText
                                 required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
                             <div class="p-error" *ngIf="prenom.invalid && (prenom.dirty || prenom.touched)">
                                 <span>Veillez renseigner votre prenom</span>
+                            </div>
+                        </div>
+                        <div class="col-12 md:col-6">
+                            <label for="telephone">Telephone</label>
+                            <input type="number"   id="telephone" name="telephone" #telephone="ngModel" [(ngModel)]="request.telephone" pInputText
+                                required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
+                            <div class="p-error" *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)">
+                                <span>Veillez renseigner votre telephone</span>
                             </div>
                         </div>
 <!--
@@ -64,7 +72,7 @@
                             </div>
                         </div>
 
-                        <div class="field col-6 md:col-6">
+                        <div class="col-12 md:col-6">
                             <label for="superieur">Matricule du supérieur hiérarchique</label>
                             <input id="superieur" name="superieur" #superieur="ngModel"
                                 [(ngModel)]="request.superieurHierarchique!.matricule"   pInputText required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
@@ -75,7 +83,7 @@
 
 
 
-                        <div class="field col-6 md:col-6">
+                        <div class="col-12 md:col-6">
                             <label for="ministeres">Ministeres</label>
                             <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" id="profil"
                                 name="ministeres"  [options]="ministeres"
@@ -88,7 +96,7 @@
                         </div>
 
 
-                        <div class="field col-6 md:col-6">
+                        <div class="col-12 md:col-6">
                             <label for="structures">Structures</label>
                             <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" id="structures"
                                 name="structures"  [options]="structures"
@@ -140,7 +148,7 @@
                             </div>
                         </div> -->
 
-                        <div class="field col-6 md:col-6">
+                        <div class="col-12 md:col-6">
                             <label for="email">Addresse Email</label>
                         <input id="email" name="email" type="email" #email="ngModel" [(ngModel)]="request.email" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
                             pInputText email required />
@@ -168,7 +176,7 @@
                             </div>
                         </div>
 
-                        <div class="field col-6 md:col-6">
+                        <div class="col-12 md:col-6">
                             <label for="pwd-confirmation">Confirmation du Mot de Passe</label>
                             <p-password id="pwd-confirmation" name="pwd-confirmation" #confirmation="ngModel"
                                 [(ngModel)]="pwdConfirmation" [toggleMask]="true" [feedback]="false" required>
@@ -197,8 +205,6 @@
                         </button>
                     </div> -->
                 </form>
-
-
             </div>
 
 
@@ -260,7 +266,7 @@
                 </form>
             </div>
         </div>
-    </p-card>
+    <!-- </p-card> -->
 </div>
 
 

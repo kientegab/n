@@ -1,0 +1,57 @@
+<!-- Confirmation -->
+<app-confirmation></app-confirmation>
+<!-- <p-divider></p-divider> -->
+<ng-template pTemplate="header" style="
+    background-color:#1e88e0;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;">
+    <i class="{{isEditing() ? 'pi-pencil' : 'pi-plus'}} pi p-mr-1 mr-2"></i>
+    <h3 class="mr-auto">
+        {{typeDemande.id ? 'Formulaire de modification' : 'Formulaire d\'ajout de'}} type demande
+    </h3>
+</ng-template>
+<p-progressBar *ngIf="isDialogOpInProgress" mode="indeterminate" color="#1e88e0"></p-progressBar>
+<p-message *ngIf="message" [severity]="message.severity" [text]="message.summary"></p-message>
+<form (ngSubmit)="saveEntity()" #dtf="ngForm" style="margin-top:20px;">
+    <div class="formgrid grid">
+        <div class="field col-4 md:col-4">
+            <label for="code">Code :</label>
+            <input type="text" id="code" name="code" #code="ngModel" [(ngModel)]="typeDemande.code" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-4 md:col-4">
+            <label for="libelle">Libelle :</label>
+            <input type="text" id="libelle" name="libelle" #libelle="ngModel" [(ngModel)]="typeDemande.libelle" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
+        </div>
+        <div class="field col-4 md:col-4">
+            <label for="libelle">Visa :</label>
+            <div>
+                <p-multiSelect name="visas" appendTo="body" [style]="{'minWidth':'100%'}" [options]="visas" [(ngModel)]="visasSelected" defaultLabel="Selectionner les visas" optionLabel="libelle" display="chip"></p-multiSelect>
+            </div>
+        </div>
+        <div class="field col-4 md:col-4">
+            <label for="libelle">Ampliations :</label>
+            <div>
+                <p-multiSelect name="Ampliations" appendTo="body" [style]="{'minWidth':'100%'}" [options]="ampliations" [(ngModel)]="ampliationsSelected" defaultLabel="Selectionner les avis" optionLabel="libelle" display="chip"></p-multiSelect>
+            </div>
+        </div>
+        <div class="field col-4 md:col-4">
+            <label for="libelle">Articles :</label>
+            <div>
+                <p-multiSelect name="Articles" appendTo="body" [style]="{'minWidth':'100%'}" [options]="articles" [(ngModel)]="articlesSelected" defaultLabel="Selectionner les articles" optionLabel="libelle" display="chip"></p-multiSelect>
+            </div>
+        </div>
+    </div>
+
+    <!-- <p-divider></p-divider> -->
+    <div class="p-ml-auto text-right ">
+        <div class="p-ml-auto text-right">
+            <button type="reset" label="Effacer" class="p-button-filter mr-3 float-left" pButton icon="pi pi-trash"></button>
+            <button label="Annuler" (click)="clear()" class="p-button-filter mr-3" pButton icon="pi pi-times"></button>
+            <button type="submit" [disabled]="!dtf.form.valid" label="{{isEditing() ? 'Enregistrer' : 'Ajouter'}}" icon="pi {{isEditing() ? 'pi-save' : 'pi-plus'}}" class="  {{isEditing() ? 'p-button-primary' : 'p-button-success'}}" pButton>
+            </button>
+        </div>
+    </div>
+</form>
+

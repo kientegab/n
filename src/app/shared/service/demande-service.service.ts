@@ -152,4 +152,19 @@ export class DemandeService {
     }
 
     
+
+    imputerCST(id: number, matriculeImputation: string, groupe: IDemande): Observable<EntityResponseType> {
+      return this.http.post<IDemande>(
+        `${demandeUrl}/imputer/${id}/${matriculeImputation}`,
+        groupe.historique,
+        { observe: 'response' }
+      );
+
+   
+
+
+    }
+
+
+
 }
