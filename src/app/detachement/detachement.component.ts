@@ -31,6 +31,8 @@ export class DetachementComponent {
   enableBtnEdit = true;
   enableBtnDelete=true;
   enableBtnValider=true;
+  enableBtnAbandonner=true;
+
   isLoading!: boolean;
   isOpInProgress!: boolean;
   isDialogOpInProgress!: boolean;
@@ -203,6 +205,35 @@ export class DetachementComponent {
       this.showMessage({ severity: 'error', summary: error.error.message });
     });
   }
+
+  //Abandonner
+  onAbandonner(demande: IDemande) {
+    this.confirmationService.confirm({
+      message: 'Etes-vous sur de vouloir abandonner cette demande?',
+      accept: () => {
+        this.delete(demande);
+      }
+    });
+  }
+
+  abandonner(selection: any) {
+    this.isOpInProgress = true;
+    this.demandeService.abandonner(selection.id).subscribe(() => {
+      this.demandes = this.demandes.filter(demande => demande.id !== selection.id);
+      selection = null;
+      this.isOpInProgress = false;
+      this.totalRecords--;
+      this.showMessage({
+        severity: 'success',
+        summary: 'Demande abandonner avec succès',
+      });
+    }, (error) => {
+      console.error("demande " + JSON.stringify(error));
+      this.isOpInProgress = false;
+      this.showMessage({ severity: 'error', summary: error.error.message });
+    });
+  }
+
   // Errors
   handleError(error: HttpErrorResponse) {
     console.error(`Processing Error: ${JSON.stringify(error)}`);
