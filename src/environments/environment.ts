@@ -1,5 +1,5 @@
 const commonAppURI: string = 'http://localhost:8081/api/';
-const commonAuth: string = 'http://localhost:8082/api/auth/';
+const commonAuth: string = 'http://localhost:8080/api/auth/';
 const domaineUrl: string='localhost:4200'
 
 export const environment = {
@@ -9,7 +9,7 @@ export const environment = {
 
   // detachementUrl: 'http://10.53.218.146:8081/api',
   detachementUrl: 'http://localhost:8081/api/detachements',
-  authentificationUrl: 'http://localhost:8082/api/auth',
+  authentificationUrl: 'http://localhost:8080/api/auth',
   disponibiliteUrl: 'http://localhost:8082/api',
 
   circuitUrl:commonAppURI + 'circuit',

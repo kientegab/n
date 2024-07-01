@@ -68,7 +68,9 @@ export class DemandeService {
     return this.http.post<IDemande>(`${demandeUrl}/receptionner/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
 
-
+  receptionV(groupe: IDemande): Observable<EntityResponseType> {
+    return this.http.post<IDemande>(`${demandeUrl}/receptionner/valided-sg/${groupe.id}`, groupe.historique, { observe: 'response' });
+  }
 
   
   verifierProjetSTDCMEF(groupe: IDemande): Observable<EntityResponseType>{
