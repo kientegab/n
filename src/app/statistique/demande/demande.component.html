@@ -1,4 +1,3 @@
-
 <!-- <p-dialog header="Précisez le format du fichier d'export souhaité" [(visible)]="formatvisible" [style]="{ width: '30vw' }">
     <div class="flex py-2 justify-content-center">
         <p-dropdown autoWidth="false" appendTo="body" [options]="formats" [(ngModel)]="formatSelected" placeholder="Choisissez le format d'export" [style]="{width: '20vw', 'margin-right': '10px'}"></p-dropdown>
@@ -6,110 +5,67 @@
     </div>
 </p-dialog> -->
 
-<div class="grid card">
-    
-    <fieldset class="form-group border p-3" >
-        
-        <legend class="w-auto px-2 text-bolt" style="color:blue;">Critères de recherche de demandes</legend>
-        
-        <div class="grid formgrid col-12">
-
-            <div class="formgrid grid col-12"> 
-                <div class="field col-4 md:col-4">
-                      <label for="typeDemandeur">Type demandeur<span class="text-danger">*</span></label>
-                      <p-multiSelect [style]="{'width':'100%'}"  optionLabel="libelle" display="chip"></p-multiSelect>
+    <div class="grid card">
+        <fieldset class="form-group border p-3">
+            <legend class="w-auto px-2 text-bolt" style="color:blue;">Critères de recherche de demandes</legend>
+            <div class="grid formgrid">
+                <div class="col-12 md:col-4">
+                    <label for="typeDemandeur">Type demandeur<span class="text-danger">*</span></label>
+                    <p-multiSelect [style]="{'width':'100%'}" optionLabel="libelle" display="chip"></p-multiSelect>
                 </div>
 
-                <div class="field col-4 md:col-4">
-                    <label for="secteurStructureSelected">structure<span class="text-danger">*</span>:</label>
-                    <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" [options]="structures" [(ngModel)]="secteurStructureSelected"  optionLabel="libelle" 
-                     name="secteurStructureSelected" placeholder="Selectionner la structure..." [filter]="true" appendTo="body"  [showClear]="true" >
+                <div class="col-12 md:col-4">
+                    <label for="secteurStructureSelected">Structure<span class="text-danger">*</span>:</label>
+                    <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" [options]="structures"
+                        [(ngModel)]="secteurStructureSelected" optionLabel="libelle" name="secteurStructureSelected"
+                        placeholder="Selectionner la structure..." [filter]="true" appendTo="body" [showClear]="true">
                     </p-dropdown>
                 </div>
-              
-                <div class="field col-4 md:col-4">
+
+                <div class="col-12 md:col-4">
                     <label for="typeDemandeSelected">Type demande<span class="text-danger"></span>:</label>
-                    <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" [options]="TypeDemandes"  [(ngModel)]="typeDemandeSelected" optionLabel="libelle" inputId="typeDemandeSelected"
-                        name="typeDemandeSelected" placeholder="Selectionner la province..." [filter]="true" appendTo="body"  [showClear]="true" >
+                    <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" [options]="TypeDemandes"
+                        [(ngModel)]="typeDemandeSelected" optionLabel="libelle" inputId="typeDemandeSelected"
+                        name="typeDemandeSelected" placeholder="Selectionner la province..." [filter]="true"
+                        appendTo="body" [showClear]="true">
                     </p-dropdown>
+                </div>
+
+                <!-- <div class="formgrid grid col-12">
+            </div> -->
+
+                <div class="col-12 md:col-12" style="text-align: right;">
+                    <div class="flex justify-content-center">
+                        <p-button styleClass="p-button-raised p-button-success" [style]="{'margin-right': '20px'}"
+                            label="Rechercher" icon="pi pi-search"></p-button>
+                        <p-button styleClass="p-button-raised p-button-help" label="Exporter"
+                            icon="pi pi-print"></p-button>
+                    </div>
                 </div>
             </div>
+        </fieldset>
+    </div>
+    <p-table #dt [value]="demandes" [paginator]="true" [rows]="recordsPerPage" [loading]="isLoading"
+        [totalRecords]="totalRecords" [scrollable]="true" scrollDirection="horizontal"
+        currentPageReportTemplate="Affichage {first} à {last} de {totalRecords} élements" [showCurrentPageReport]=true
+        [rowsPerPageOptions]="[10, 20, 100]" styleClass="p-datatable-sm">
 
-            <div class="formgrid grid col-12">  
-
-                <!-- <div class="field col-4 md:col-4">
-                    <label for="communeSelected">Département/Commune<span class="text-danger">*</span>:</label>
-                    <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" [options]="communes"  [(ngModel)]="communeSelected" optionLabel="libelle" inputId="communeSelected"
-                        name="communeSelected" placeholder="Selectionner la commune..." [filter]="true" appendTo="body"  (onChange)="onSelectedCommune(communeSelected)" [showClear]="true" >
-                    </p-dropdown>
-                </div> -->
-
-                <!-- <div class="field col-4 md:col-4">
-                    <label for="arrondissementSelected">Arrondissement<span class="text-danger">*</span>:</label>
-                    <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" [options]="arrondissements" [(ngModel)]="arrondissementSelected"  optionLabel="libelle" inputId="arrondissementSelected"
-                        name="arrondissementSelected" placeholder="Selectionner l'arrondissement..." [filter]="true" appendTo="body" (onChange)="onSelectedArrondissement(arrondissementSelected)" [showClear]="true" >
-                    </p-dropdown>
-                </div> -->
-
-                <!-- <div class="field col-4 md:col-4">
-                    <label for="secteurVillageSelected">Secteur/Village<span class="text-danger">*</span>:</label>
-                    <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" [options]="secteurVillages" [(ngModel)]="secteurVillageSelected" optionLabel="libelle" inputId="secteurVillageSelected"
-                        name="secteurVillageSelected" placeholder="Selectionner le village..." [filter]="true" appendTo="body" [showClear]="true">
-                    </p-dropdown>
-                </div> -->
-
-            </div> 
-
-            <div class="formgrid grid col-12">  
-                 <!--  <div class="field col-6 md:col-6">
-                    <label for="dateDebutPeriode">Date début de période</label>
-                    <p-calendar name="dateDebutPeriode" styleClass="mb-3" [style]="{'width':'100%'}" dateFormat="dd-mm-yy" [showIcon]="true" inputId="dateDebutPeriode"
-                        [inline]="false" [(ngModel)]="dateDebutPeriode">
-                    </p-calendar>
-                </div> -->
-
-                <!-- <div class="field col-6 md:col-6">
-                    <label for="dateFinPeriode">Date de fin de période</label>
-                    <p-calendar name="dateFinPeriode" styleClass="mb-3" [style]="{'width':'100%'}" dateFormat="dd-mm-yy" [showIcon]="true" inputId="dateFinPeriode"
-                        [inline]="false" [(ngModel)]="dateFinPeriode">
-                    </p-calendar>
-                </div>  -->
-
-            </div>  
-
-            <div class="field col-12 md:col-12" style="text-align: right;">
-                <div class="flex justify-content-center">
-                    <p-button styleClass="p-button-raised p-button-success" [style]="{'margin-right': '20px'}" label="Rechercher" icon="pi pi-search"></p-button> 
-                    <p-button styleClass="p-button-raised p-button-help" label="Exporter" icon="pi pi-print" ></p-button>
-                </div> 
-            </div> 
-             
-        </div>
-    </fieldset> 
-</div>
-
-<p-table #dt [value]="demandes" [paginator]="true" [rows]="recordsPerPage" [loading]="isLoading"
-    [totalRecords]="totalRecords"
-    [scrollable]="true" scrollDirection="horizontal" 
-    currentPageReportTemplate="Affichage {first} à {last} de {totalRecords} élements" [showCurrentPageReport]=true
-    [rowsPerPageOptions]="[10, 20, 100]" styleClass="p-datatable-sm">
-    
-    <ng-template pTemplate="header">
-        <tr>
-            <th pSortableColumn="numeroAffiliation" style="width: 100px">Structure</th>
-            <th pSortableColumn="morale" style="width: 120px">N° demande</th>
-            <th pSortableColumn="sigle" style="width: 100px">Type demande</th>
-            <th pSortableColumn="ifu" style="width: 100px">Nom</th>
-            <th pSortableColumn="ifu" style="width: 100px">Prénom</th>
-            <!-- <th pSortableColumn="formesJuridique" style="width: 100px">Forme<p-sortIcon field="formesJuridique"></p-sortIcon></th>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="numeroAffiliation" style="width: 100px">Structure</th>
+                <th pSortableColumn="morale" style="width: 120px">N° demande</th>
+                <th pSortableColumn="sigle" style="width: 100px">Type demande</th>
+                <th pSortableColumn="ifu" style="width: 100px">Nom</th>
+                <th pSortableColumn="ifu" style="width: 100px">Prénom</th>
+                <!-- <th pSortableColumn="formesJuridique" style="width: 100px">Forme<p-sortIcon field="formesJuridique"></p-sortIcon></th>
             <th pSortableColumn="ville" style="width: 120px">Ville<p-sortIcon field="ville"></p-sortIcon></th>
             <th pSortableColumn="typeEmp" style="width: 120px">Type<p-sortIcon field="typeEmp"></p-sortIcon></th>
             <th pSortableColumn="raison" style="width: 150px">Raison S.<p-sortIcon field="raison"></p-sortIcon></th>
             <th pSortableColumn="dateValidation" style="width: 120px">Validation<p-sortIcon field="dateValidation"></p-sortIcon></th> -->
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-affiliationStep>
-        <!-- <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex"> -->
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-affiliationStep>
+            <!-- <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="rowIndex"> -->
             <!-- <td style="width: 100px">{{affiliationStep.numeroAffiliation}}</td>
             <td style="width: 120px">{{affiliationStep.morale?'Morale':'Physique'}}</td>
             <td style="width: 100px">{{affiliationStep.sigle}}</td>
@@ -120,6 +76,6 @@
             <td style="width: 120px">{{affiliationStep.typeEmployeur ? affiliationStep.typeEmployeur.libelle : '-'}}</td> 
             <td style="width: 150px">{{affiliationStep.raisonSociale ? affiliationStep.raisonSociale : '-'}}</td> 
             <td style="width: 120px">{{affiliationStep.dateValide ? (affiliationStep.dateValide | date: 'dd-MM-yyyy HH:mm:ss') : '-'}}</td>   -->
-        <!-- </tr> -->
-    </ng-template>
-</p-table>
+            <!-- </tr> -->
+        </ng-template>
+    </p-table>

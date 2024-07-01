@@ -143,7 +143,7 @@ export class CircuitComponent {
       this.dialogService.open(CreerModifierCircuitComponent,
         {
           header: 'Ajouter un circuit',
-          width: '60%',
+          width: '70%',
           contentStyle: { overflow: 'auto', },
           baseZIndex: 10000,
           maximizable: true,
@@ -164,7 +164,7 @@ export class CircuitComponent {
       this.dialogService.open(CreerModifierCircuitComponent,
         {
           header: 'Modifier un circuit',
-          width: '60%',
+          width: '70%',
           contentStyle: { overflow: 'auto' },
           baseZIndex: 10000,
           maximizable: true,
@@ -186,7 +186,7 @@ export class CircuitComponent {
       this.dialogService.open(CreerModifierCircuitComponent,
         {
           header: 'Details de circuit',
-          width: '60%',
+          width: '70%',
           contentStyle: { overflow: 'auto' },
           baseZIndex: 10000,
           maximizable: true,
