@@ -29,7 +29,7 @@ export class DetachementComponent {
   recordsPerPage = environment.recordsPerPage;
   enableBtnInfo = true;
   enableBtnEdit = true;
-  enableBtnDelete=true;
+  enableBtnDelete=false;
   enableBtnValider=true;
   enableBtnAbandonner=true;
 

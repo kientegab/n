@@ -71,8 +71,8 @@
         <td class="actionsStyle">
           <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(demande)"
           [enableBtnInfo]="enableBtnInfo"
-          (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'DEMANDE_REJETEE')"
-          (delete)="onDelete(demande)" [enableBtnDelete]="enableBtnDelete"   (abandonner)="onAbandonner(demande)" [enableBtnAbandonner]="enableBtnAbandonner">
+          (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'DEMANDE_REJETEE')"          
+          (delete)="onDelete(demande)" [enableBtnDelete]="enableBtnDelete" (abandonner)="onAbandonner(demande)" [enableBtnAbandonner]="enableBtnAbandonner && (demande.statut !== 'ELABORATION' && demande.statut !== 'CLOS' && demande.statut !== 'ABANDONNEE')">
         </app-actions-toolbar-iud>
         </td>
       </tr>
