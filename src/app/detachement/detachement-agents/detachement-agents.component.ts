@@ -69,6 +69,7 @@ export class DetachementAgentsComponent {
   ngOnInit(): void {
 
     this.isLoggedIn = !!this.tokenService.getToken();
+    this.loadAllDemande();
 
     if (this.isLoggedIn) {
       const user = this.tokenService.getUser();
@@ -78,7 +79,6 @@ export class DetachementAgentsComponent {
 
     this.activatedRoute.data.subscribe(
       () => {
-       // this.loadAll();
           this.loadAgentDmds();
       }
     );
@@ -123,15 +123,33 @@ export class DetachementAgentsComponent {
           this.loadAgentDmds();
       }
 
-      /*loadAll(): void {
+      loadAllDemande(): void {
         const req = this.buildReq();
+        this.isLoggedIn = !!this.tokenService.getToken();
+
+        if (this.isLoggedIn) {
+          const user = this.tokenService.getUser();
+          this.profil = user.profil;
+
         this.demandeService.query(req).subscribe(result => {
           if (result && result.body) {
+
+            console.log("matricule agent connecté:::::",this.tokenStorage.getUser().matricule)
+            this.demandes= result.body || [];
+
+            console.log("liste des demandes",this.demandes)
+
+            const filteredDemandeImput = result.body.filter(demande => demande.imputerA == this.tokenStorage.getUser().matricule);
+            console.log("liste des demandes",this.demandes)
+            console.log("matricule de la demandes:::::",this.demande.imputerA)
+
             this.totalRecords = Number(result.headers.get('X-Total-Count'));
-            this.demandes = result.body || [];
+            this.demandes = filteredDemandeImput|| [];
           }
+        
         });
-      }*/
+      }
+      }
 
     loadAgentDmds(): void {
       const req = this.buildReq();
@@ -142,13 +160,20 @@ export class DetachementAgentsComponent {
           this.profil = user.profil;
 
           if(this.profil === 'STDRH' || this.profil === 'STDGFP' || this.profil === 'DRH' || 
-                this.profil === 'DGFP' || this.profil === 'SG' || this.profil === 'DCMEF' || this.profil === 'STDCMEF' || this.profil === 'CSTDRH') {
+                this.profil === 'DGFP' || this.profil === 'SG' || this.profil === 'DCMEF' || this.profil === 'STDCMEF' || this.profil === 'CSTDRH' ) {
             this.demandeService.findMinistereDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
                 if (result && result.body) {
                     this.totalRecords = Number(result.headers.get('X-Total-Count'));
                     this.demandes = result.body || [];
                 }
             });
+          }
+
+          if (this.profil === 'CA') {
+
+this.loadAllDemande();
+
+
           }
           else {
             this.demandeService.findAgentDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
