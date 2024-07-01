@@ -9,5 +9,6 @@ import { environment } from 'src/environments/environment';
 export class HomePageComponent {
   download(){
     window.open(environment.domaine+'/assets/img/loi_sigepa.pdf','_blank');
+    window.location.reload();
   }
 }
