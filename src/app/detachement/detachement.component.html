@@ -52,7 +52,7 @@
 
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th pSortableColumn="numero">Numero<p-sortIcon field="numero"></p-sortIcon></th>
+        <th pSortableColumn="numero">Numero2<p-sortIcon field="numero"></p-sortIcon></th>
         <th pSortableColumn="dateDemande">Date<p-sortIcon field="dateDemande"></p-sortIcon></th>
         <th pSortableColumn="strucDestination">Structure de disponibilité<p-sortIcon field="strucDestination"></p-sortIcon></th>
         <th pSortableColumn="dateEffet">Date d'effet<p-sortIcon field="dateEffet"></p-sortIcon></th>
@@ -71,15 +71,15 @@
         <td class="actionsStyle">
           <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(demande)"
           [enableBtnInfo]="enableBtnInfo"
-          (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'DEMANDE_REJETEE')"
-          (delete)="onDelete(demande)" [enableBtnDelete]="enableBtnDelete">
+          (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'DEMANDE_REJETEE')"          
+          (delete)="onDelete(demande)" [enableBtnDelete]="enableBtnDelete" (abandonner)="onAbandonner(demande)" [enableBtnAbandonner]="enableBtnAbandonner && (demande.statut !== 'ELABORATION' && demande.statut !== 'CLOS' && demande.statut !== 'ABANDONNEE')">
         </app-actions-toolbar-iud>
         </td>
       </tr>
 
 
 
-      
+
     </ng-template>
   </p-table>
 
