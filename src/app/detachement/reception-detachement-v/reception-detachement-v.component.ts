@@ -74,6 +74,31 @@ export class ReceptionDetachementVComponent {
      
     }
   }
+
+  receptionnerV(): void {
+    this.clearDialogMessages();
+    this.isDialogOpInProgress = true;
+    if (this.demande) {
+        console.log("histo ===========", this.historique);
+        this.demande.historique=this.historique;
+        this.demandeService.receptionV(this.demande).subscribe(
+          {
+            next: (response: any) => {
+              this.dialogRef.close(response);
+              this.dialogRef.destroy();
+              this.showMessage({ severity: 'success', summary: 'Demande receptionnée avec succès' });
+             
+            },
+            error: (error: { error: { message: any; }; }) => {
+              console.error("error" + JSON.stringify(error));
+              this.isOpInProgress = false;
+              this.showMessage({ severity: 'error', summary: error.error.message });
+
+            }
+          });
+     
+    }
+  }
   
   clearDialogMessages() {
     this.dialogErrorMessage = null;

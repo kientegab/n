@@ -314,8 +314,7 @@ openModalImputerDemande(demande: IDemande): void {
           if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGF')) {
             this.disableElaborer = false;
           }
-
-
+      
             if (this.demande.statut === 'PROJET_ELABORE' && (this.profil === 'DRH')) {
                 this.disableValiderElaboration = false;
             }
