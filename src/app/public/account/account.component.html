@@ -10,6 +10,14 @@
                 <form #af="ngForm">
                     <div class="formgrid grid">
                         <div class="field col-6 md:col-6">
+                            <label for="matricule">No. Matricule</label>
+                            <input id="matricule" name="matricule" #matricule="ngModel"
+                                [(ngModel)]="request.matricule" (change)="loadAgentByMatricule(request.matricule!)" pInputText required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
+                            <div class="p-error" *ngIf="matricule.invalid && (matricule.dirty || matricule.touched) ">
+                                <span>Veillez renseigner votre No. matricule</span>
+                            </div>
+                        </div>
+                        <div class="field col-6 md:col-6">
                             <label for="nom">Nom</label>
                             <input id="nom" name="nom" #nom="ngModel" [(ngModel)]="request.nom" pInputText required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
                             <div class="p-error" *ngIf="nom.invalid && (nom.dirty || nom.touched) ">
@@ -24,15 +32,7 @@
                                 <span>Veillez renseigner votre prenom</span>
                             </div>
                         </div>
-                        <div class="field col-6 md:col-6">
-                            <label for="telephone">Telephone</label>
-                            <input type="number"   id="telephone" name="telephone" #telephone="ngModel" [(ngModel)]="request.telephone" pInputText
-                                required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
-                            <div class="p-error" *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)">
-                                <span>Veillez renseigner votre telephone</span>
-                            </div>
-                        </div>
-<!-- 
+<!--
                         <div class="field col-6 md:col-6">
                             <label for="matricule">No. Matricule</label>
                             <input id="matricule" name="matricule" #matricule="ngModel"
@@ -41,7 +41,7 @@
                                 <span>Veillez renseigner votre No. matricule</span>
                             </div>
                         </div> -->
-                        
+
                         <!-- <div class="field col-6 md:col-6">
                             <label for="profil">Profil</label>
                             <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" id="profil"
@@ -56,18 +56,18 @@
 
 
                         <div class="field col-6 md:col-6">
-                            <label for="matricule">No. Matricule</label>
-                            <input id="matricule" name="matricule" #matricule="ngModel"
-                                [(ngModel)]="request.matricule" pInputText required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
-                            <div class="p-error" *ngIf="matricule.invalid && (matricule.dirty || matricule.touched) ">
-                                <span>Veillez renseigner votre No. matricule</span>
+                            <label for="telephone">Telephone</label>
+                            <input type="number"   id="telephone" name="telephone" #telephone="ngModel" [(ngModel)]="request.telephone" pInputText
+                                required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
+                            <div class="p-error" *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)">
+                                <span>Veillez renseigner votre telephone</span>
                             </div>
                         </div>
 
                         <div class="field col-6 md:col-6">
                             <label for="superieur">Matricule du supérieur hiérarchique</label>
-                            <input id="matricule" name="matricule" #matricule="ngModel"
-                                [(ngModel)]="request.superieurHierarchique!.matricule"  (ngModelChange)="LoadAgentByMatricule()" pInputText required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
+                            <input id="superieur" name="superieur" #matricule="ngModel"
+                                [(ngModel)]="request.superieurHierarchique!.matricule"   pInputText required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
                             <div class="p-error" *ngIf="matricule.invalid && (matricule.dirty || matricule.touched) ">
                                 <span>Veillez renseigner le No. matricule</span>
                             </div>
@@ -152,8 +152,8 @@
                         </div>
                         </div>
 
-                        
-                   
+
+
                         <div class="field col-6 md:col-6">
                             <label for="password">Mot de Passe</label>
                             <p-password id="password" name="password" #password="ngModel" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
