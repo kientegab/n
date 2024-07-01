@@ -170,6 +170,7 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
         this.demandeDisponibiliteService.find(this.idDmd!).subscribe(result => {
             if (result && result.body) {
                 this.demande = result.body;
+                console.warn("demande recup",this.demande);
                 this.isDisplay = false;
                 this.duree.id = this.demande.duree?.id;
                 this.duree.annee = this.demande.duree?.annee;
@@ -177,6 +178,7 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
                 this.duree.jours = this.demande.duree?.jours;
                 this.duree.mois = this.demande.duree?.mois;
                 this.selectedMotif = this.demande.motif;
+                this.typeDemandeSelected = this.demande.typeDemande!;
                 /** charger la liste des pieces jointes */
                 this.getPieceByDmd(this.demande.id!);
                 this.onChangeMatricule();
