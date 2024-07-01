@@ -14,6 +14,7 @@ type EntityArrayResponseType = HttpResponse<IAgent[]>;
 //const agentUrl = environment.authentificationUrl;
 
 const agentUrl = environment.detachementUrl+'/agents';
+const agentMatriculeUrl=environment.authentificationUrl
 // const agentUrl = "assets/data/agents.json";
 
 
@@ -56,6 +57,11 @@ export class AgentService {
 
   getAgentInfoByMatricule(matricule: string): Observable<EntityResponseType> {
     return this.http.get<IAgent>(`${agentUrl}/matricule/${matricule}`, { observe: 'response' });
+  }
+
+  //microservice auth
+  getAgentByMatricule(matricule: string): Observable<EntityResponseType> {
+    return this.http.get<IAgent>(`${agentMatriculeUrl}/matricule/${matricule}`, { observe: 'response' });
   }
 
 }

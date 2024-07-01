@@ -14,6 +14,7 @@ import {saveAs} from "file-saver";
 import { AmpliationDemande, IAmpliationDemande } from 'src/app/shared/model/ampliationDemande.model';
 import { ReceptionDetachementVComponent } from '../reception-detachement-v/reception-detachement-v.component';
 import { ImputerDemandeComponent } from '../imputer-demande/imputer-demande.component';
+import { AnalyserDisponibiliteComponent } from '../analyser-disponibilite/analyser-disponibilite.component';
 
 @Component({
   selector: 'app-details-detachement-agent',
@@ -47,6 +48,7 @@ export class DetailsDetachementAgentComponent {
   disableAviserSH = true;
   disableAviserDRH = true;
   disableAviserSG = true;
+  disableAnalyserCA = true;
   disableReceptionner = true;
   disableReceptionnerV=true;
   disableElaborer = true;
@@ -137,6 +139,27 @@ export class DetailsDetachementAgentComponent {
 
     });
   }
+   /** Permet d'afficher un modal pour aviser une demande */
+   openModalAnalyser(demande: IDemande): void {
+    this.dialogService.open(AnalyserDisponibiliteComponent,
+    {
+      header: 'Aviser une demande',
+      width: '40%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+      closable: true,
+      data: demande
+    }).onClose.subscribe(result => {
+      if(result){
+        this.isDialogOpInProgress = false;
+        window.location.reload();
+        this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
+      }
+
+    });
+  }
+ 
 
 
   showConfirmation() {
@@ -302,35 +325,42 @@ openModalImputerDemande(demande: IDemande): void {
             this.disableReceptionner = false;
           }
 
-          if(this.demande.statut === 'RECEPTIONEE' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
+          if(this.demande.statut === 'CONFORME' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
             this.disableAviserDRH = false;
           }
+          if(this.demande.statut === 'REJET_SG' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
+            this.disableAviserDRH = false;
+            this.disableRejeterDemande = false;
+          }
+          if((this.demande.statut === 'ANALYSE'||this.demande.statut === 'DEMANDE_REJETEE') && (this.profil === 'CA' )) {
+            this.disableAnalyserCA = false;
+          }
+          
 
           if((this.demande.statut === 'AVIS_DRH' || this.demande.statut === 'AVIS_DGFP') && this.profil === 'SG') {
             this.disableAviserSG = false;
-            this.disableRejeterDemande = false;
+        //    this.disableRejeterDemande = false;
         }
 
           if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGF')) {
-            this.disableElaborer = false;
+            this.disableReceptionnerV = false;
           }
+      
+          //   if (this.demande.statut === 'PROJET_ELABORE' && (this.profil === 'DRH')) {
+          //       this.disableValiderElaboration = false;
+          //   }
 
+          //   if (this.demande.statut === 'PROJET_REJETE' && (this.profil === 'STDRH')) {
+          //     this.disableElaborer = false;
+          // }
+          //   if (this.demande.statut === 'PROJET_VALIDE' && (this.profil === 'SG')) {
+          //       this.disableSignerElaboration = false;
+          //       this.disableRejeterProjet = false;
+          //   }
 
-            if (this.demande.statut === 'PROJET_ELABORE' && (this.profil === 'DRH')) {
-                this.disableValiderElaboration = false;
-            }
-
-            if (this.demande.statut === 'PROJET_REJETE' && (this.profil === 'STDRH')) {
-              this.disableElaborer = false;
-          }
-            if (this.demande.statut === 'PROJET_VALIDE' && (this.profil === 'SG')) {
-                this.disableSignerElaboration = false;
-                this.disableRejeterProjet = false;
-            }
-
-            if (this.demande.statut === 'PROJET_SIGNE') {
-                this.disableExporterElaboration = false;
-            }
+          //   if (this.demande.statut === 'PROJET_SIGNE') {
+          //       this.disableExporterElaboration = false;
+          //   }
 
 
             if (this.demande.statut === 'RECEPTIONEE' && (this.profil === 'CSTDRH')) {
