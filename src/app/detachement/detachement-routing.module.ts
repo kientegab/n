@@ -12,6 +12,7 @@ import {
 } from "./detail-detachement-elaboration/detail-detachement-elaboration.component";
 import { VerifierProjetComponent } from './verifier-projet/verifier-projet.component';
 import { ViserProjetComponent } from './viser-projet/viser-projet.component';
+import { ImputerDemandeComponent } from './imputer-demande/imputer-demande.component';
 
 const routes: Routes = [
   { path: '', component: DetachementComponent },
@@ -23,7 +24,8 @@ const routes: Routes = [
   { path: 'elaborer/:id',  component: DetailDetachementElaborationComponent },
   { path: 'valider/:id',  component: ValiderProjetComponent },
   { path: 'verifier/:id',  component: VerifierProjetComponent },
-  { path: 'viser/:id',  component: ViserProjetComponent }
+  { path: 'viser/:id',  component: ViserProjetComponent },
+  { path: 'imputer/:id',  component: ImputerDemandeComponent }
 
 ];
 

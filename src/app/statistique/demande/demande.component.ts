@@ -9,6 +9,9 @@ import { IStructure, Structure } from 'src/app/shared/model/structure.model';
 import { ITypeDemande, TypeDemande } from 'src/app/shared/model/typeDemande.model';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
 import { environment } from 'src/environments/environment';
+import { DashbordService } from './../../shared/service/dashbord.service';
+import { IStatDemande, StatDemande } from 'src/app/shared/model/statDemande';
+
 
 @Component({
   selector: 'app-demande',
@@ -49,12 +52,32 @@ export class DemandeComponent {
   structures: Structure[] = [];
   typeDemandeSelected: ITypeDemande = new TypeDemande();
   TypeDemandes: TypeDemande[] = [];
+  statDemandes: IStatDemande[]=[];
+  statDemande: IStatDemande= new StatDemande()
   constructor(
-    private demandeService: DemandeService,
+    private dashboardService: DashbordService,
     private activatedRoute: ActivatedRoute,
     private dialogService: DialogService,
     private router: Router,
     private confirmationService: ConfirmationService
   ){}
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(
+      () => {
+        this.statGlobale();
+      }
+    );
 
+  }
+  
+  statGlobale(): void{
+    this.dashboardService.getNbDemande().subscribe(result => {
+        if (result && result.body) {
+            
+            this.statDemande = result.body
+
+            console.log("les statistiques", this.statDemande);
+        }
+    });   
+}
 }

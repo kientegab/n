@@ -22,6 +22,7 @@ import {UploadFileService} from "../../shared/service/upload.service";
 import {cloneDeep} from "lodash";
 import {DemandeDisponibiliteService} from "../../shared/service/demande-disponibilite-service.service";
 import {TypeDmdDisponibilite} from "../../shared/model/type-dmd-disponibilite";
+import {Router} from "@angular/router";
 
 interface UploadEvent {
     originalEvent: Event;
@@ -92,6 +93,7 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
         private structureService: StructureService,
         private pieceService: PieceService,
         private uploadService: UploadFileService,
+        private router: Router
     ) {
     }
 
@@ -356,12 +358,11 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
                 this.demande.motif = this.selectedMotif;
                 this.demandeDisponibiliteService.create(this.demande).subscribe({
                     next: (response) => {
-                        this.dialogRef.close(response);
-                        this.dialogRef.destroy();
                         this.showMessage({
                             severity: 'success',
                             summary: 'demande creer avec succès',
                         });
+                        this.router.navigate(['disponibilites']);
                     },
                     error: (error) => {
                         console.error("error" + JSON.stringify(error));

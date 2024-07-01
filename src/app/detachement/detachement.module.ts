@@ -37,6 +37,8 @@ import { ViserProjetComponent } from './viser-projet/viser-projet.component';
 import { VisaProjetComponent } from './visa-projet/visa-projet.component';
 import { ArticleProjetComponent } from './article-projet/article-projet.component';
 import { AmpliationProjetComponent } from './ampliation-projet/ampliation-projet.component';
+import { ReceptionDetachementVComponent } from './reception-detachement-v/reception-detachement-v.component';
+import { ImputerDemandeComponent } from './imputer-demande/imputer-demande.component';
 
 
 @NgModule({
@@ -56,7 +58,9 @@ import { AmpliationProjetComponent } from './ampliation-projet/ampliation-projet
     ViserProjetComponent,
     AmpliationProjetComponent,
     ArticleProjetComponent,
-    VisaProjetComponent
+    VisaProjetComponent,
+    ReceptionDetachementVComponent,
+    ImputerDemandeComponent
  
 
   ],
