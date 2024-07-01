@@ -16,7 +16,9 @@ $gutter: 1rem; //for primeflex grid system
 // Import Bootstrap source files from node_modules
 @import "~bootstrap/dist/css/bootstrap.css";
 
-
+.app-yellow, .p-picklist-buttons {
+  color: #FF8C00;
+}
 
 //@import '~bs-stepper/dist/css/bs-stepper.min.css';
 

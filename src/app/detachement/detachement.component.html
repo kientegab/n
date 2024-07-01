@@ -72,7 +72,7 @@
           <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(demande)"
           [enableBtnInfo]="enableBtnInfo"
           (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'DEMANDE_REJETEE')"
-          (delete)="onDelete(demande)" [enableBtnDelete]="enableBtnDelete">
+          (delete)="onDelete(demande)" [enableBtnDelete]="enableBtnDelete" >
         </app-actions-toolbar-iud>
         </td>
       </tr>
