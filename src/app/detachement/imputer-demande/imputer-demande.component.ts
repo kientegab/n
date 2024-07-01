@@ -206,7 +206,7 @@ export class ImputerDemandeComponent {
 
         console.log("liste agent avec le profil",filteredAgents)
 
-        this.agents = result.body ;
+        this.agents = filteredAgents || [] ;
       }
     });
   }
