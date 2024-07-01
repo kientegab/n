@@ -39,6 +39,7 @@ import { ArticleProjetComponent } from './article-projet/article-projet.componen
 import { AmpliationProjetComponent } from './ampliation-projet/ampliation-projet.component';
 import { ReceptionDetachementVComponent } from './reception-detachement-v/reception-detachement-v.component';
 import { ImputerDemandeComponent } from './imputer-demande/imputer-demande.component';
+import { AnalyserDisponibiliteComponent } from './analyser-disponibilite/analyser-disponibilite.component';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import { ImputerDemandeComponent } from './imputer-demande/imputer-demande.compo
     ArticleProjetComponent,
     VisaProjetComponent,
     ReceptionDetachementVComponent,
-    ImputerDemandeComponent
+    ImputerDemandeComponent,
+    AnalyserDisponibiliteComponent
  
 
   ],

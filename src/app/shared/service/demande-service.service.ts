@@ -98,6 +98,9 @@ export class DemandeService {
   aviserSG(groupe: IDemande): Observable<EntityResponseType> {
     return this.http.post<IDemande>(`${demandeUrl}/valider-demande/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
+  analyserCA(groupe: IDemande): Observable<EntityResponseType> {
+    return this.http.post<IDemande>(`${demandeUrl}/analyser/${groupe.id}`, groupe.historique, { observe: 'response' });
+  }
 
   rejeterSG(groupe: IDemande): Observable<EntityResponseType> {
     return this.http.post<IDemande>(`${demandeUrl}/rejet-new/${groupe.id}`, groupe.historique, { observe: 'response' });
