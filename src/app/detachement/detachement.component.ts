@@ -211,7 +211,7 @@ export class DetachementComponent {
     this.confirmationService.confirm({
       message: 'Etes-vous sur de vouloir abandonner cette demande?',
       accept: () => {
-        this.delete(demande);
+        this.abandonner(demande);
       }
     });
   }

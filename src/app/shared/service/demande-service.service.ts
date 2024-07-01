@@ -61,7 +61,7 @@ export class DemandeService {
   }
 
   abandonner(id: number): Observable<HttpResponse<{}>> {
-    return this.http.delete(`${demandeUrl}/abandonner/${id}`, { observe: 'response' });
+    return this.http.post<any>(`${demandeUrl}/abandonner/${id}`, { observe: 'response' });
   }
 
   findListe(): Observable<EntityArrayResponseType> {
