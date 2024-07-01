@@ -15,7 +15,7 @@
 </ng-template>
 <p-progressBar *ngIf="isDialogOpInProgress" mode="indeterminate" color="#1e88e0"></p-progressBar>
 <p-message *ngIf="message" [severity]="message.severity" [text]="message.summary"></p-message>
-<form (ngSubmit)="receptionnerV()" #dtf="ngForm" style="margin-top:20px;">
+<form (ngSubmit)="analyserDemande()" #dtf="ngForm" style="margin-top:20px;">
     <div class="formgrid grid">
         <div class="field col-6 md:col-6">
             <label for="avis">Avis</label>

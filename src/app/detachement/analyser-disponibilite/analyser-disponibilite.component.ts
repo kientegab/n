@@ -2,18 +2,18 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { cloneDeep } from 'lodash';
 import { Message } from 'primeng/api';
-import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { IDemande, Demande } from 'src/app/shared/model/demande.model';
-import { IHistorique, Historique, RECEPTIONS } from 'src/app/shared/model/historique.model';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Demande, IDemande } from 'src/app/shared/model/demande.model';
+import { AVIS, Historique, IHistorique, RECEPTIONS } from 'src/app/shared/model/historique.model';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
+import { TokenService } from 'src/app/shared/service/token.service';
 
 @Component({
-  selector: 'app-reception-detachement-v',
-  templateUrl: './reception-detachement-v.component.html',
-  styleUrls: ['./reception-detachement-v.component.scss']
+  selector: 'app-analyser-disponibilite',
+  templateUrl: './analyser-disponibilite.component.html',
+  styleUrls: ['./analyser-disponibilite.component.scss']
 })
-export class ReceptionDetachementVComponent {
-  
+export class AnalyserDisponibiliteComponent {
   demande: IDemande = new Demande();
   @Input() data: IDemande = new Demande();
   isDialogOpInProgress: boolean | undefined;
@@ -50,43 +50,18 @@ export class ReceptionDetachementVComponent {
     this.dialogErrorMessage = error.error.title;
   }
   
-  receptionner(): void {
+  analyserDemande(): void {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
     if (this.demande) {
         console.log("histo ===========", this.historique);
         this.demande.historique=this.historique;
-        this.demandeService.reception(this.demande).subscribe(
+        this.demandeService.analyserCA(this.demande).subscribe(
           {
             next: (response: any) => {
               this.dialogRef.close(response);
               this.dialogRef.destroy();
-              this.showMessage({ severity: 'success', summary: 'Demande receptionnée avec succès' });
-             
-            },
-            error: (error: { error: { message: any; }; }) => {
-              console.error("error" + JSON.stringify(error));
-              this.isOpInProgress = false;
-              this.showMessage({ severity: 'error', summary: error.error.message });
-
-            }
-          });
-     
-    }
-  }
-
-  receptionnerV(): void {
-    this.clearDialogMessages();
-    this.isDialogOpInProgress = true;
-    if (this.demande) {
-        console.log("histo ===========", this.historique);
-        this.demande.historique=this.historique;
-        this.demandeService.receptionV(this.demande).subscribe(
-          {
-            next: (response: any) => {
-              this.dialogRef.close(response);
-              this.dialogRef.destroy();
-              this.showMessage({ severity: 'success', summary: 'Demande receptionnée avec succès' });
+              this.showMessage({ severity: 'success', summary: 'Demande Analysée avec succès' });
              
             },
             error: (error: { error: { message: any; }; }) => {
@@ -110,4 +85,5 @@ export class ReceptionDetachementVComponent {
       this.message = null;
     }, 5000);
   }
+
 }
