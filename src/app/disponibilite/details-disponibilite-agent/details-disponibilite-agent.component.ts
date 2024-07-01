@@ -11,9 +11,12 @@ import { IDemande, Demande } from 'src/app/shared/model/demande.model';
 import { IHistorique, Historique } from 'src/app/shared/model/historique.model';
 import { IPieceJointe } from 'src/app/shared/model/pieceJointe.model';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
-import { PieceService } from 'src/app/shared/service/piece.service';
 import { TokenService } from 'src/app/shared/service/token.service';
 import { ReceptionDisponibiliteVComponent } from '../reception-disponibilite-v/reception-disponibilite-v.component';
+import { DemandeDisponibiliteService } from 'src/app/shared/service/demande-disponibilite-service.service';
+import { AviserDisponibiliteComponent } from '../aviser-disponibilite/aviser-disponibilite.component';
+import { PieceDisponibiliteService } from 'src/app/shared/service/piece-disponibilite.service';
+import { ReceptionDisponibiliteComponent } from '../reception-disponibilite/reception-disponibilite.component';
 
 @Component({
   selector: 'app-details-disponibilite-agent',
@@ -58,11 +61,11 @@ export class DetailsDisponibiliteAgentComponent {
   constructor(
     private dialogRef: DynamicDialogRef,
     private dialogService: DialogService,
-    private demandeService: DemandeService,
+    private demandeService: DemandeDisponibiliteService,
     private tokenService: TokenService,
     private route: ActivatedRoute,
     private router: Router,
-    private pieceService: PieceService,
+    private pieceService: PieceDisponibiliteService,
     private confirmationService: ConfirmationService
   ) {}
 
@@ -76,7 +79,7 @@ export class DetailsDisponibiliteAgentComponent {
 
   /** Permet d'afficher un modal pour la reception */
   openModalReceptionner(demande: IDemande): void {
-    this.dialogService.open(ReceptionDetachementComponent,
+    this.dialogService.open(ReceptionDisponibiliteComponent,
       {
         header: 'Receptionner une demande',
         width: '40%',
@@ -117,7 +120,7 @@ export class DetailsDisponibiliteAgentComponent {
   
   /** Permet d'afficher un modal pour aviser une demande */
   openModalAviser(demande: IDemande): void {
-    this.dialogService.open(AviserDetachementComponent,
+    this.dialogService.open(AviserDisponibiliteComponent,
     {
       header: 'Aviser une demande',
       width: '40%',

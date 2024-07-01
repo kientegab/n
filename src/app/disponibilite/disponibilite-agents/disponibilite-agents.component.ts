@@ -176,16 +176,9 @@ export class DisponibiliteAgentsComponent {
       }
 
       /** Permet d'afficher un modal pour voir les détails */
-      openModalDetail(demande:IDemande): void {
-        this.dialogService.open(DetailsDisponibiliteComponent,
-          {
-            header: 'Details de demande',
-            width: '60%',
-            contentStyle: { overflow: 'auto' },
-            baseZIndex: 10000,
-            maximizable: true,
-            data: demande
-          });
+      
+      openModalDetailAgent(demande:IDemande): void {
+        this.router.navigate(['disponibilites','details-ags', demande.id]);
       }
 
       // Errors
