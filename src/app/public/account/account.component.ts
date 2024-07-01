@@ -54,7 +54,7 @@ export class AccountComponent implements OnInit {
   isFetchingAgentInfo: boolean = false; // Pour gérer l'état de chargement
   dossierTypes!: any[];
   selectedType: any;
-  
+
 
   profil: IProfil = new Profil()
 
@@ -82,7 +82,7 @@ export class AccountComponent implements OnInit {
         matricule: '' // Valeur par défaut ou vide
       };
     }
-    
+
     this.stepItems = [
       { label: 'Verification' },
       { label: 'Creation du Compte' }
@@ -102,9 +102,9 @@ loadProfil(): void {
       if (result && result.body) {
         console.log("Profil::===============================",result.body)
           this.profils = result.body || [];
-         
-          
-        
+
+
+
       }
   });
 
@@ -136,6 +136,21 @@ loadStructure() {
       console.error(JSON.stringify(error));
   });
 }
+
+loadAgentByMatricule(matricule :string) {
+    this.agentService.getAgentByMatricule(matricule).subscribe(response => {
+
+        this.request = response.body!;
+        this.request.nom=response.body!.nom;
+        this.request.matricule=response.body!.matricule;
+        this.request.superieurHierarchique?.matricule!=response.body!.superieurHierarchique?.matricule;
+        console.log("agent================", this.request)
+        console.log("matricule================", this.request.matricule)
+    }, error => {
+        this.message = {severity: 'error', summary: error.error};
+        console.error(JSON.stringify(error));
+    });
+  }
 
 
   canActivate() {
@@ -219,10 +234,10 @@ LoadAgentByMatricule() {
     //this.request.profil = this.profil
      this.request.profil= { id: 2 };
 
-    
+
     this.request.superieurHierarchique = this.agent;
-    
-    
+
+
     this.isOpInProgress = true;
     // console.log("Profils=====================================================",this.profil)
     console.log("Création de compte=====================================================",this.request);
@@ -251,9 +266,9 @@ LoadAgentByMatricule() {
 
   // create() {
   //   this.isOpInProgress = true;
-  
+
   //   // Traitement de la création du compte ici
-  
+
   //   this.accountService.create(this.request).subscribe(
   //     () => {
   //       this.showMessage({ severity: 'success', summary: 'Compte d\'utilisateur crée avec succès' });;
@@ -266,9 +281,9 @@ LoadAgentByMatricule() {
   //     }
   //   );
   // }
-  
 
-  
+
+
   resetForm() {
     this.request = {}; // Réinitialisez le modèle du formulaire (request) à un objet vide.
     this.pwdConfirmation = null;
