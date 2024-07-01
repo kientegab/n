@@ -21,8 +21,8 @@
             <label for="avis">Chargé d'analyse</label>
             <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}"
               [options]="agents"
-              [(ngModel)]="agent.nom" optionValue="id" optionLabel="nom" inputId="nom"
-              name="nom" placeholder="Sélectionner le Chargé d'analyse.." [filter]="true" appendTo="body"
+              [(ngModel)]="selectedAgentMatricule" optionValue="matricule" optionLabel="nom" inputId="matricule"
+              name="matricule" placeholder="Sélectionner le Chargé d'analyse.." [filter]="true" appendTo="body"
               [showClear]="true">
             </p-dropdown>
         </div>

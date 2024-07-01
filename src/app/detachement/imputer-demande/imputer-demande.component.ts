@@ -8,6 +8,7 @@ import { Agent, IAgent } from 'src/app/shared/model/agent.model';
 import { IDemande, Demande } from 'src/app/shared/model/demande.model';
 import { AVIS, RECEPTIONS, IHistorique, Historique } from 'src/app/shared/model/historique.model';
 import { AgentService } from 'src/app/shared/service/agent.service';
+import { DemandeDisponibiliteService } from 'src/app/shared/service/demande-disponibilite-service.service';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
 import { environment } from 'src/environments/environment';
 
@@ -48,6 +49,8 @@ export class ImputerDemandeComponent {
   ascending!: boolean;
   reverse: any;
   agents: IAgent[] = [];
+  selectedAgentMatricule: string | undefined;
+
 
 
   filtreLibelle: string | undefined;
@@ -88,6 +91,7 @@ export class ImputerDemandeComponent {
     this.dialogErrorMessage = error.error.title;
   }
   
+  /*
   saveImputerProjet(): void {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
@@ -110,7 +114,40 @@ export class ImputerDemandeComponent {
             }
           });
     }
-  }
+  }*/
+
+
+    saveImputerProjet(): void {
+      this.clearDialogMessages();
+      this.isDialogOpInProgress = true;
+      if (this.demande) {
+        this.demande.historique = this.historique;
+        this.demande.agent = this.agent;
+        console.log("l'agent à imputer",this.demande.agent.matricule)
+    
+        const id = this.demande.id; // Assurez-vous que `id` est défini dans `this.demande`
+        console.log("Matricule de l'agent à imputer",this.selectedAgentMatricule)
+        this.demande.imputerA = this.agent.matricule;
+        const matriculeImputation = this.selectedAgentMatricule;
+                if (id !== undefined && matriculeImputation !== undefined) {
+        this.demandeService.imputerCST(id, matriculeImputation, this.demande).subscribe(
+          {
+            next: (response: any) => {
+              this.dialogRef.close(response);
+              this.dialogRef.destroy();
+              this.showMessage({ severity: 'success', summary: 'Demande imputé avec succès' });
+            },
+            error: (error: { error: { message: any; }; }) => {
+              console.error("error" + JSON.stringify(error));
+              this.isOpInProgress = false;
+              this.showMessage({ severity: 'error', summary: error.error.message });
+            }
+          }
+        );
+      }
+      }
+    }
+    
   
   
  clearDialogMessages() {
@@ -169,7 +206,7 @@ export class ImputerDemandeComponent {
 
         console.log("liste agent avec le profil",filteredAgents)
 
-        this.agents = filteredAgents ;
+        this.agents = result.body ;
       }
     });
   }
