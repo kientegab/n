@@ -321,7 +321,7 @@ openModalImputerDemande(demande: IDemande): void {
             this.disableAviserSH = false;
           }
 
-          if (this.demande.statut === 'AVIS_SH' && (this.profil === 'STDRH' || this.profil === 'STDGFP')) {
+          if (this.demande.statut === 'AVIS_SH' && (this.profil === 'CSTDRH' || this.profil === 'STDGFP')) {
             this.disableReceptionner = false;
           }
 
