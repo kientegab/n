@@ -15,6 +15,7 @@ import {IMotif} from "../../shared/model/motif.model";
 import {ITypeDemandeur} from "../../shared/model/typeDemandeur.model";
 import {DemandeDisponibiliteService} from "../../shared/service/demande-disponibilite-service.service";
 import { TokenService } from 'src/app/shared/service/token.service';
+import { DocumentUploadComponent } from 'src/app/document-upload/document-upload.component';
 
 @Component({
   selector: 'app-disponibilite-agents',
@@ -33,6 +34,7 @@ export class DisponibiliteAgentsComponent {
   enableBtnInfo = true;
   enableBtnEdit = true;
   enableBtnDelete = true;
+  enableBtnActe = true;
   enableBtnValider=false;
   isLoading!: boolean;
   isOpInProgress!: boolean;
@@ -152,6 +154,24 @@ export class DisponibiliteAgentsComponent {
           }
       }
 
+      openModalUpload(demande: IDemande): void {
+        this.dialogService.open(DocumentUploadComponent,
+          {
+            header: 'Chargement de l\'acte signé',
+            width: '60%',
+            contentStyle: { overflow: 'auto', },
+            baseZIndex: 10000,
+            maximizable: true,
+            data: demande,
+            closable: true,
+          }
+        ).onClose.subscribe(result => {
+          if(result) {
+          this.isDialogOpInProgress = false;
+          this.showMessage({ severity: 'success', summary: 'Fichier sauvegardé avec succès' });
+          }
+        });
+      }
 
       sortMethod(): string[] {
         this.predicate = 'id';

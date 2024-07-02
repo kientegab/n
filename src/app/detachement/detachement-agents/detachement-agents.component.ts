@@ -278,7 +278,7 @@ export class DetachementAgentsComponent {
     }, 5000);
   }
 
-  openModalUpload(): void {
+  openModalUpload(demande: IDemande): void {
     this.dialogService.open(DocumentUploadComponent,
       {
         header: 'Chargement de l\'acte signé',
@@ -286,14 +286,13 @@ export class DetachementAgentsComponent {
         contentStyle: { overflow: 'auto', },
         baseZIndex: 10000,
         maximizable: true,
+        data: demande,
         closable: true,
       }
     ).onClose.subscribe(result => {
       if(result) {
-      // this.circuits.push(result);
-      // this.loadAll();
       this.isDialogOpInProgress = false;
-      this.showMessage({ severity: 'success', summary: 'Circuit créée avec succès' });
+      this.showMessage({ severity: 'success', summary: 'Fichier sauvegardé avec succès' });
       }
     });
   }

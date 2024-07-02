@@ -4,6 +4,9 @@ import { NgForm } from '@angular/forms';
 import { Message } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
 import { FileUploadServiceService } from '../shared/service/file-upload-service.service';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Demande, IDemande } from '../shared/model/demande.model';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-document-upload',
@@ -17,72 +20,110 @@ export class DocumentUploadComponent implements OnInit {
 
   isOperationInProgress: boolean | false = false;
   uploadPanelHasFiles: boolean | false = false;
-
+  @Input() data: IDemande = new Demande();
+  demande: IDemande = new Demande();
   uploadedFiles: any[] = [];
 
-
-  message: Message | undefined;
+  error: string | undefined;
+  showDialog = false;
+  isDialogOpInProgress!: boolean;
+  message: any;
+  dialogErrorMessage: any;
+  timeoutHandle: any;
+  isOpInProgress!: boolean;
+  formData!: FormData;
 
   selectedFile: File | null = null;
 
   constructor(
-  private fileUploadService: FileUploadServiceService
+  private fileUploadService: FileUploadServiceService,
+  private dialogRef: DynamicDialogRef,
+  private dynamicDialog: DynamicDialogConfig
   
   ) { }
 
 
   ngOnInit() {
+    console.log(this.dynamicDialog.data);
+    if (this.dynamicDialog.data) {
+      this.demande = cloneDeep(this.dynamicDialog.data);
+      console.log(this.demande);
+    }
+  }
 
+  clear(): void {
+    this.form.resetForm();
+    this.dialogRef.close();
+    this.dialogRef.destroy();
+  }
+
+  clearDialogMessages() {
+    this.dialogErrorMessage = null;
+  }
+  // Errors
+  handleError(error: HttpErrorResponse) {
+    console.error(`Processing Error: ${JSON.stringify(error)}`);
+    this.isDialogOpInProgress = false;
+    this.dialogErrorMessage = error.error.title;
   }
 
 
+  showMessage(message: Message) {
+    this.message = message;
+    this.timeoutHandle = setTimeout(() => {
+      this.message = null;
+    }, 5000);
+  }
 
   save() {
-    this.fileUpload.upload();
+    //this.fileUpload.upload();
+    this.fileUploadService.upload(this.formData, this.demande.id!).subscribe({
+      next: (response) => {
+        this.dialogRef.close(response);
+        this.dialogRef.destroy();
+        this.showMessage({
+          severity: 'success',
+          summary: 'Document sauvegardé avec succès',
+        });
+      },
+      error: (error) => {
+        this.message = { severity: 'error', summary: error.error };
+        console.error("error" + JSON.stringify(error));
+        this.isOpInProgress = false;
+        this.showMessage({ severity: 'error', summary: error.error.message });
+
+      }
+    });
   }
 
-  upload(event:any, id: number) {
-    let data = this.fileUploadService.uploadDocument(event, id);
-    // this.fileUploadService.uploadFil(data, id).subscribe(response => { 
-    //   this.isDialogOpInProgress = false;
-    //   this.showMessage({ severity: 'success', summary: 'Signature enregistrer avec succes' });
-    // }, error => this.handleError(error));
+  onUpload(event:any) {
+    console.log("selectionner file", event);
+    this.clearDialogMessages();
+    this.isDialogOpInProgress = true;
+    let id = 1;
+    let data = this.fileUploadService.uploadDocument(event);
+    this.fileUploadService.upload(data, id).subscribe({
+      next: (response) => {
+        this.dialogRef.close(response);
+        this.dialogRef.destroy();
+        this.showMessage({
+          severity: 'success',
+          summary: 'Document sauvegardé avec succès',
+        });
+      },
+      error: (error) => {
+        this.message = { severity: 'error', summary: error.error };
+        console.error("error" + JSON.stringify(error));
+        this.isOpInProgress = false;
+        this.showMessage({ severity: 'error', summary: error.error.message });
+
+      }
+    });
   }
    
-  onUpload(event: any): void {
-  }
 
   onFileSelect(event: any): void {
-    this.uploadPanelHasFiles = true;
-    if (event) {
-      const file = event.files[0];
-      if (file.type === 'application/pdf') {
-        this.selectedFile = file;
-      } else {
-        alert('Veuillez sélectionner un fichier PDF.');
-        this.selectedFile = null;
-      }
-    }
-    console.log(this.selectedFile);
+    this.formData = this.fileUploadService.uploadDocument(event);
   }
-
-  onFileRemove() {
-    this.uploadPanelHasFiles = false;
-  }
-
-  // Messages
-
-  // handleError(error: HttpErrorResponse) {
-  //   console.log(`Processing Error: ${JSON.stringify(error)}`);
-  //   this.isOperationInProgress = false;
-  //   this.showMessage(error.error.message, Severity.error);
-  // }
-
-  // showMessage(message: string, severity: Severity) {
-  //   this.message = { severity: severity, summary: 'Message', detail: message };
-  //   setTimeout(() => {
-  //     this.message = null;
-  //   }, 5000);
-  // }
 
 }

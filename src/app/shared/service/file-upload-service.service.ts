@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+
+const uploadtUrl= environment.uploadFileDetatchement;
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +21,15 @@ export class FileUploadServiceService {
     return this.http.post(this.uploadUrl, formData);
   }
 
-  uploadDocument(event:any, id:number){
+  uploadDocument(event:any){
     let data:FormData=new FormData();
     data.append('file',event.files[0]);
     return data;
   }
+
+  upload(request: any,id:number): Observable<any> {
+    return this.http.post(uploadtUrl+'/'+id, request);
+  } 
 
   // upload(data: FormData, id:number): Observable<any> {
   //   return ;
