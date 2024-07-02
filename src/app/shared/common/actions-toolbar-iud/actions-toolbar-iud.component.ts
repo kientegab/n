@@ -23,6 +23,7 @@ export class ActionsToolbarIudComponent implements OnInit {
   @Input() enableBtnValidation!: boolean;
   @Input() enableBtnActe!: boolean;
   @Input() enableBtnAbandonner!: boolean;
+  @Input() enableBtnRecipisse!: boolean;
 
   @Output() info: EventEmitter<any> = new EventEmitter();
   @Output() edit: EventEmitter<any> = new EventEmitter();
@@ -39,6 +40,7 @@ export class ActionsToolbarIudComponent implements OnInit {
   @Output() valider: EventEmitter<any> = new EventEmitter();
   @Output() acte: EventEmitter<any> = new EventEmitter();
   @Output() abandonner: EventEmitter<any> = new EventEmitter();
+  @Output() generate: EventEmitter<any> = new EventEmitter();
   // items: MenuItem[] = [];
 
   constructor() { }
@@ -117,5 +119,9 @@ export class ActionsToolbarIudComponent implements OnInit {
  
   fireAbandonner() {
     this.abandonner.emit();
+  }
+
+  fireGenerate(){
+    this.generate.emit()
   }
 }

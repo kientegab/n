@@ -160,6 +160,9 @@ export class DemandeService {
         return this.http.post<IDemande>(`${demandeUrl}/signer-projet/${demande.id}`, demande.historique, { observe: 'response' });
     }
 
+generateRecipisse(demandeId: number): Observable<Blob> {
+  return this.http.get(`${exportUrl}/recepisse-demande/${demandeId}`, { responseType: 'blob' });
+}
 
 
     imputerCST(id: number, matriculeImputation: string, groupe: IDemande): Observable<EntityResponseType> {
