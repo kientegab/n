@@ -827,7 +827,7 @@ table.blueTable tfoot .links a{
 
 .p-menubar {
   padding: 0.5rem;
-  background:#28a745!important;
+  background: #28a745!important;
   color: #ffffff;
   width: 100%;
   border:0px;
@@ -836,4 +836,7 @@ table.blueTable tfoot .links a{
 }
 .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-text {
   color: white;
+  }
+  .p-menubar .p-menubar-root-list > .p-menuitem > .btn-blue:hover{
+    color: black
   }

@@ -21,6 +21,8 @@ export class ActionsToolbarIudComponent implements OnInit {
   @Input() enableBtnChanger: boolean=false;
   @Input() enableBtnEditProfil: boolean=false;
   @Input() enableBtnValidation!: boolean;
+  @Input() enableBtnAbandonner!: boolean;
+  @Input() enableBtnRecipisse!: boolean;
 
   @Output() info: EventEmitter<any> = new EventEmitter();
   @Output() edit: EventEmitter<any> = new EventEmitter();
@@ -35,9 +37,10 @@ export class ActionsToolbarIudComponent implements OnInit {
   @Output() download: EventEmitter<any> = new EventEmitter();
   @Output() validation: EventEmitter<any> = new EventEmitter();
   @Output() valider: EventEmitter<any> = new EventEmitter();
-
+  @Output() abandonner: EventEmitter<any> = new EventEmitter();
+  @Output() generate: EventEmitter<any> = new EventEmitter();
   // items: MenuItem[] = [];
-  
+
   constructor() { }
 
   ngOnInit(): void {
@@ -97,7 +100,7 @@ export class ActionsToolbarIudComponent implements OnInit {
   fireEditProfil(){
     this.editProfil.emit();
     }
-  
+
   fireDownload(){
     this.download.emit()
   }
@@ -106,5 +109,13 @@ export class ActionsToolbarIudComponent implements OnInit {
   }
   fireValider() {
     this.valider.emit();
+  }
+ 
+  fireAbandonner() {
+    this.abandonner.emit();
+  }
+
+  fireGenerate(){
+    this.generate.emit()
   }
 }

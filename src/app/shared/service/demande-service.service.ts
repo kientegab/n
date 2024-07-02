@@ -60,6 +60,10 @@ export class DemandeService {
     return this.http.delete(`${demandeUrl}/${id}`, { observe: 'response' });
   }
 
+  abandonner(id: number): Observable<HttpResponse<{}>> {
+    return this.http.post<any>(`${demandeUrl}/abandonner/${id}`, { observe: 'response' });
+  }
+
   findListe(): Observable<EntityArrayResponseType> {
     return this.http.get<IDemande[]>(demandeUrl+'/list', { observe: 'response' });
   }
@@ -68,9 +72,11 @@ export class DemandeService {
     return this.http.post<IDemande>(`${demandeUrl}/receptionner/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
 
+  receptionV(groupe: IDemande): Observable<EntityResponseType> {
+    return this.http.post<IDemande>(`${demandeUrl}/receptionner/valided-sg/${groupe.id}`, groupe.historique, { observe: 'response' });
+  }
 
 
-  
   verifierProjetSTDCMEF(groupe: IDemande): Observable<EntityResponseType>{
     return this.http.post<IDemande>(`${demandeUrl}/verifier-projet/${groupe.id}`, groupe.historique, { observe: 'response' });
 
@@ -144,7 +150,7 @@ export class DemandeService {
     validerElaborationDRH(demande: IDemande): Observable<EntityResponseType> {
         return this.http.post<IDemande>(`${demandeUrl}/valider-projet/${demande.id}`, demande.historique, { observe: 'response' });
     }
-    
+
 
     rejeterElaborationSG(demande: IDemande): Observable<EntityResponseType> {
       return this.http.post<IDemande>(`${demandeUrl}/rejeter-projet/${demande.id}`, demande.historique, { observe: 'response' });
@@ -154,7 +160,10 @@ export class DemandeService {
         return this.http.post<IDemande>(`${demandeUrl}/signer-projet/${demande.id}`, demande.historique, { observe: 'response' });
     }
 
-    
+generateRecipisse(demandeId: number): Observable<Blob> {
+  return this.http.get(`${exportUrl}/recepisse-demande/${demandeId}`, { responseType: 'blob' });
+}
+
 
     imputerCST(id: number, matriculeImputation: string, groupe: IDemande): Observable<EntityResponseType> {
       return this.http.post<IDemande>(
@@ -163,7 +172,7 @@ export class DemandeService {
         { observe: 'response' }
       );
 
-   
+
 
 
     }

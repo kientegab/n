@@ -321,43 +321,46 @@ openModalImputerDemande(demande: IDemande): void {
             this.disableAviserSH = false;
           }
 
-          if (this.demande.statut === 'AVIS_SH' && (this.profil === 'STDRH' || this.profil === 'STDGFP')) {
+          if (this.demande.statut === 'AVIS_SH' && (this.profil === 'CSTDRH' || this.profil === 'STDGFP')) {
             this.disableReceptionner = false;
           }
 
           if(this.demande.statut === 'CONFORME' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
             this.disableAviserDRH = false;
           }
-          if(this.demande.statut === 'ANALYSE' && (this.profil === 'CA' )) {
+          if(this.demande.statut === 'REJET_SG' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
+            this.disableAviserDRH = false;
+            this.disableRejeterDemande = false;
+          }
+          if((this.demande.statut === 'ANALYSE'||this.demande.statut === 'DEMANDE_REJETEE') && (this.profil === 'CA' )) {
             this.disableAnalyserCA = false;
           }
           
 
           if((this.demande.statut === 'AVIS_DRH' || this.demande.statut === 'AVIS_DGFP') && this.profil === 'SG') {
             this.disableAviserSG = false;
-            this.disableRejeterDemande = false;
+        //    this.disableRejeterDemande = false;
         }
 
           if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGF')) {
-            this.disableElaborer = false;
+            this.disableReceptionnerV = false;
           }
+      
+          //   if (this.demande.statut === 'PROJET_ELABORE' && (this.profil === 'DRH')) {
+          //       this.disableValiderElaboration = false;
+          //   }
 
+          //   if (this.demande.statut === 'PROJET_REJETE' && (this.profil === 'STDRH')) {
+          //     this.disableElaborer = false;
+          // }
+          //   if (this.demande.statut === 'PROJET_VALIDE' && (this.profil === 'SG')) {
+          //       this.disableSignerElaboration = false;
+          //       this.disableRejeterProjet = false;
+          //   }
 
-            if (this.demande.statut === 'PROJET_ELABORE' && (this.profil === 'DRH')) {
-                this.disableValiderElaboration = false;
-            }
-
-            if (this.demande.statut === 'PROJET_REJETE' && (this.profil === 'STDRH')) {
-              this.disableElaborer = false;
-          }
-            if (this.demande.statut === 'PROJET_VALIDE' && (this.profil === 'SG')) {
-                this.disableSignerElaboration = false;
-                this.disableRejeterProjet = false;
-            }
-
-            if (this.demande.statut === 'PROJET_SIGNE') {
-                this.disableExporterElaboration = false;
-            }
+          //   if (this.demande.statut === 'PROJET_SIGNE') {
+          //       this.disableExporterElaboration = false;
+          //   }
 
 
             if (this.demande.statut === 'RECEPTIONEE' && (this.profil === 'CSTDRH')) {

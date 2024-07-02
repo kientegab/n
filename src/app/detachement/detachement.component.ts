@@ -29,8 +29,11 @@ export class DetachementComponent {
   recordsPerPage = environment.recordsPerPage;
   enableBtnInfo = true;
   enableBtnEdit = true;
-  enableBtnDelete=true;
+  enableBtnDelete=false;
   enableBtnValider=true;
+  enableBtnAbandonner=true;
+  enableBtnRecipisse=true;
+
   isLoading!: boolean;
   isOpInProgress!: boolean;
   isDialogOpInProgress!: boolean;
@@ -174,7 +177,24 @@ export class DetachementComponent {
     this.router.navigate(['detachements','details', demande.id]);
   }
 
-
+  generateRecipisse(demande: IDemande): void {
+    if (demande.id !== undefined) {
+      this.demandeService.generateRecipisse(demande.id).subscribe(
+        (response: Blob) => {
+          const file = new Blob([response], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(file);
+          window.open(fileURL, '_blank');
+        },
+        (error) => {
+          console.error('Erreur lors de la génération du récépissé : ', error);
+          // Gérer les erreurs ici...
+        }
+      );
+    } else {
+      console.error('ID de demande non défini.');
+      // Gérer le cas où ID est undefined (optionnel)
+    }
+  }
 
   // Deletion
   onDelete(demande: IDemande) {
@@ -203,6 +223,35 @@ export class DetachementComponent {
       this.showMessage({ severity: 'error', summary: error.error.message });
     });
   }
+
+  //Abandonner
+  onAbandonner(demande: IDemande) {
+    this.confirmationService.confirm({
+      message: 'Etes-vous sur de vouloir abandonner cette demande?',
+      accept: () => {
+        this.abandonner(demande);
+      }
+    });
+  }
+
+  abandonner(selection: any) {
+    this.isOpInProgress = true;
+    this.demandeService.abandonner(selection.id).subscribe(() => {
+      this.demandes = this.demandes.filter(demande => demande.id !== selection.id);
+      selection = null;
+      this.isOpInProgress = false;
+      this.totalRecords--;
+      this.showMessage({
+        severity: 'success',
+        summary: 'Demande abandonner avec succès',
+      });
+    }, (error) => {
+      console.error("demande " + JSON.stringify(error));
+      this.isOpInProgress = false;
+      this.showMessage({ severity: 'error', summary: error.error.message });
+    });
+  }
+
   // Errors
   handleError(error: HttpErrorResponse) {
     console.error(`Processing Error: ${JSON.stringify(error)}`);
