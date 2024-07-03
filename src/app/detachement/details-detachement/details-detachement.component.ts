@@ -197,7 +197,6 @@ exporter(){
           console.error("error" + JSON.stringify(error));
           this.isOpInProgress = false;
           this.showMessage({ severity: 'error', summary: error.error.message });
-
       }
   });
 }
