@@ -2,7 +2,7 @@ const commonAppURI: string = 'http://localhost:8082/api/';
 const commonAuth: string = 'http://localhost:8080/api/auth/';
 const domaineUrl: string='localhost:4200';
 const detachement: string = 'http://localhost:8081/api/detachements';
-
+const disponibilite: string = 'http://localhost:8082/api';
 export const environment = {
   production: false,
   domaine:`${domaineUrl}`,
@@ -13,6 +13,7 @@ export const environment = {
   authentificationUrl: 'http://localhost:8080/api/auth',
   disponibiliteUrl: 'http://localhost:8082/api',
   uploadFileDetatchement: detachement + '/demandes/upload', 
+  uploadFileDisponibilite: disponibilite + '/api/demandes/upload',
 
 
   circuitUrl:commonAppURI + 'circuit',

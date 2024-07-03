@@ -12,7 +12,6 @@ import { CreerModifierDetachementComponent } from './creer-modifier-detachement/
 import { DetailsDetachementComponent } from './details-detachement/details-detachement.component';
 import { ValiderProjetComponent } from './valider-projet/valider-projet.component';
 import {TokenService} from "../shared/service/token.service";
-import { DocumentUploadComponent } from '../document-upload/document-upload.component';
 
 @Component({
   selector: 'app-detachement',

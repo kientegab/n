@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
 import { ValiderProjetComponent } from '../valider-projet/valider-projet.component';
 import { TokenService } from 'src/app/shared/service/token.service';
 import { Historique, IHistorique } from 'src/app/shared/model/historique.model';
-import { DocumentUploadComponent } from 'src/app/document-upload/document-upload.component';
+import { DocumentUploadComponent } from '../document-upload/document-upload.component';
 
 @Component({
   selector: 'app-detachement-agents',

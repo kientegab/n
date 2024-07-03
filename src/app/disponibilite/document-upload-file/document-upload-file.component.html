@@ -1,0 +1,41 @@
+<ng-template pTemplate="header">
+  <h3 class="mr-auto">
+    Chargement de l'acte signé
+  </h3>
+  <p-divider></p-divider>
+  <div class="p-mb-2"><p-progressBar *ngIf="isDialogOpInProgress" mode="indeterminate" color="#1e88e0"></p-progressBar>
+    <!-- <p-message *ngIf="message" [severity]="message.severity" [text]="message.summary"></p-message> <p-message *ngIf="message" [severity]="message.severity" [text]="message.detail"></p-message> -->
+  </div>
+</ng-template>
+<form (ngSubmit)="save()" #df="ngForm">
+  <div>
+    <div class="p-grid">
+      <div class="p-col-6">
+        <p-fileUpload #fileUpload mode="advanced" [showCancelButton]="false" [showUploadButton]="false" accept=".pdf"
+          chooseLabel="Selectionner" (onSelect)="onFileSelect($event)">
+          <ng-template pTemplate="content" let-files>
+            <div *ngIf="!files.length" class="text-center p-p-5 app-yellow">
+              <i class="pi pi-upload" style="font-size: 2rem"></i>
+              <div>
+                <span>Selectionnez ou glissez et deplacez un fichier ici</span>
+              </div>
+            </div>
+          </ng-template>
+        </p-fileUpload>
+      </div>
+
+    </div>
+    <p-button label="Fichiers acceptés: pdf" icon="pi pi-info-circle" styleClass="p-button-text p-button-secondary">
+    </p-button>
+  </div>
+  <p-divider></p-divider>
+  <div class="p-ml-auto text-right ">
+    <div class="p-ml-auto text-right">
+      <button type="reset" label="Effacer" class="p-button-filter mr-3 float-left" pButton icon="pi pi-trash"></button>
+      <button label="Fermer" (click)="clear()" class="p-button-filter mr-3" pButton icon="pi pi-times"></button>
+      <button type="submit" [disabled]="!isFile" label="Enregistrer" icon="pi pi-save"
+        class="p-button-success p-mr-2" pButton>
+      </button>
+    </div>
+  </div>
+</form>

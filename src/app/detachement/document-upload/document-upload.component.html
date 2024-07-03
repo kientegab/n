@@ -33,7 +33,7 @@
     <div class="p-ml-auto text-right">
       <button type="reset" label="Effacer" class="p-button-filter mr-3 float-left" pButton icon="pi pi-trash"></button>
       <button label="Fermer" (click)="clear()" class="p-button-filter mr-3" pButton icon="pi pi-times"></button>
-      <button type="submit" [disabled]="!df.form.valid" label="Enregistrer" icon="pi pi-save"
+      <button type="submit" [disabled]="!isFile" label="Enregistrer" icon="pi pi-save"
         class="p-button-success p-mr-2" pButton>
       </button>
     </div>
