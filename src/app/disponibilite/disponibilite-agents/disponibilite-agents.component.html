@@ -65,7 +65,7 @@
         <td>{{ demande.statut }}</td>
 
         <td class="actionsStyle">
-            <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetailAgent(demande)">
+            <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetailAgent(demande)" (acte)="openModalUpload(demande)" [enableBtnActe]="enableBtnActe">
             </app-actions-toolbar-iud>
           </td>
         </tr>
