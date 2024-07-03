@@ -66,8 +66,7 @@
 
         <td class="actionsStyle">
           <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetailAgent(demande)"
-          (acte)="openModalUpload(demande)" [enableBtnActe]="enableBtnActe"
-
+          (acte)="openModalUpload(demande)" [enableBtnActe]="enableBtnActe && (demande.statut === 'ELABORATION')"
           [enableBtnValider]="enableBtnValider" (valider)="openModalValiderProjet(demande)"
            >
           </app-actions-toolbar-iud>

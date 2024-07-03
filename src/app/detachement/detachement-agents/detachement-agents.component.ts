@@ -160,9 +160,10 @@ export class DetachementAgentsComponent {
     if (this.isLoggedIn) {
       const user = this.tokenService.getUser();
       this.profil = user.profil;
+      this.enableBtnActe = (this.profil === 'SAD');
 
       if (this.profil === 'STDRH' || this.profil === 'STDGFP' || this.profil === 'DRH' ||
-        this.profil === 'DGFP' || this.profil === 'SG' || this.profil === 'DCMEF' || this.profil === 'STDCMEF' || this.profil === 'CSTDRH') {
+        this.profil === 'DGFP' || this.profil === 'SG' || this.profil === 'DCMEF' || this.profil === 'STDCMEF' || this.profil === 'CSTDRH'|| this.profil === 'SAD') {
         this.demandeService.findMinistereDmds(req, this.tokenStorage.getUser().matricule).subscribe(result => {
           if (result && result.body) {
             this.totalRecords = Number(result.headers.get('X-Total-Count'));
@@ -292,6 +293,7 @@ export class DetachementAgentsComponent {
     ).onClose.subscribe(result => {
       if(result) {
       this.isDialogOpInProgress = false;
+      window.location.reload();
       this.showMessage({ severity: 'success', summary: 'Fichier sauvegardé avec succès' });
       }
     });
