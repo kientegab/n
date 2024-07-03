@@ -110,6 +110,7 @@ export class DocumentUploadComponent implements OnInit {
           severity: 'success',
           summary: 'Document sauvegardé avec succès',
         });
+  //      window.location.reload();
       },
       error: (error) => {
         this.message = { severity: 'error', summary: error.error };
@@ -118,7 +119,14 @@ export class DocumentUploadComponent implements OnInit {
         this.showMessage({ severity: 'error', summary: error.error.message });
 
       }
-    });
+
+      
+    }
+  
+  
+  );
+
+    window.location.reload();
   }
    
 

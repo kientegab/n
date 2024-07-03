@@ -294,10 +294,18 @@ export class DetachementAgentsComponent {
     ).onClose.subscribe(result => {
       if(result) {
       this.isDialogOpInProgress = false;
-      window.location.reload();
+    //  window.location.reload();
       this.showMessage({ severity: 'success', summary: 'Fichier sauvegardé avec succès' });
       }
+
+      window.location.reload();
+
     });
+   // this.loadAgentDmds();
+  //  window.location.reload();
+
+
   }
+  
 
 }
