@@ -71,11 +71,12 @@ export class DetachementAgentsComponent {
   ngOnInit(): void {
 
     this.isLoggedIn = !!this.tokenService.getToken();
-    this.loadAllDemande();
 
     if (this.isLoggedIn) {
       const user = this.tokenService.getUser();
       this.matricule = user.username;
+      this.loadAllDemande();
+
       // console.log("========= user matricule ==========", this.matricule);
     }
 
