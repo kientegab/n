@@ -160,12 +160,17 @@ export class DemandeService {
         return this.http.post<IDemande>(`${demandeUrl}/signer-projet/${demande.id}`, demande.historique, { observe: 'response' });
     }
 
-generateRecipisse(demandeId: number): Observable<Blob> {
-  return this.http.get(`${exportUrl}/recepisse-demande/${demandeId}`, { responseType: 'blob' });
-}
+  generateRecipisse(demandeId: number): Observable<Blob> {
+    return this.http.get(`${exportUrl}/recepisse-demande/${demandeId}`, { responseType: 'blob' });
+  }
+  downloadActe(id: number): Observable<Blob> {
+    return this.http.get(`${demandeUrl}/download/${id}`, { responseType: 'blob' });
+  }
+  
+  
 
 
-    imputerCST(id: number, matriculeImputation: string, groupe: IDemande): Observable<EntityResponseType> {
+ imputerCST(id: number, matriculeImputation: string, groupe: IDemande): Observable<EntityResponseType> {
       return this.http.post<IDemande>(
         `${demandeUrl}/imputer/${id}/${matriculeImputation}`,
         groupe.historique,
@@ -176,7 +181,6 @@ generateRecipisse(demandeId: number): Observable<Blob> {
 
 
     }
-
 
 
 }
