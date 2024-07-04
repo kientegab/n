@@ -98,27 +98,49 @@ export class DetailsDetachementAgentComponent {
         }
       });
   }
+  openModalReceptionnerV(): void {
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: 'Êtes-vous sûr de vouloir receptionner cette demande?',
+      accept: () => {
+        // Code à exécuter si l'utilisateur clique sur le bouton "Accepter" dans la boîte de dialogue de confirmation
+        this.isDialogOpInProgress = true;
+  
+        if (this.demande) {
+          this.demande.historique = this.historique;
+          this.demandeService.receptionV(this.demande).subscribe({
+            // ...
+          });
+          window.location.reload();
+        }
+      },
+      reject: () => {
+        // Code à exécuter si l'utilisateur clique sur le bouton "Annuler" dans la boîte de dialogue de confirmation
+        // Vous pouvez ne rien faire ici si vous ne souhaitez pas exécuter d'action spécifique lors du rejet
+      },
+    });
+  }
 
     /** Permet d'afficher un modal pour aviser une demande */
-    openModalReceptionnerV(demande: IDemande): void {
-      this.dialogService.open(ReceptionDetachementVComponent,
-      {
-        header: 'Receptionner une demande',
-        width: '40%',
-        contentStyle: { overflow: 'auto' },
-        baseZIndex: 10000,
-        maximizable: true,
-        closable: true,
-        data: demande
-      }).onClose.subscribe(result => {
-        if(result){
-          this.isDialogOpInProgress = false;
-          window.location.reload();
-          this.showMessage({ severity: 'success', summary: 'Demande Receptionné avec succès' });
-        }
+    // openModalReceptionnerV(demande: IDemande): void {
+    //   this.dialogService.open(ReceptionDetachementVComponent,
+    //   {
+    //     header: 'Receptionner une demande',
+    //     width: '40%',
+    //     contentStyle: { overflow: 'auto' },
+    //     baseZIndex: 10000,
+    //     maximizable: true,
+    //     closable: true,
+    //     data: demande
+    //   }).onClose.subscribe(result => {
+    //     if(result){
+    //       this.isDialogOpInProgress = false;
+    //       window.location.reload();
+    //       this.showMessage({ severity: 'success', summary: 'Demande Receptionné avec succès' });
+    //     }
   
-      });
-    }
+    //   });
+    // }
   
   /** Permet d'afficher un modal pour aviser une demande */
   openModalAviser(demande: IDemande): void {
