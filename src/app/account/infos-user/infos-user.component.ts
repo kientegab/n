@@ -17,16 +17,16 @@ import { UserService } from 'src/app/shared/service/user.service';
 export class InfosUserComponent {
 
 
-  
+
 
   user: IAgent = new Agent();
   oldPassword: string | undefined;
   newPassword: string | undefined;
   confirmPassword: string | undefined;
-  
+
 
   changePasswordDTO: IChangePasswordDTO = new ChangePasswordDTO();
-  
+
   today = new Date();
 
   isChangeInfoPerso = false;
@@ -59,7 +59,7 @@ export class InfosUserComponent {
 
   ngOnInit(): void {
     this.user = this.tokenService.getUser();
-    
+
     console.log("user connecté::::::::::",this.user)
 
   }
@@ -76,15 +76,20 @@ export class InfosUserComponent {
 
   changePassword(): void {
     // if (this.newPassword !== this.confirmPassword) {
-          this.changePasswordDTO.oldPassword;
-          this.changePasswordDTO.newPassword = this.newPassword;
+          //this.changePasswordDTO.oldPassword;
+          //this.changePasswordDTO.newPassword = this.newPassword;
+          this.changePasswordDTO.matricule = this.user.matricule;
           console.log(this.changePasswordDTO);
           this.userService.changePassword(this.changePasswordDTO).subscribe(
-            () => { 
-                this.authService.logout();
+            (response) => {
+                console.log(response);
+               // this.authService.logout();
+               //this.router.navigate(['admin/agents']);
+               this.router.navigate(['/admin']);
+
                 });
 
-            
+
                   this.emptyFields();
   }
 
