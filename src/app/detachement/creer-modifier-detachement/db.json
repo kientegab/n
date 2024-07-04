@@ -1,0 +1,37 @@
+{
+    "commande": {
+        "invoice":{
+            "items": [
+                {
+                    "name": "Tom",
+                    "description": "Cruise",
+                    "quantity": 5,
+                    "unit_price": 1000,
+                    "total_price": 5000
+                }
+            ],
+            "total_amount": 40000,
+            "devise": "XOF",
+            "description": "",
+            "customer":"",
+            "customer_firstname": "",
+            "customer_lastname": "",
+            "customer_email": "",
+            "external_id": "",
+            "otp": ""
+        },
+        "store":{
+            "name": "MonSite",
+            "website_url": ""
+        },
+        "actions":{
+            "cancel_url": "",
+            "return_url": "",
+            "callback_url": ""
+        },
+        "custom_data": {
+            "order_id": "",
+            "transaction_id":""
+        }
+    }
+}

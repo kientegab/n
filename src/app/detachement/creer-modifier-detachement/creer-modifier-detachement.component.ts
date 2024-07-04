@@ -20,6 +20,14 @@ import {IStructure} from 'src/app/shared/model/structure.model';
 import {Duree, IDuree} from 'src/app/shared/model/duree.model';
 import {UploadFileService} from 'src/app/shared/service/upload.service';
 import {IPieceJointe, pieceJointe} from 'src/app/shared/model/pieceJointe.model';
+import {RedirectService} from "../../shared/service/redirect.service";
+import {Paiement} from "../../shared/model/paiement";
+import {LigneItems} from "../../shared/model/LigneItems";
+import {Store} from "../../shared/model/store";
+import {Actions} from "../../shared/model/actions";
+import {CustomData} from "../../shared/model/custom_data";
+import {Invoice} from "../../shared/model/invoice";
+import {Commande} from "../../shared/model/commande";
 
 interface UploadEvent {
     originalEvent: Event;
@@ -174,6 +182,7 @@ export class CreerModifierDetachementComponent {
         private structureService: StructureService,
         private pieceService: PieceService,
         private agentService: AgentService,
+        private redirectService: RedirectService
     ) {
     }
 
@@ -467,5 +476,64 @@ console.warn("ALERT ICI",this.demande);
 
     display(){
         this.isDisplay = true;
+    }
+
+
+    goToPaiement() {
+
+        const items: LigneItems[] = []
+        const item = new LigneItems();
+        item.description ='Mon super produit';
+        item.unit_price = 1
+        item.total_price = 200;
+
+        items.push(item);
+
+        const store = new Store();
+        store.name ='localhost:4200';
+        store.website_url = "localhost:4200";
+
+        const action = new Actions();
+        action.callback_url="localhost:4200/payment-cancel";
+        action.return_url="localhost:4200/payment-return";
+        action.callback_url="localhost:4200/payment-callback";
+
+        const customeData = new CustomData();
+        customeData.order_id = "MonSiteOrder234";
+        customeData.transaction_id = "TRNS.36887";
+
+        const invoice = new Invoice();
+        invoice.items = items;
+        invoice.description = "Achat de timbre";
+        invoice.devise = "XOF";
+        invoice.customer_lastname = "Kabore";
+        invoice.customer_email = "test@gmail.com";
+
+
+        const commande = new Commande();
+        commande.invoice = invoice;
+        commande.actions = action;
+        commande.custom_data = customeData;
+        commande.store = store
+
+
+
+
+        const paiement = new Paiement();
+
+        paiement.commande = commande;
+        console.warn("json",paiement)
+
+
+        const url = 'https://app.ligdicash.com/pay/v01/redirect/checkout-invoice/create'; // Target URL
+        const data = paiement;
+        const headers = {
+            'ApiKey': 'V5T3Z0O594C6QNZ4L',
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZF9hcHAiOiIxODI0OSIsImlkX2Fib25uZSI6ODk5NDIsImRhdGVjcmVhdGlvbl9hcHAiOiIyMDI0LTA3LTA0IDE1OjA2OjE2In0.MPR-WGFdX3PoBAH8IbMreF6AENu2DImrcRzTuiznjXY',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        };
+
+        this.redirectService.redirectPaiement(url, data, headers);
     }
 }
