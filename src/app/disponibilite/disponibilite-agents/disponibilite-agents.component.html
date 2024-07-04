@@ -64,10 +64,17 @@
         <td>{{ demande.dateEffet }}</td>
         <td>{{ demande.statut }}</td>
 
-        <td class="actionsStyle">
+        <!-- <td class="actionsStyle">
             <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetailAgent(demande)" (acte)="openModalUpload(demande)" [enableBtnActe]="enableBtnActe">
             </app-actions-toolbar-iud>
-          </td>
+        </td> -->
+        <td class="actionsStyle">
+          <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo"
+            (info)="openModalDetailAgent(demande)" (acte)="openModalUpload(demande)" [enableBtnActe]="enableBtnActe && demande.statut == 'ELABORATION'"
+            [enableBtnValider]="enableBtnValider">
+          </app-actions-toolbar-iud>
+        </td>
+
         </tr>
       </ng-template>
     </p-table>

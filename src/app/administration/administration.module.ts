@@ -15,7 +15,6 @@ import { CrudToolbarComponent } from '../shared/comon/crud-toolbar/crud-toolbar.
 import {ArchwizardModule} from "angular-archwizard";
 import { CircuitComponent } from './parametre/circuit/circuit.component';
 import { CardModule } from 'primeng/card';
-import { DocumentUploadComponent } from '../document-upload/document-upload.component';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { FileUploadModule } from 'primeng/fileupload';
@@ -27,7 +26,6 @@ import { FileUploadModule } from 'primeng/fileupload';
     DashboardAdministrationComponent,
     ActionsToolbarIudComponent,
     CrudToolbarComponent,
-    DocumentUploadComponent,
    // PieceDisponibiliteComponent,
   ],
   imports: [

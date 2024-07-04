@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 const uploadtUrl= environment.uploadFileDetatchement;
+const uploadDispoUrl= environment.uploadFileDisponibilite;
 
 @Injectable({
   providedIn: 'root'
@@ -31,8 +32,8 @@ export class FileUploadServiceService {
     return this.http.post(uploadtUrl+'/'+id, request);
   } 
 
-  // upload(data: FormData, id:number): Observable<any> {
-  //   return ;
-  // }
+  uploadDispo(request: any,id:number): Observable<any> {
+    return this.http.post(uploadDispoUrl+'/'+id, request);
+  } 
 
 }

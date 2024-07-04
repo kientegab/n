@@ -12,8 +12,7 @@ export const environment = {
   authentificationUrl: 'http://localhost:8088/api/auth',
   disponibiliteUrl: 'http://localhost:8082/api',
   uploadFileDetatchement: 'http://localhost:8081/api/detachements/demandes/upload', 
-
-
+  uploadFileDisponibilite:'http://localhost:8082/api/demandes/upload',
   circuitUrl:commonAppURI + 'circuit',
   communeUrl: commonAppURI +'communes',
   pieceUrl: commonAppURI +'pieces',
