@@ -109,7 +109,10 @@ export class DemandeService {
   }
 
   rejeterSG(groupe: IDemande): Observable<EntityResponseType> {
-    return this.http.post<IDemande>(`${demandeUrl}/rejet-new/${groupe.id}`, groupe.historique, { observe: 'response' });
+    return this.http.post<IDemande>(`${demandeUrl}/rejet-sg/${groupe.id}`, groupe.historique, { observe: 'response' });
+  }
+  rejeterDRH(groupe: IDemande): Observable<EntityResponseType> {
+    return this.http.post<IDemande>(`${demandeUrl}/rejet-drh/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
 
 

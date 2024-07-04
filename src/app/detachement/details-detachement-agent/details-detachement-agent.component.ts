@@ -15,6 +15,7 @@ import { AmpliationDemande, IAmpliationDemande } from 'src/app/shared/model/ampl
 import { ReceptionDetachementVComponent } from '../reception-detachement-v/reception-detachement-v.component';
 import { ImputerDemandeComponent } from '../imputer-demande/imputer-demande.component';
 import { AnalyserDisponibiliteComponent } from '../analyser-disponibilite/analyser-disponibilite.component';
+import { ValiderDetachementComponent } from '../valider-detachement/valider-detachement.component';
 
 @Component({
   selector: 'app-details-detachement-agent',
@@ -56,9 +57,11 @@ export class DetailsDetachementAgentComponent {
   disableSignerElaboration = true;
     disableExporterElaboration = true;
     disableImputerDemande = true;
-    disableRejeterDemande = true;
+    disableRejeterDemandeDRH = true;
     disableRejeterProjet=true;
     disableGenerateDemande=true;
+    disablemodifierCADemande=true;
+    disableRejeterDemandeSG = true;
 
   constructor(
     private dialogRef: DynamicDialogRef,
@@ -98,6 +101,26 @@ export class DetailsDetachementAgentComponent {
         }
       });
   }
+  openModalRejetter(demande: IDemande): void {
+    this.dialogService.open(ValiderDetachementComponent,
+      {
+        header: 'Rejetter une demande pour modification',
+        width: '40%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        closable: true,
+        data: demande
+      }).onClose.subscribe(result => {
+        if(result){
+          this.isDialogOpInProgress = false;
+          window.location.reload();
+          this.showMessage({ severity: 'success', summary: 'Demande rejettée pour modification avec succès' });
+        }
+      });
+  }
+  
+
   openModalReceptionnerV(): void {
     this.confirmationService.confirm({
       header: 'Confirmation',
@@ -287,6 +310,10 @@ this.router.navigate(['detachements','elaborer', demande.id]);
 }
 
 
+  openModalEdit(demande: IDemande): void {
+    this.router.navigate(['detachements','edit', demande.id]);
+
+  }
 
 
 openModalImputerDemande(demande: IDemande): void {
@@ -350,19 +377,20 @@ openModalImputerDemande(demande: IDemande): void {
 
           if(this.demande.statut === 'CONFORME' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
             this.disableAviserDRH = false;
+            this.disableRejeterDemandeDRH = false;
           }
-          if(this.demande.statut === 'REJET_SG' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
-            this.disableAviserDRH = false;
-            this.disableRejeterDemande = false;
-          }
-          if((this.demande.statut === 'IMPUTEE'||this.demande.statut === 'DEMANDE_REJETEE') && (this.profil === 'CA' )) {
+         
+          if((this.demande.statut === 'IMPUTEE') && (this.profil === 'CA' )) {
             this.disableAnalyserCA = false;
+          }
+          if((this.demande.statut === 'REJET_DRH'|| this.demande.statut === 'REJET_SG') && (this.profil === 'CA' )) {
+            this.disablemodifierCADemande = false;
           }
           
 
           if((this.demande.statut === 'AVIS_DRH' || this.demande.statut === 'AVIS_DGFP') && this.profil === 'SG') {
             this.disableAviserSG = false;
-        //    this.disableRejeterDemande = false;
+        this.disableRejeterDemandeSG = false;
         }
         
         if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGF')) {
@@ -494,7 +522,7 @@ rejeterDemande(): void {
 
       if (this.demande) {
         this.demande.historique = this.historique;
-        this.demandeService.rejeterSG(this.demande).subscribe({
+        this.demandeService.rejeterDRH(this.demande).subscribe({
           // ...
         });
         window.location.reload();
