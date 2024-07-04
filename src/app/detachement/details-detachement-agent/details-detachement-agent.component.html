@@ -46,7 +46,8 @@
 
     <div class="row">
       <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Statut demande : </span> {{ demande.statut }}</span>
+        <span class="va-m"><span class="font-bold">Statut demande :
+           </span> {{ demande.statut }}</span>
       </div>
     </div>
   </p-fieldset>
@@ -149,9 +150,14 @@
     <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 
     <div class="p-ml-auto text-right">
-      <button description="rejeter demande sg" icon="pi pi-times" label="Rejeter demande" [hidden]="disableRejeterDemande" (click)="rejeterDemande()" class="p-button p-button-danger mr-2"
+      <button description="rejeter demande drh" icon="pi pi-times" label="Rejeter demande" [hidden]="disableRejeterDemandeDRH" (click)="openModalRejetter(demande)" class="p-button p-button-danger mr-2"
               pButton></button>
     </div>
+    <div class="p-ml-auto text-right">
+      <button description="rejeter demande SG" icon="pi pi-times" label="Rejeter demande" [hidden]="disableRejeterDemandeSG" (click)="openModalRejetter(demande)" class="p-button p-button-danger mr-2"
+              pButton></button>
+    </div>
+
 
     
     <div class="p-ml-auto text-right">
@@ -162,6 +168,7 @@
       <button description="analyser-ca" icon="pi pi-pencil" label="Analyser" [hidden]="disableAnalyserCA" (click)="openModalAnalyser(demande)" class="p-button-success mr-2"
       pButton></button>
     </div>
+    
 
     <div class="p-ml-auto text-right">
       <button description="Imputer " icon="pi pi-pencil" label="Imputer demande"  [hidden]="disableImputerDemande" (click)="openModalImputerDemande(demande)" class="p-button-success mr-2"
@@ -174,7 +181,7 @@
     </div>
 
     <div class="p-ml-auto text-right">
-      <button description="aviser sg" icon="pi pi-pencil" label="Valider" [hidden]="disableAviserSG" (click)="openModalAviser(demande)" class="p-button-success mr-2"
+      <button description="aviser sg" icon="pi pi-pencil" label="Decision" [hidden]="disableAviserSG" (click)="openModalAviser(demande)" class="p-button-success mr-2"
       pButton></button>
     </div>
 
@@ -182,9 +189,13 @@
       <button description="receptionner" icon="pi pi-folder-open" label="Receptionner" [hidden]="disableReceptionner" (click)="openModalReceptionner(demande)" class="p-button-primary mr-2"
       pButton></button>
     </div>
+    <div class="p-ml-auto text-right">
+      <button description="modifier" icon="pi pi-folder-open" label="modifier" [hidden]="disablemodifierCADemande" (click)="openModalEdit(demande)" class="p-button-primary mr-2"
+      pButton></button>
+    </div>
 
     <div class="p-ml-auto text-right">
-      <button description="receptionner après validation" icon="pi pi-folder-open" label="Receptionner validation" [hidden]="disableReceptionnerV" (click)="openModalReceptionnerV(demande)" class="p-button-primary mr-2"
+      <button description="receptionner après validation" icon="pi pi-folder-open" label="Receptionner validation" [hidden]="disableReceptionnerV" (click)="openModalReceptionnerV()" class="p-button-primary mr-2"
       pButton></button>
     </div>
 

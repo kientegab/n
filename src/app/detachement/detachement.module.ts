@@ -41,6 +41,7 @@ import { ReceptionDetachementVComponent } from './reception-detachement-v/recept
 import { ImputerDemandeComponent } from './imputer-demande/imputer-demande.component';
 import { AnalyserDisponibiliteComponent } from './analyser-disponibilite/analyser-disponibilite.component';
 import { DocumentUploadComponent } from './document-upload/document-upload.component';
+import { ValiderDetachementComponent } from './valider-detachement/valider-detachement.component';
 
 
 @NgModule({
@@ -65,6 +66,8 @@ import { DocumentUploadComponent } from './document-upload/document-upload.compo
     ImputerDemandeComponent,
     AnalyserDisponibiliteComponent,
     DocumentUploadComponent,
+    ValiderDetachementComponent
+ 
 
   ],
     imports: [

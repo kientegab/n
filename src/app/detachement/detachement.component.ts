@@ -314,7 +314,7 @@ export class DetachementComponent {
 
 
   isEditButtonVisible(demande: any): boolean {
-    return demande.statut === 'DEMANDE_REJETEE';
+    return demande.statut === 'REJET_CA';
   }
 
   

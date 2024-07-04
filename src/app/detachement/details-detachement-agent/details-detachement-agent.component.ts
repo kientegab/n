@@ -15,6 +15,7 @@ import { AmpliationDemande, IAmpliationDemande } from 'src/app/shared/model/ampl
 import { ReceptionDetachementVComponent } from '../reception-detachement-v/reception-detachement-v.component';
 import { ImputerDemandeComponent } from '../imputer-demande/imputer-demande.component';
 import { AnalyserDisponibiliteComponent } from '../analyser-disponibilite/analyser-disponibilite.component';
+import { ValiderDetachementComponent } from '../valider-detachement/valider-detachement.component';
 
 @Component({
   selector: 'app-details-detachement-agent',
@@ -56,9 +57,11 @@ export class DetailsDetachementAgentComponent {
   disableSignerElaboration = true;
     disableExporterElaboration = true;
     disableImputerDemande = true;
-    disableRejeterDemande = true;
+    disableRejeterDemandeDRH = true;
     disableRejeterProjet=true;
     disableGenerateDemande=true;
+    disablemodifierCADemande=true;
+    disableRejeterDemandeSG = true;
 
   constructor(
     private dialogRef: DynamicDialogRef,
@@ -98,12 +101,10 @@ export class DetailsDetachementAgentComponent {
         }
       });
   }
-
-    /** Permet d'afficher un modal pour aviser une demande */
-    openModalReceptionnerV(demande: IDemande): void {
-      this.dialogService.open(ReceptionDetachementVComponent,
+  openModalRejetter(demande: IDemande): void {
+    this.dialogService.open(ValiderDetachementComponent,
       {
-        header: 'Receptionner une demande',
+        header: 'Rejetter une demande pour modification',
         width: '40%',
         contentStyle: { overflow: 'auto' },
         baseZIndex: 10000,
@@ -114,11 +115,55 @@ export class DetailsDetachementAgentComponent {
         if(result){
           this.isDialogOpInProgress = false;
           window.location.reload();
-          this.showMessage({ severity: 'success', summary: 'Demande Receptionné avec succès' });
+          this.showMessage({ severity: 'success', summary: 'Demande rejettée pour modification avec succès' });
         }
-  
       });
-    }
+  }
+  
+
+  openModalReceptionnerV(): void {
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: 'Êtes-vous sûr de vouloir receptionner cette demande?',
+      accept: () => {
+        // Code à exécuter si l'utilisateur clique sur le bouton "Accepter" dans la boîte de dialogue de confirmation
+        this.isDialogOpInProgress = true;
+  
+        if (this.demande) {
+          this.demande.historique = this.historique;
+          this.demandeService.receptionV(this.demande).subscribe({
+            // ...
+          });
+          window.location.reload();
+        }
+      },
+      reject: () => {
+        // Code à exécuter si l'utilisateur clique sur le bouton "Annuler" dans la boîte de dialogue de confirmation
+        // Vous pouvez ne rien faire ici si vous ne souhaitez pas exécuter d'action spécifique lors du rejet
+      },
+    });
+  }
+
+    /** Permet d'afficher un modal pour aviser une demande */
+    // openModalReceptionnerV(demande: IDemande): void {
+    //   this.dialogService.open(ReceptionDetachementVComponent,
+    //   {
+    //     header: 'Receptionner une demande',
+    //     width: '40%',
+    //     contentStyle: { overflow: 'auto' },
+    //     baseZIndex: 10000,
+    //     maximizable: true,
+    //     closable: true,
+    //     data: demande
+    //   }).onClose.subscribe(result => {
+    //     if(result){
+    //       this.isDialogOpInProgress = false;
+    //       window.location.reload();
+    //       this.showMessage({ severity: 'success', summary: 'Demande Receptionné avec succès' });
+    //     }
+  
+    //   });
+    // }
   
   /** Permet d'afficher un modal pour aviser une demande */
   openModalAviser(demande: IDemande): void {
@@ -265,6 +310,10 @@ this.router.navigate(['detachements','elaborer', demande.id]);
 }
 
 
+  openModalEdit(demande: IDemande): void {
+    this.router.navigate(['detachements','edit', demande.id]);
+
+  }
 
 
 openModalImputerDemande(demande: IDemande): void {
@@ -328,19 +377,20 @@ openModalImputerDemande(demande: IDemande): void {
 
           if(this.demande.statut === 'CONFORME' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
             this.disableAviserDRH = false;
+            this.disableRejeterDemandeDRH = false;
           }
-          if(this.demande.statut === 'REJET_SG' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
-            this.disableAviserDRH = false;
-            this.disableRejeterDemande = false;
-          }
-          if((this.demande.statut === 'IMPUTEE'||this.demande.statut === 'DEMANDE_REJETEE') && (this.profil === 'CA' )) {
+         
+          if((this.demande.statut === 'IMPUTEE') && (this.profil === 'CA' )) {
             this.disableAnalyserCA = false;
+          }
+          if((this.demande.statut === 'REJET_DRH'|| this.demande.statut === 'REJET_SG') && (this.profil === 'CA' )) {
+            this.disablemodifierCADemande = false;
           }
           
 
           if((this.demande.statut === 'AVIS_DRH' || this.demande.statut === 'AVIS_DGFP') && this.profil === 'SG') {
             this.disableAviserSG = false;
-        //    this.disableRejeterDemande = false;
+        this.disableRejeterDemandeSG = false;
         }
         
         if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGF')) {
@@ -472,7 +522,7 @@ rejeterDemande(): void {
 
       if (this.demande) {
         this.demande.historique = this.historique;
-        this.demandeService.rejeterSG(this.demande).subscribe({
+        this.demandeService.rejeterDRH(this.demande).subscribe({
           // ...
         });
         window.location.reload();

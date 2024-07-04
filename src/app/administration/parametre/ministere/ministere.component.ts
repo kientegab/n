@@ -4,7 +4,7 @@ import { ConfirmationService, MenuItem, Message } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 import { CURRENT_PAGE, MAX_SIZE_PAGE } from 'src/app/shared/constants/pagination.constants';
-import { IMinistere, Ministere } from 'src/app/shared/model/ministere.model';
+import { CIVILITE, IMinistere, Ministere } from 'src/app/shared/model/ministere.model';
 import { MinistereService } from 'src/app/shared/service/ministere-service';
 import { environment } from 'src/environments/environment';
 import { CreerModifierMinistereComponent } from './creer-modifier-ministere/creer-modifier-ministere.component';
@@ -47,6 +47,7 @@ export class MinistereComponent implements OnInit {
 
   filtreLibelle: string | undefined;
   items: MenuItem[] = [];
+  avis = CIVILITE;
 
   
 
