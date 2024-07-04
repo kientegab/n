@@ -481,6 +481,8 @@ console.warn("ALERT ICI",this.demande);
         item.description ='Mon super produit';
         item.unit_price = 1
         item.total_price = 200;
+        item.name = "test";
+        item.quantity= 5
 
         items.push(item);
 
@@ -499,6 +501,7 @@ console.warn("ALERT ICI",this.demande);
 
         const invoice = new Invoice();
         invoice.items = items;
+        invoice.total_amount= 5000;
         invoice.description = "Achat de timbre";
         invoice.devise = "XOF";
         invoice.customer_lastname = "Kabore";
@@ -521,13 +524,27 @@ console.warn("ALERT ICI",this.demande);
 
         const url = 'https://app.ligdicash.com/pay/v01/redirect/checkout-invoice/create'; // Target URL
         const data = paiement;
-        const headers = {
+        const headers = new HttpHeaders({
             'ApiKey': 'V5T3Z0O594C6QNZ4L',
             'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZF9hcHAiOiIxODI0OSIsImlkX2Fib25uZSI6ODk5NDIsImRhdGVjcmVhdGlvbl9hcHAiOiIyMDI0LTA3LTA0IDE1OjA2OjE2In0.MPR-WGFdX3PoBAH8IbMreF6AENu2DImrcRzTuiznjXY',
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-        };
+        });
 
-    this.redirectService.redirectPaiement(url, data, headers);
+
+       this.redirectService.postWithHeaders(url, paiement, headers).subscribe(response => {
+            // Handle the response if necessary
+            console.warn("RESP",response);
+
+            // Redirect to another URL
+          //  this.router.navigate(['/new-route']);
+        }, error => {
+            console.error('Error:', error);
+        });
+
+        //this.redirectService.redirectPaiement(url, data, headers);
     }
+
+    //
+
 }

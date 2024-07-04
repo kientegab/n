@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Paiement} from "../model/paiement";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,10 @@ export class RedirectService {
         }
         document.body.appendChild(form);
         form.submit();
+    }
+
+    postWithHeaders(url: string, body: any, headers: HttpHeaders): Observable<any> {
+        return this.http.post(url, body, { headers });
     }
 
 }
