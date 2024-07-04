@@ -166,7 +166,9 @@ export class DemandeService {
   downloadActe(id: number): Observable<Blob> {
     return this.http.get(`${demandeUrl}/download/${id}`, { responseType: 'blob' });
   }
-  
+  generateDemande(id: number): Observable<Blob> {
+    return this.http.get(`${exportUrl}/demande-traitee/${id}`, { responseType: 'blob' });
+  }
   
 
 

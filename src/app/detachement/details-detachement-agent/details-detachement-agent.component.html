@@ -25,7 +25,7 @@
   
     <div class="row">
       <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Structure de disponibilité : </span> {{ demande.destination?.libelle }}</span>
+        <span class="va-m"><span class="font-bold">Structure de détachement : </span> {{ demande.destination?.libelle }}</span>
       </div>
     
       <div class="col-md-6 details-item">
@@ -225,10 +225,13 @@
                   pButton></button>
       </div>
 
-  
+  <div class="p-ml-auto text-right">
+          <button description="telecharger" icon="pi pi-pencil" [hidden]="disableExporterElaboration" label="Exporter l'arrete signé" (click)="exporter()" class="p-button-success mr-2"
+                  pButton></button>
+      </div>
 
       <div class="p-ml-auto text-right">
-          <button description="telecharger" icon="pi pi-pencil" [hidden]="disableExporterElaboration" label="Exporter l'arrete signé" (click)="exporter()" class="p-button-success mr-2"
+          <button description="telecharger" icon="pi pi-file-pdf" [hidden]="disableGenerateDemande" label="Exporter l'arrete signé" (click)="generateDemande(demande)" class="p-button-raised p-button-success mr-2 "
                   pButton></button>
       </div>
 
