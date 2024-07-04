@@ -2,8 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { cloneDeep } from 'lodash';
 import { MenuItem, MessageService, Message } from 'primeng/api';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LISTE_TYPE_AGENT } from 'src/app/shared/constants/liste.constants';
 import { Agent, IAgent } from 'src/app/shared/model/agent.model';
 import { CanActivateRequest, CreateAccountRequest, ICanActivateRequest, ICreateAccountRequest } from 'src/app/shared/model/can-activate-request';
@@ -64,6 +65,7 @@ export class CreerModifierAgentComponent {
 
   constructor(
     private dialogRef: DynamicDialogRef,
+    private dynamicDialog: DynamicDialogConfig,
     private accountService: UserService,
     private ministereService: MinistereService,
     private profilService: ProfilService,
@@ -85,6 +87,10 @@ export class CreerModifierAgentComponent {
     // if(this.idAgt){
     //     this.getAgent();
     // }
+    if (this.dynamicDialog.data) {
+        this.request = cloneDeep(this.dynamicDialog.data);
+        console.warn("MMM",this.request);
+      }
 
     if (!this.request.superieurHierarchique) {
       this.request.superieurHierarchique = {
@@ -242,16 +248,33 @@ LoadAgentByMatriculeSuperieur(matricule: string) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   create() {
-    // this.accountRequest.noMatricule = this.request.noMatricule;
-    // this.profil = { name: "SH" };
-
-   // this.request.profil = this.profil
-    //this.request.profil = this.profil
-    // this.request.profil= { id: 2 };
 
 
+    this.clearDialogMessages();
+    this.isDialogOpInProgress = true;
+       if(this.request){
+        console.log("Agent to save ==========", this.profil);
+        if (this.request.id) {
+          this.agentService.updateAgent(this.request).subscribe(
+            {
+              next: (response) => {
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'Agent modifié avec succès' });
 
+              },
+              error: (error) => {
+                console.error("error" + JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
 
+              }
+            });
+        }
+
+       }else{
+
+       }
    // this.LoadAgentByMatriculeSuperieur(this.request.superieurHierarchique!.matricule!)
 //debut
 if (this.request.superieurHierarchique && this.request.superieurHierarchique.matricule) {
