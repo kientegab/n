@@ -21,13 +21,8 @@ import {Duree, IDuree} from 'src/app/shared/model/duree.model';
 import {UploadFileService} from 'src/app/shared/service/upload.service';
 import {IPieceJointe, pieceJointe} from 'src/app/shared/model/pieceJointe.model';
 import {RedirectService} from "../../shared/service/redirect.service";
-import {Paiement} from "../../shared/model/paiement";
-import {LigneItems} from "../../shared/model/LigneItems";
-import {Store} from "../../shared/model/store";
-import {Actions} from "../../shared/model/actions";
-import {CustomData} from "../../shared/model/custom_data";
-import {Invoice} from "../../shared/model/invoice";
-import {Commande} from "../../shared/model/commande";
+import {Actions, Commande, CustomData, Invoice, Item, Paiement, Store} from "../../shared/model/paiement/paiementDto";
+
 
 interface UploadEvent {
     originalEvent: Event;
@@ -481,8 +476,8 @@ console.warn("ALERT ICI",this.demande);
 
     goToPaiement() {
 
-        const items: LigneItems[] = []
-        const item = new LigneItems();
+        const items: Item[] = []
+        const item = new Item();
         item.description ='Mon super produit';
         item.unit_price = 1
         item.total_price = 200;
@@ -508,16 +503,15 @@ console.warn("ALERT ICI",this.demande);
         invoice.devise = "XOF";
         invoice.customer_lastname = "Kabore";
         invoice.customer_email = "test@gmail.com";
+        invoice.transaction_id ="fjfj";
+        invoice.external_id ="TTT";
 
 
         const commande = new Commande();
         commande.invoice = invoice;
         commande.actions = action;
         commande.custom_data = customeData;
-        commande.store = store
-
-
-
+        commande.store = store;
 
         const paiement = new Paiement();
 
@@ -534,6 +528,6 @@ console.warn("ALERT ICI",this.demande);
             'Accept': 'application/json',
         };
 
-        this.redirectService.redirectPaiement(url, data, headers);
+    this.redirectService.redirectPaiement(url, data, headers);
     }
 }
