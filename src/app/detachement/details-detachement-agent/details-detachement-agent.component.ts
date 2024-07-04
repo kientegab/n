@@ -58,6 +58,7 @@ export class DetailsDetachementAgentComponent {
     disableImputerDemande = true;
     disableRejeterDemande = true;
     disableRejeterProjet=true;
+    disableGenerateDemande=true;
 
   constructor(
     private dialogRef: DynamicDialogRef,
@@ -143,7 +144,7 @@ export class DetailsDetachementAgentComponent {
    openModalAnalyser(demande: IDemande): void {
     this.dialogService.open(AnalyserDisponibiliteComponent,
     {
-      header: 'Aviser une demande',
+      header: 'Analyser une demande',
       width: '40%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
@@ -322,7 +323,7 @@ openModalImputerDemande(demande: IDemande): void {
           }
 
           if (this.demande.statut === 'AVIS_SH' && (this.profil === 'CSTDRH' || this.profil === 'STDGFP')) {
-            this.disableReceptionner = false;
+            this.disableReceptionner = true;
           }
 
           if(this.demande.statut === 'CONFORME' && (this.profil === 'DRH' || this.profil === 'DGFP')) {
@@ -332,7 +333,7 @@ openModalImputerDemande(demande: IDemande): void {
             this.disableAviserDRH = false;
             this.disableRejeterDemande = false;
           }
-          if((this.demande.statut === 'ANALYSE'||this.demande.statut === 'DEMANDE_REJETEE') && (this.profil === 'CA' )) {
+          if((this.demande.statut === 'IMPUTEE'||this.demande.statut === 'DEMANDE_REJETEE') && (this.profil === 'CA' )) {
             this.disableAnalyserCA = false;
           }
           
@@ -340,6 +341,10 @@ openModalImputerDemande(demande: IDemande): void {
           if((this.demande.statut === 'AVIS_DRH' || this.demande.statut === 'AVIS_DGFP') && this.profil === 'SG') {
             this.disableAviserSG = false;
         //    this.disableRejeterDemande = false;
+        }
+        
+        if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGF')) {
+          this.disableGenerateDemande = false;
         }
 
           if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGF')) {
@@ -363,7 +368,7 @@ openModalImputerDemande(demande: IDemande): void {
           //   }
 
 
-            if (this.demande.statut === 'RECEPTIONEE' && (this.profil === 'CSTDRH')) {
+            if (this.demande.statut === 'AVIS_SH' && (this.profil === 'CSTDRH')) {
               this.disableImputerDemande = false;
           }
 
@@ -500,6 +505,25 @@ rejeterElaboration(): void {
           });
 
   }
+}
+generateDemande(demande: IDemande): void {
+  if (demande.id !== undefined) {
+    this.demandeService.generateDemande(demande.id).subscribe(
+      (response: Blob) => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL, '_blank');
+      },
+      (error) => {
+        console.error('Erreur lors de la génération de la demande : ', error);
+        // Gérer les erreurs ici...
+      }
+    );
+  } else {
+    console.error('ID de demande non défini.');
+    // Gérer le cas où ID est undefined (optionnel)
+  }
+  
 }
 
 }
