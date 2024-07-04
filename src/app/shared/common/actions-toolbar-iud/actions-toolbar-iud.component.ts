@@ -21,6 +21,7 @@ export class ActionsToolbarIudComponent implements OnInit {
   @Input() enableBtnChanger: boolean=false;
   @Input() enableBtnEditProfil: boolean=false;
   @Input() enableBtnValidation!: boolean;
+  @Input() enableBtnActe!: boolean;
   @Input() enableBtnAbandonner!: boolean;
   @Input() enableBtnRecipisse!: boolean;
 
@@ -37,6 +38,7 @@ export class ActionsToolbarIudComponent implements OnInit {
   @Output() download: EventEmitter<any> = new EventEmitter();
   @Output() validation: EventEmitter<any> = new EventEmitter();
   @Output() valider: EventEmitter<any> = new EventEmitter();
+  @Output() acte: EventEmitter<any> = new EventEmitter();
   @Output() abandonner: EventEmitter<any> = new EventEmitter();
   @Output() generate: EventEmitter<any> = new EventEmitter();
   // items: MenuItem[] = [];
@@ -75,6 +77,10 @@ export class ActionsToolbarIudComponent implements OnInit {
 
   fireDelete() {
     this.delete.emit();
+  }
+
+  fireActe() {
+    this.acte.emit();
   }
 
   firePrivilege() {

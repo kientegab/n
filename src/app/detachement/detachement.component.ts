@@ -12,6 +12,7 @@ import { CreerModifierDetachementComponent } from './creer-modifier-detachement/
 import { DetailsDetachementComponent } from './details-detachement/details-detachement.component';
 import { ValiderProjetComponent } from './valider-projet/valider-projet.component';
 import {TokenService} from "../shared/service/token.service";
+import { DocumentUploadComponent } from '../document-upload/document-upload.component';
 
 @Component({
   selector: 'app-detachement',
@@ -33,6 +34,7 @@ export class DetachementComponent {
   enableBtnValider=true;
   enableBtnAbandonner=true;
   enableBtnRecipisse=true;
+  enableBtnDownload=true;
 
   isLoading!: boolean;
   isOpInProgress!: boolean;
@@ -194,6 +196,25 @@ export class DetachementComponent {
       console.error('ID de demande non défini.');
       // Gérer le cas où ID est undefined (optionnel)
     }
+    
+  }
+  downloadActe(demande: IDemande): void {
+    if (demande.id !== undefined) {
+      this.demandeService.downloadActe(demande.id).subscribe(
+        (response: Blob) => {
+          const file = new Blob([response], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(file);
+          window.open(fileURL, '_blank');
+        },
+        (error) => {
+          console.error('Erreur lors de la génération du récépissé : ', error);
+          // Gérer les erreurs ici...
+        }
+      );
+    } else {
+      console.error('ID de demande non défini.');
+      // Gérer le cas où ID est undefined (optionnel)
+    }
   }
 
   // Deletion
@@ -296,6 +317,8 @@ export class DetachementComponent {
   isEditButtonVisible(demande: any): boolean {
     return demande.statut === 'DEMANDE_REJETEE';
   }
+
+  
 
 
 }
