@@ -1,11 +1,15 @@
 export interface IChangePasswordDTO {
+    matricule?: string;
+    password?: string;
     newPassword?: string;
-    oldPassword?: string;
+    confirmPassword?: string;
 }
 
 export class ChangePasswordDTO implements IChangePasswordDTO{
     constructor(
-        public newPassword?: string, 
-        public oldPassword?: string
+        public matricule?: string,
+        public password?: string,
+        public newPassword?: string,
+        public confirmPassword?: string,
         ) {}
 }

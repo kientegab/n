@@ -18,14 +18,14 @@ type PasswordResponseType = HttpResponse<IChangePasswordDTO>;
 type ValidationCompteResponseType = HttpResponse<IValidationCompte>;
 
 const resourceUrl = environment.userUrl;
-
+const resourceUrl2 = environment.userUrl2;
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
   private authenticationState = new ReplaySubject<IUser | null>(1);
-  
+
   constructor(protected http: HttpClient) {}
 
   // create(user: IUser): Observable<EntityResponseType> {
@@ -66,7 +66,7 @@ export class UserService {
     return this.http.delete(`${resourceUrl}/${login}`, { observe: 'response' });
   }
 
-  
+
   login(): void {
     // return this.http.post(resourceUrl, request);
   }
@@ -79,8 +79,8 @@ export class UserService {
     return this.http.get<IUser[]>(resourceUrl, { observe: 'response' });
   }
 
-  changePassword(request: IChangePasswordDTO): Observable<PasswordResponseType> {
-    return this.http.post<IChangePasswordDTO>(resourceUrl+'/reset-connect-password', request,{ observe: 'response' });
+  changePassword(request: IChangePasswordDTO): Observable<any> {
+    return this.http.put(resourceUrl2+'update-password', request,{responseType: 'text' });
   }
 
   getAuthenticationState(): Observable<IUser | null> {
