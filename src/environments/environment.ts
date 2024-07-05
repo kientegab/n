@@ -1,7 +1,6 @@
-const commonAppURI: string = 'http://localhost:8082/api/';
+const commonAppURI: string = 'http://localhost:8081/api/';
 const commonAuth: string = 'http://localhost:8080/api/auth/';
-const domaineUrl: string='localhost:4200';
-const detachement: string = 'http://localhost:8081/api/detachements';
+const domaineUrl: string='localhost:4200'
 
 export const environment = {
   production: false,
@@ -12,9 +11,8 @@ export const environment = {
   detachementUrl: 'http://localhost:8081/api/detachements',
   authentificationUrl: 'http://localhost:8080/api/auth',
   disponibiliteUrl: 'http://localhost:8082/api',
-  uploadFileDetatchement: detachement + '/demandes/upload', 
-
-
+  uploadFileDetatchement: 'http://localhost:8081/api/detachements/demandes/upload',
+  uploadFileDisponibilite:'http://localhost:8082/api/demandes/upload',
   circuitUrl:commonAppURI + 'circuit',
   communeUrl: commonAppURI +'communes',
   pieceUrl: commonAppURI +'pieces',
@@ -30,6 +28,7 @@ export const environment = {
   secteurActiviteUrl: commonAppURI +'secteur-activites',
   // secteurVillageUrl: commonAppURI +'secteur-villages',
   userUrl: commonAuth +'register',
+  userUrl2: commonAuth ,
   profilUrl: commonAuth +'profils',
   privilegeUrl: commonAuth +'privileges',
   authResource: commonAuth +'authenticate',

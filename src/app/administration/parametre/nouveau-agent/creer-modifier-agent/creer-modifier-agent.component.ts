@@ -2,8 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { cloneDeep } from 'lodash';
 import { MenuItem, MessageService, Message } from 'primeng/api';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LISTE_TYPE_AGENT } from 'src/app/shared/constants/liste.constants';
 import { Agent, IAgent } from 'src/app/shared/model/agent.model';
 import { CanActivateRequest, CreateAccountRequest, ICanActivateRequest, ICreateAccountRequest } from 'src/app/shared/model/can-activate-request';
@@ -64,6 +65,7 @@ export class CreerModifierAgentComponent {
 
   constructor(
     private dialogRef: DynamicDialogRef,
+    private dynamicDialog: DynamicDialogConfig,
     private accountService: UserService,
     private ministereService: MinistereService,
     private profilService: ProfilService,
@@ -78,13 +80,17 @@ export class CreerModifierAgentComponent {
     this.loadMinistere();
     this.loadStructure();
     this.loadProfil();
-    this.LoadAgentByMatricule();
+   // this.LoadAgentByMatricule();
 
    // this.idAgt= +this.activatedRoute.snapshot.paramMap.get('id')!;
 
     // if(this.idAgt){
     //     this.getAgent();
     // }
+    if (this.dynamicDialog.data) {
+        this.request = cloneDeep(this.dynamicDialog.data);
+        console.warn("MMM",this.request);
+      }
 
     if (!this.request.superieurHierarchique) {
       this.request.superieurHierarchique = {
@@ -170,7 +176,7 @@ loadAgentByMatricule(matricule :string) {
     });
   }
 
-
+/* desactiver apres
   canActivate() {
     this.isOpInProgress = true;
     this.accountService.canActivate(this.request).subscribe(response => {
@@ -188,7 +194,7 @@ loadAgentByMatricule(matricule :string) {
     });
   }
 
-
+*/
 
 
 //   getAgent(): void {
@@ -203,25 +209,25 @@ loadAgentByMatricule(matricule :string) {
 // }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-LoadAgentByMatricule() {
+LoadAgentByMatriculeSuperieur(matricule: string) {
   if (this.request.superieurHierarchique && this.request.superieurHierarchique.matricule) {
     this.isFetchingAgentInfo = true; // Activez l'indicateur de chargement
-    console.warn("agent================================================", this.agent)
-    console.warn("agent================================================", this.agentInfo)
+   // console.warn("agent================================================", this.agent)
+    console.log("matricule================================================", matricule)
     // Faites une requête au service pour obtenir les informations de l'agent en utilisant this.matricule
     this.agentService.getAgentInfoByMatricule(this.request.superieurHierarchique.matricule)
         .subscribe(
             (response) => {
 
-                console.warn("agent================================================", this.agent)
-                console.warn("agent================================================", this.agentInfo)
+               // console.warn("agent================================================", this.agent)
+               // console.warn("agent================================================", this.agentInfo)
 
                 // Vérifiez que la réponse est réussie
                 if (response && response.body) {
                     this.agent = response.body;
                     this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement une fois les données obtenues
-                    console.warn("agent================================================", this.agent)
-                    console.warn("agent================================================", this.agentInfo)
+                    //console.log("agent================================================", this.agent)
+                    //console.warn("agent================================================", this.agentInfo)
                 } else {
                     console.error("Erreur lors de la récupération des informations de l'agent", response);
                     this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement en cas d'erreur
@@ -242,62 +248,125 @@ LoadAgentByMatricule() {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   create() {
-    // this.accountRequest.noMatricule = this.request.noMatricule;
-    // this.profil = { name: "SH" };
-
-   // this.request.profil = this.profil
-    //this.request.profil = this.profil
-    // this.request.profil= { id: 2 };
 
 
-    this.request.superieurHierarchique = this.agent;
+    this.clearDialogMessages();
+    this.isDialogOpInProgress = true;
+       if(this.request){
+        console.log("Agent to save ==========", this.profil);
+        if (this.request.id) {
+          this.agentService.updateAgent(this.request).subscribe(
+            {
+              next: (response) => {
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'Agent modifié avec succès' });
+
+              },
+              error: (error) => {
+                console.error("error" + JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
+
+              }
+            });
+        }
+
+       }else{
+
+       }
+   // this.LoadAgentByMatriculeSuperieur(this.request.superieurHierarchique!.matricule!)
+//debut
+if (this.request.superieurHierarchique && this.request.superieurHierarchique.matricule) {
+    this.isFetchingAgentInfo = true; // Activez l'indicateur de chargement
+   // console.warn("agent================================================", this.agent)
+    //console.log("matricule================================================", matricule)
+    // Faites une requête au service pour obtenir les informations de l'agent en utilisant this.matricule
+    this.agentService.getAgentInfoByMatricule(this.request.superieurHierarchique.matricule)
+        .subscribe(
+            (response) => {
+
+               // console.warn("agent================================================", this.agent)
+               // console.warn("agent================================================", this.agentInfo)
+
+                // Vérifiez que la réponse est réussie
+                if (response && response.body) {
+                    this.agent = response.body;
+                    this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement une fois les données obtenues
+                    this.request.superieurHierarchique = this.agent;
 
 
-    this.isOpInProgress = true;
-    // console.log("Profils=====================================================",this.profil)
-    console.log("Création de compte=====================================================",this.request);
-    console.warn("Supérieur à envoyé================================================", this.agent)
+                    this.isOpInProgress = true;
+                    // console.log("Profils=====================================================",this.profil)
+                    //console.log("Création de compte=====================================================",this.request);
+                    console.log(" objet Supérieur ", this.agent)
+                    console.log("bon",this.request);
 
-    this.accountService.create(this.request).subscribe(
-
-
-      {
-        next: (response) => {
-          this.dialogRef.close(response);
-          this.dialogRef.destroy();
-          this.router.navigate(['admin/agents']);
-          this.showMessage({
-              severity: 'success',
-              summary: 'agent créé avec succès',
-
-          });
-
-              this.resetForm();
-  //     this.router.navigate(['agents']);
-       setTimeout(() => {
-         this.accountService.login();
-       }, 2000);
-       this.accountRequest = {};
-       this.pwdConfirmation = null;
-       this.form.reset();
-       this.isOpInProgress = false;
-  //   },
-
-          this.isDialogOpInProgress = false;
-      },
-      error: (error) => {
-         console.error("error" + JSON.stringify(error));
-         this.isOpInProgress = false;
-         this.isDialogOpInProgress = false;
-         this.showMessage({severity: 'error', summary: error.error.message});
-
-     }
+                    this.accountService.create(this.request).subscribe(
 
 
+                      {
+                        next: (response) => {
+                          this.dialogRef.close(response);
+                          this.dialogRef.destroy();
+                          this.router.navigate(['admin/agents']);
+                          this.showMessage({
+                              severity: 'success',
+                              summary: 'agent créé avec succès',
 
-  }
+                          });
 
-    )
+                              this.resetForm();
+                  //     this.router.navigate(['agents']);
+                       setTimeout(() => {
+                         this.accountService.login();
+                       }, 2000);
+                       this.accountRequest = {};
+                       this.pwdConfirmation = null;
+                       this.form.reset();
+                       this.isOpInProgress = false;
+                  //   },
+
+                          this.isDialogOpInProgress = false;
+                      },
+                      error: (error) => {
+                         console.error("error" + JSON.stringify(error));
+                         this.isOpInProgress = false;
+                         this.isDialogOpInProgress = false;
+                         this.showMessage({severity: 'error', summary: error.error.message});
+
+                     }
+
+
+
+                  }
+
+                    )
+
+                    //console.log("agent================================================", this.agent)
+                    //console.warn("agent================================================", this.agentInfo)
+                } else {
+                    console.error("Erreur lors de la récupération des informations de l'agent", response);
+                    this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement en cas d'erreur
+
+                }
+            },
+            (error: any) => {
+                console.error("Erreur lors de la récupération des informations de l'agent", error);
+                this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement en cas d'erreur
+            }
+        );
+} else {
+    console.log("agent================================================", this.agent)
+    console.log("agent================================================", this.agentInfo)
+    // Réinitialisez les informations de l'agent si le numéro matricule est vide
+    this.agent = new Agent();
+}
+//fin
+
+
+
+
 
 }
 

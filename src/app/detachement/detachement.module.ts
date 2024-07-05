@@ -40,6 +40,8 @@ import { AmpliationProjetComponent } from './ampliation-projet/ampliation-projet
 import { ReceptionDetachementVComponent } from './reception-detachement-v/reception-detachement-v.component';
 import { ImputerDemandeComponent } from './imputer-demande/imputer-demande.component';
 import { AnalyserDisponibiliteComponent } from './analyser-disponibilite/analyser-disponibilite.component';
+import { DocumentUploadComponent } from './document-upload/document-upload.component';
+import { ValiderDetachementComponent } from './valider-detachement/valider-detachement.component';
 
 
 @NgModule({
@@ -62,7 +64,9 @@ import { AnalyserDisponibiliteComponent } from './analyser-disponibilite/analyse
     VisaProjetComponent,
     ReceptionDetachementVComponent,
     ImputerDemandeComponent,
-    AnalyserDisponibiliteComponent
+    AnalyserDisponibiliteComponent,
+    DocumentUploadComponent,
+    ValiderDetachementComponent
  
 
   ],

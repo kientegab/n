@@ -8,11 +8,8 @@ import { environment } from 'src/environments/environment';
 import { CURRENT_PAGE, MAX_SIZE_PAGE } from '../shared/constants/pagination.constants';
 import { IDemande, Demande } from '../shared/model/demande.model';
 import { DemandeService } from '../shared/service/demande-service.service';
-import { CreerModifierDetachementComponent } from './creer-modifier-detachement/creer-modifier-detachement.component';
-import { DetailsDetachementComponent } from './details-detachement/details-detachement.component';
 import { ValiderProjetComponent } from './valider-projet/valider-projet.component';
 import {TokenService} from "../shared/service/token.service";
-import { DocumentUploadComponent } from '../document-upload/document-upload.component';
 import {Actions, Commande, CustomData, Invoice, Item, Paiement, Store} from "../shared/model/paiement/paiementDto";
 import {RedirectService} from "../shared/service/redirect.service";
 
@@ -79,9 +76,6 @@ export class DetachementComponent {
           this.loadMesDemandes();
       }
     );
-  }
-
-  getToken(){
 
   }
 
@@ -322,7 +316,7 @@ export class DetachementComponent {
 
 
   isEditButtonVisible(demande: any): boolean {
-    return demande.statut === 'DEMANDE_REJETEE';
+    return demande.statut === 'REJET_CA';
   }
 
 

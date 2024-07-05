@@ -5,6 +5,7 @@ import { IStructure } from "./structure.model";
 import { IUser } from "./user";
 
 export interface ICanActivateRequest {
+    id?: number;
     nom?: string;
 	prenom?: string;
     telephone?:String;
@@ -12,8 +13,8 @@ export interface ICanActivateRequest {
 	matricule?: string;
     email?: string;
     password?: string;
-    
- 
+
+
 	dateNaissance?: Date;
 	dateRecrutement?: Date;
     ministere?: IMinistere;
@@ -26,6 +27,7 @@ export interface ICanActivateRequest {
 }
 export class CanActivateRequest implements ICanActivateRequest{
     constructor(
+    public id?: number,
     public nom?: string,
     public prenom?: string,
     public telephone?:String,
@@ -46,7 +48,7 @@ export interface ICreateAccountRequest {
    // noMatricule?: string;
     matricule?:String;
     password?: string;
-    
+
   }
 
 export class CreateAccountRequest implements ICreateAccountRequest{

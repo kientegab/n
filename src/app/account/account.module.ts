@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessagesModule } from 'primeng/messages';
 import { ButtonModule } from 'primeng/button';
 import { AdministrationModule } from '../administration/administration.module';
+import { PasswordModule } from 'primeng/password';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AdministrationModule } from '../administration/administration.module';
     MessagesModule,
     AdministrationModule,
     ButtonModule,
-    AccountRoutingModule
+    AccountRoutingModule,
+    PasswordModule
   ]
 })
 export class AccountModule { }

@@ -15,7 +15,7 @@ import {IMotif} from "../../shared/model/motif.model";
 import {ITypeDemandeur} from "../../shared/model/typeDemandeur.model";
 import {DemandeDisponibiliteService} from "../../shared/service/demande-disponibilite-service.service";
 import { TokenService } from 'src/app/shared/service/token.service';
-import { DocumentUploadComponent } from 'src/app/document-upload/document-upload.component';
+import { DocumentUploadFileComponent } from '../document-upload-file/document-upload-file.component';
 
 @Component({
   selector: 'app-disponibilite-agents',
@@ -155,7 +155,7 @@ export class DisponibiliteAgentsComponent {
       }
 
       openModalUpload(demande: IDemande): void {
-        this.dialogService.open(DocumentUploadComponent,
+        this.dialogService.open(DocumentUploadFileComponent,
           {
             header: 'Chargement de l\'acte signé',
             width: '60%',
