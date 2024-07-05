@@ -193,7 +193,7 @@
   </p-fieldset>
   <br>
 
-  <p-fieldset legend="Projet d'arrété" [toggleable]="true">
+  <p-fieldset legend="acte signé" [toggleable]="true">
     <div class="row">
       <div class="col-md-12">
         <div class="table-responsive">
@@ -208,9 +208,9 @@
               <tr>
                 <!-- <th scope="row">{{i+1}}</th> -->
                 <!-- <td>{{item.libelle}}</td> -->
-                <td> MFP_SPMABG_2023-0001.pdf</td>
+                <td> acte.pdf</td>
                 <td>
-                  <button description="Visualiser" icon="pi pi-eye" label="Visualiser"  (click)="voirPiece('item.url')"  class="p-button-primary mr-2"pButton >
+                  <button description="Visualiser" icon="pi pi-eye" label="Visualiser"  (click)="downloadActe(demande)"  class="p-button-primary mr-2"pButton >
                   </button>
                 </td>
               </tr>

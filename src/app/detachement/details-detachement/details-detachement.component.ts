@@ -170,6 +170,27 @@ async voirPiece(filname?: string): Promise<void> {
         }
 }
 
+
+downloadActe(demande: IDemande): void {
+  if (demande.id !== undefined) {
+    this.demandeService.downloadActe(demande.id).subscribe(
+      (response: Blob) => {
+        const file = new Blob([response], { type: 'application/pdf' });
+        const fileURL = URL.createObjectURL(file);
+        window.open(fileURL, '_blank');
+      },
+      (error) => {
+        console.error('Erreur lors de la génération du récépissé : ', error);
+        // Gérer les erreurs ici...
+      }
+    );
+  } else {
+    console.error('ID de demande non défini.');
+    // Gérer le cas où ID est undefined (optionnel)
+  }
+}
+
+
 getHistoriquesByDmd(dmdId: number){
   this.demandeService.findHistoriquesByDemande(dmdId).subscribe(result => {
       if (result && result.body) {
