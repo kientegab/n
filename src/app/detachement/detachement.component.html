@@ -66,7 +66,7 @@
         <td>{{ demande.dateDemande }}</td>
         <td>{{ demande.destination.libelle }}</td>
         <td>{{ demande.dateEffet }}</td>
-      
+
         <td>
           <span class="statut-label" [ngClass]="{
             'statut-initiee': demande.statut === 'INITIEE',
@@ -97,10 +97,10 @@
 
 
         <td class="actionsStyle">
-          <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(demande)"
+          <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(demande)" [enableBtnPaiement]="enableBtnPaiement" (paiement)="goToPaiement()"
           [enableBtnInfo]="enableBtnInfo" (generate)="generateRecipisse(demande)" [enableBtnRecipisse]="enableBtnRecipisse&& (demande.statut !== 'CLOS')"
           (download)="downloadActe(demande)" [enableBtnDownload]="enableBtnDownload && (demande.statut === 'CLOS')"
-          (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'REJET_CA')"          
+          (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'REJET_CA')"
           (delete)="onDelete(demande)" [enableBtnDelete]="enableBtnDelete"  (abandonner)="onAbandonner(demande)" [enableBtnAbandonner]="enableBtnAbandonner && (demande.statut !== 'ELABORATION' && demande.statut !== 'CLOS' && demande.statut !== 'ABANDONNEE')"
           >
         </app-actions-toolbar-iud>

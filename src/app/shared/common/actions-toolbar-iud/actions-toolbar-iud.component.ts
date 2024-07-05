@@ -24,6 +24,7 @@ export class ActionsToolbarIudComponent implements OnInit {
   @Input() enableBtnActe!: boolean;
   @Input() enableBtnAbandonner!: boolean;
   @Input() enableBtnRecipisse!: boolean;
+  @Input() enableBtnPaiement!: boolean;
 
   @Output() info: EventEmitter<any> = new EventEmitter();
   @Output() edit: EventEmitter<any> = new EventEmitter();
@@ -41,6 +42,7 @@ export class ActionsToolbarIudComponent implements OnInit {
   @Output() acte: EventEmitter<any> = new EventEmitter();
   @Output() abandonner: EventEmitter<any> = new EventEmitter();
   @Output() generate: EventEmitter<any> = new EventEmitter();
+  @Output() paiement: EventEmitter<any> = new EventEmitter();
   // items: MenuItem[] = [];
 
   constructor() { }
@@ -116,7 +118,7 @@ export class ActionsToolbarIudComponent implements OnInit {
   fireValider() {
     this.valider.emit();
   }
- 
+
   fireAbandonner() {
     this.abandonner.emit();
   }
@@ -124,4 +126,8 @@ export class ActionsToolbarIudComponent implements OnInit {
   fireGenerate(){
     this.generate.emit()
   }
+
+    firePaiement(){
+        this.paiement.emit()
+    }
 }

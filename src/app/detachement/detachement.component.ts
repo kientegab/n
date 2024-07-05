@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import {HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, ConfirmationService, Message } from 'primeng/api';
@@ -8,10 +8,10 @@ import { environment } from 'src/environments/environment';
 import { CURRENT_PAGE, MAX_SIZE_PAGE } from '../shared/constants/pagination.constants';
 import { IDemande, Demande } from '../shared/model/demande.model';
 import { DemandeService } from '../shared/service/demande-service.service';
-import { CreerModifierDetachementComponent } from './creer-modifier-detachement/creer-modifier-detachement.component';
-import { DetailsDetachementComponent } from './details-detachement/details-detachement.component';
 import { ValiderProjetComponent } from './valider-projet/valider-projet.component';
 import {TokenService} from "../shared/service/token.service";
+import {Actions, Commande, CustomData, Invoice, Item, Paiement, Store} from "../shared/model/paiement/paiementDto";
+import {RedirectService} from "../shared/service/redirect.service";
 
 @Component({
   selector: 'app-detachement',
@@ -28,6 +28,7 @@ export class DetachementComponent {
   totalRecords: number = 0;
   recordsPerPage = environment.recordsPerPage;
   enableBtnInfo = true;
+  enableBtnPaiement = true;
   enableBtnEdit = true;
   enableBtnDelete=false;
   enableBtnValider=true;
@@ -64,6 +65,7 @@ export class DetachementComponent {
     private router: Router,
     private confirmationService: ConfirmationService,
     private tokenStorage: TokenService,
+    private redirectService: RedirectService
   ){}
 
 
@@ -195,7 +197,7 @@ export class DetachementComponent {
       console.error('ID de demande non défini.');
       // Gérer le cas où ID est undefined (optionnel)
     }
-    
+
   }
   downloadActe(demande: IDemande): void {
     if (demande.id !== undefined) {
@@ -317,7 +319,80 @@ export class DetachementComponent {
     return demande.statut === 'REJET_CA';
   }
 
-  
+
+    goToPaiement() {
+        const items: Item[] = []
+        const item = new Item();
+        item.description ='Mon super produit';
+        item.unit_price = 200
+        item.total_price = 200;
+        item.name = "Timbre";
+        item.quantity= 1
+
+        items.push(item);
+
+        const store = new Store();
+        store.name ='eDAC';
+        store.website_url = "localhost:4200";
+
+        const action = new Actions();
+        action.callback_url="http://localhost:4200";
+        action.return_url="http://localhost:4200/detachements";
+        action.cancel_url="http://localhost:4200"
+
+        const customeData = new CustomData();
+        customeData.order_id = "eDac";
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const charactersLength = characters.length;
+        for (let i = 0; i < 10; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        customeData.transaction_id = result;
+
+        const invoice = new Invoice();
+        invoice.items = items;
+        invoice.total_amount= 100;
+        invoice.description = "Achat de timbre";
+        invoice.devise = "XOF";
+        invoice.customer_lastname = "Kabore";
+        invoice.customer_email = "test@gmail.com";
+        const ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let res = '';
+        const charLengh = ch.length;
+        for (let i = 0; i < 10; i++) {
+            res += characters.charAt(Math.floor(Math.random() * charLengh));
+        }
+        invoice.transaction_id = res;
+        invoice.external_id ="TTT";
 
 
+        const commande = new Commande();
+        commande.invoice = invoice;
+        commande.actions = action;
+        commande.custom_data = customeData;
+        commande.store = store;
+
+        const paiement = new Paiement();
+
+        paiement.commande = commande;
+
+
+        const url = 'https://app.ligdicash.com/pay/v01/redirect/checkout-invoice/create'; // Target URL
+        const data = paiement;
+        const headers = new HttpHeaders({
+            'ApiKey': 'V5T3Z0O594C6QNZ4L',
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZF9hcHAiOiIxODI0OSIsImlkX2Fib25uZSI6ODk5NDIsImRhdGVjcmVhdGlvbl9hcHAiOiIyMDI0LTA3LTA0IDE1OjA2OjE2In0.MPR-WGFdX3PoBAH8IbMreF6AENu2DImrcRzTuiznjXY',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        });
+
+
+        this.redirectService.postWithHeaders(url, paiement, headers).subscribe(response => {
+            console.warn("RESP",response);
+            window.location.href = response.response_text;
+        }, error => {
+            console.error('Error:', error);
+        });
+    }
 }
