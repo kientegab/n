@@ -29,6 +29,7 @@ import { ReceptionDisponibiliteComponent } from './reception-disponibilite/recep
 import {FieldsetModule} from "primeng/fieldset";
 import { ReceptionDisponibiliteVComponent } from './reception-disponibilite-v/reception-disponibilite-v.component';
 import { DetailsDisponibiliteAgentComponent } from './details-disponibilite-agent/details-disponibilite-agent.component';
+import { DocumentUploadFileComponent } from './document-upload-file/document-upload-file.component';
 
 
 
@@ -43,7 +44,8 @@ import { DetailsDisponibiliteAgentComponent } from './details-disponibilite-agen
     DisponibiliteAgentsComponent,
     ReceptionDisponibiliteComponent,
     ReceptionDisponibiliteVComponent,
-    DetailsDisponibiliteAgentComponent
+    DetailsDisponibiliteAgentComponent,
+    DocumentUploadFileComponent
   ],
     imports: [
         CommonModule,

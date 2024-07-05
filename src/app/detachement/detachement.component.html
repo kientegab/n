@@ -52,12 +52,12 @@
 
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th pSortableColumn="numero">Numero2<p-sortIcon field="numero"></p-sortIcon></th>
+        <th pSortableColumn="numero">Numero<p-sortIcon field="numero"></p-sortIcon></th>
         <th pSortableColumn="dateDemande">Date<p-sortIcon field="dateDemande"></p-sortIcon></th>
-        <th pSortableColumn="strucDestination">Structure de disponibilité<p-sortIcon field="strucDestination"></p-sortIcon></th>
+        <th pSortableColumn="strucDestination">Structure de détachement<p-sortIcon field="strucDestination"></p-sortIcon></th>
         <th pSortableColumn="dateEffet">Date d'effet<p-sortIcon field="dateEffet"></p-sortIcon></th>
         <th pSortableColumn="statut">Statut<p-sortIcon field="statut"></p-sortIcon></th>
-        <th class="actionsStyle">Action</th>
+        <th class="actionsStyle">Actions</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-demande>
@@ -66,13 +66,43 @@
         <td>{{ demande.dateDemande }}</td>
         <td>{{ demande.destination.libelle }}</td>
         <td>{{ demande.dateEffet }}</td>
-        <td>{{ demande.statut }}</td>
+      
+        <td>
+          <span class="statut-label" [ngClass]="{
+            'statut-initiee': demande.statut === 'INITIEE',
+            'statut-avis-sh': demande.statut === 'AVIS_SH',
+            'statut-avis-drh': demande.statut === 'AVIS_DRH',
+            'statut-avis-dgfp': demande.statut === 'AVIS_DGFP',
+            'statut-receptionee': demande.statut === 'RECEPTIONEE',
+            'statut-imputee': demande.statut === 'IMPUTEE',
+            'statut-conforme': demande.statut === 'CONFORME',
+            'statut-rejet-ca': demande.statut === 'REJET_CA',
+            'statut-rejet-drh': demande.statut === 'REJET_DRH',
+            'statut-validee': demande.statut === 'VALIDEE',
+            'statut-refusee': demande.statut === 'REFUSEE',
+            'statut-rejet-sg': demande.statut === 'REJET_SG',
+            'statut-abandonnee': demande.statut === 'ABANDONNEE',
+            'statut-elaboration': demande.statut === 'ELABORATION',
+            'statut-clos': demande.statut === 'CLOS',
+            'statut-demande-validee': demande.statut === 'DEMANDE_VALIDEE',
+            'statut-demande-rejetee': demande.statut === 'DEMANDE_REJETEE',
+            'statut-projet-elabore': demande.statut === 'PROJET_ELABORE',
+            'statut-projet-valide': demande.statut === 'PROJET_VALIDE',
+            'statut-projet-verifie': demande.statut === 'PROJET_VERIFIE',
+            'statut-projet-vise': demande.statut === 'PROJET_VISE',
+            'statut-projet-signe': demande.statut === 'PROJET_SIGNE',
+            'statut-projet-rejete': demande.statut === 'PROJET_REJETE'
+          }">{{ demande.statut }}</span>
+        </td>
+
 
         <td class="actionsStyle">
           <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(demande)"
-          [enableBtnInfo]="enableBtnInfo"
-          (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'DEMANDE_REJETEE')"
-          (delete)="onDelete(demande)" [enableBtnDelete]="enableBtnDelete"   (abandonner)="onAbandonner(demande)" [enableBtnAbandonner]="enableBtnAbandonner">
+          [enableBtnInfo]="enableBtnInfo" (generate)="generateRecipisse(demande)" [enableBtnRecipisse]="enableBtnRecipisse&& (demande.statut !== 'CLOS')"
+          (download)="downloadActe(demande)" [enableBtnDownload]="enableBtnDownload && (demande.statut === 'CLOS')"
+          (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'REJET_CA')"          
+          (delete)="onDelete(demande)" [enableBtnDelete]="enableBtnDelete"  (abandonner)="onAbandonner(demande)" [enableBtnAbandonner]="enableBtnAbandonner && (demande.statut !== 'ELABORATION' && demande.statut !== 'CLOS' && demande.statut !== 'ABANDONNEE')"
+          >
         </app-actions-toolbar-iud>
         </td>
       </tr>

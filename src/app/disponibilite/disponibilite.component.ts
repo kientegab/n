@@ -112,7 +112,7 @@ export class DisponibiliteComponent {
         this.loadMesDemandes();
       }
 
- 
+
 
 
       loadMesDemandes(): void {
@@ -156,23 +156,7 @@ export class DisponibiliteComponent {
 
       /** Permet d'afficher un modal pour la modification */
       openModalEdit(demande: IDemande): void {
-        this.dialogService.open(CreerModifierDisponibiliteComponent,
-          {
-            header: 'Modifier un demande',
-            width: '60%',
-            contentStyle: { overflow: 'auto' },
-            baseZIndex: 10000,
-            maximizable: true,
-            closable: true,
-            data: demande
-          }).onClose.subscribe(result => {
-            if(result){
-              this.isDialogOpInProgress = false;
-              this.loadMesDemandes();
-              this.showMessage({ severity: 'success', summary: 'Demande modifiée avec succès' });
-            }
-
-          });
+          this.router.navigate(['disponibilites','edit', demande.id]);
 
       }
 

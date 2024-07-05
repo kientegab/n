@@ -4,17 +4,16 @@ import { cloneDeep } from 'lodash';
 import { Message } from 'primeng/api';
 import { DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { IDemande, Demande } from 'src/app/shared/model/demande.model';
-import { IHistorique, Historique, AVIS } from 'src/app/shared/model/historique.model';
+import { IHistorique, Historique, RECEPTIONS } from 'src/app/shared/model/historique.model';
 import { DemandeService } from 'src/app/shared/service/demande-service.service';
 import { TokenService } from 'src/app/shared/service/token.service';
 
 @Component({
-  selector: 'app-aviser-detachement',
-  templateUrl: './aviser-detachement.component.html',
-  styleUrls: ['./aviser-detachement.component.scss']
+  selector: 'app-valider-detachement',
+  templateUrl: './valider-detachement.component.html',
+  styleUrls: ['./valider-detachement.component.scss']
 })
-export class AviserDetachementComponent {
-
+export class ValiderDetachementComponent {
   demande: IDemande = new Demande();
   @Input() data: IDemande = new Demande();
   isDialogOpInProgress: boolean | undefined;
@@ -25,7 +24,7 @@ export class AviserDetachementComponent {
   message: any;
   timeoutHandle: any;
   historique:IHistorique = new Historique();
-  avis = AVIS;
+
   
  
   constructor(
@@ -60,7 +59,7 @@ export class AviserDetachementComponent {
     this.dialogErrorMessage = error.error.title;
   }
   
-  aviserDemande(): void {
+  rejetterDemande(): void {
     this.clearDialogMessages();
     this.isDialogOpInProgress = true;
     if (this.demande) {
@@ -68,13 +67,13 @@ export class AviserDetachementComponent {
         console.log("historique ===========", this.historique);
         this.demande.historique=this.historique;
 
-        if(this.profil === "SH") {
-          this.demandeService.aviserSH(this.demande).subscribe(
+        if(this.profil === "SG") {
+          this.demandeService.rejeterSG(this.demande).subscribe(
             {
               next: (response: any) => {
                 this.dialogRef.close(response);
                 this.dialogRef.destroy();
-                this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
+                this.showMessage({ severity: 'success', summary: 'Demande rejettée avec succès pour modification' });
               
               },
               error: (error: { error: { message: any; }; }) => {
@@ -87,12 +86,12 @@ export class AviserDetachementComponent {
         }
 
         if(this.profil === "DRH") {
-          this.demandeService.aviserDRH(this.demande).subscribe(
+          this.demandeService.rejeterDRH(this.demande).subscribe(
             {
               next: (response: any) => {
                 this.dialogRef.close(response);
                 this.dialogRef.destroy();
-                this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
+                this.showMessage({ severity: 'success', summary: 'Demande rejettée avec succès pour modification' });
               
               },
               error: (error: { error: { message: any; }; }) => {
@@ -104,58 +103,7 @@ export class AviserDetachementComponent {
           );
         }
 
-        if(this.profil === "DGFP") {
-          this.demandeService.aviserDGFP(this.demande).subscribe(
-            {
-              next: (response: any) => {
-                this.dialogRef.close(response);
-                this.dialogRef.destroy();
-                this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
-              
-              },
-              error: (error: { error: { message: any; }; }) => {
-                console.error("error" + JSON.stringify(error));
-                this.isOpInProgress = false;
-                this.showMessage({ severity: 'error', summary: error.error.message });
-              }
-            }
-          );
-        }
-
-        if(this.profil === "SG") {
-          this.demandeService.aviserSG(this.demande).subscribe(
-            {
-              next: (response: any) => {
-                this.dialogRef.close(response);
-                this.dialogRef.destroy();
-                this.showMessage({ severity: 'success', summary: 'Demande avisée avec succès' });
-              
-              },
-              error: (error: { error: { message: any; }; }) => {
-                console.error("error" + JSON.stringify(error));
-                this.isOpInProgress = false;
-                this.showMessage({ severity: 'error', summary: error.error.message });
-              }
-            }
-          );
-        }
-        if(this.profil === "CA") {
-          this.demandeService.analyserCA(this.demande).subscribe(
-            {
-              next: (response: any) => {
-                this.dialogRef.close(response);
-                this.dialogRef.destroy();
-                this.showMessage({ severity: 'success', summary: 'Demande Analysée avec succès' });
-              
-              },
-              error: (error: { error: { message: any; }; }) => {
-                console.error("error" + JSON.stringify(error));
-                this.isOpInProgress = false;
-                this.showMessage({ severity: 'error', summary: error.error.message });
-              }
-            }
-          );
-        }
+       
       }
     }
   }

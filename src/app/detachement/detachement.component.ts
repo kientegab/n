@@ -29,9 +29,11 @@ export class DetachementComponent {
   recordsPerPage = environment.recordsPerPage;
   enableBtnInfo = true;
   enableBtnEdit = true;
-  enableBtnDelete=true;
+  enableBtnDelete=false;
   enableBtnValider=true;
   enableBtnAbandonner=true;
+  enableBtnRecipisse=true;
+  enableBtnDownload=true;
 
   isLoading!: boolean;
   isOpInProgress!: boolean;
@@ -176,7 +178,43 @@ export class DetachementComponent {
     this.router.navigate(['detachements','details', demande.id]);
   }
 
-
+  generateRecipisse(demande: IDemande): void {
+    if (demande.id !== undefined) {
+      this.demandeService.generateRecipisse(demande.id).subscribe(
+        (response: Blob) => {
+          const file = new Blob([response], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(file);
+          window.open(fileURL, '_blank');
+        },
+        (error) => {
+          console.error('Erreur lors de la génération du récépissé : ', error);
+          // Gérer les erreurs ici...
+        }
+      );
+    } else {
+      console.error('ID de demande non défini.');
+      // Gérer le cas où ID est undefined (optionnel)
+    }
+    
+  }
+  downloadActe(demande: IDemande): void {
+    if (demande.id !== undefined) {
+      this.demandeService.downloadActe(demande.id).subscribe(
+        (response: Blob) => {
+          const file = new Blob([response], { type: 'application/pdf' });
+          const fileURL = URL.createObjectURL(file);
+          window.open(fileURL, '_blank');
+        },
+        (error) => {
+          console.error('Erreur lors de la génération du récépissé : ', error);
+          // Gérer les erreurs ici...
+        }
+      );
+    } else {
+      console.error('ID de demande non défini.');
+      // Gérer le cas où ID est undefined (optionnel)
+    }
+  }
 
   // Deletion
   onDelete(demande: IDemande) {
@@ -276,8 +314,10 @@ export class DetachementComponent {
 
 
   isEditButtonVisible(demande: any): boolean {
-    return demande.statut === 'DEMANDE_REJETEE';
+    return demande.statut === 'REJET_CA';
   }
+
+  
 
 
 }

@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { cloneDeep } from 'lodash';
 import { ConfirmationService, Message } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { IMinistere, Ministere } from 'src/app/shared/model/ministere.model';
+import { CIVILITE, IMinistere, Ministere } from 'src/app/shared/model/ministere.model';
 import { MinistereService } from 'src/app/shared/service/ministere-service';
 
 @Component({
@@ -27,6 +27,7 @@ export class CreerModifierMinistereComponent {
   dialogErrorMessage: any;
   timeoutHandle: any;
   isOpInProgress!: boolean;
+  avis = CIVILITE;
 
   constructor(
     private ministereService: MinistereService,

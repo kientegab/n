@@ -1,7 +1,6 @@
 import {HttpErrorResponse} from '@angular/common/http';
 import {Component, Input, OnInit} from '@angular/core';
 import {Message} from 'primeng/api';
-import {DynamicDialogRef} from 'primeng/dynamicdialog';
 import {Agent, IAgent} from 'src/app/shared/model/agent.model';
 import {Demande, IDemande} from 'src/app/shared/model/demande.model';
 import {IMotif} from 'src/app/shared/model/motif.model';
@@ -9,7 +8,6 @@ import {IPiece, Piece} from 'src/app/shared/model/piece.model';
 
 import {ITypeDemande, TypeDemande} from 'src/app/shared/model/typeDemande.model';
 import {AgentService} from 'src/app/shared/service/agent.service';
-import {DemandeService} from 'src/app/shared/service/demande-service.service';
 import {MotifService} from 'src/app/shared/service/motif.service';
 import {StructureService} from 'src/app/shared/service/structure.service';
 import {TypeDemandeService} from 'src/app/shared/service/type-demande.service';
@@ -22,7 +20,7 @@ import {UploadFileService} from "../../shared/service/upload.service";
 import {cloneDeep} from "lodash";
 import {DemandeDisponibiliteService} from "../../shared/service/demande-disponibilite-service.service";
 import {TypeDmdDisponibilite} from "../../shared/model/type-dmd-disponibilite";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 interface UploadEvent {
     originalEvent: Event;
@@ -65,6 +63,7 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
     isDisplay= false;
     structures: IStructure [] = [];
     piecesJointes: IPieceJointe [] = [];
+    cloneePieces: IPieceJointe[] = [];
     typeDemandeurs: ITypeDemandeur[] = [{
         code: 'AGENT',
         libelle: 'AGENT'
@@ -84,21 +83,25 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
 
 
     constructor(
-        private demandeService: DemandeService,
         private demandeDisponibiliteService: DemandeDisponibiliteService,
-        private dialogRef: DynamicDialogRef,
         private typeDemandeService: TypeDemandeService,
         private motifService: MotifService,
         private agentService: AgentService,
         private structureService: StructureService,
         private pieceService: PieceService,
         private uploadService: UploadFileService,
-        private router: Router
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+
     ) {
     }
 
 
     ngOnInit(): void {
+        this.idDmd = +this.activatedRoute.snapshot.paramMap.get('id')!;
+        if(this.idDmd){
+            this.getDemande();
+        }
 
         if (!this.agent.structure) {
             this.agent.structure = {libelle: ''};
@@ -167,25 +170,35 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
         this.demandeDisponibiliteService.find(this.idDmd!).subscribe(result => {
             if (result && result.body) {
                 this.demande = result.body;
+                console.warn("demande recup",this.demande);
                 this.isDisplay = false;
-                console.warn("DEMANDE::::::::::::::::::::::::::::::::::::::",this.demande);
+                this.duree.id = this.demande.duree?.id;
+                this.duree.annee = this.demande.duree?.annee;
+                this.duree.annee = this.demande.duree?.annee;
+                this.duree.jours = this.demande.duree?.jours;
+                this.duree.mois = this.demande.duree?.mois;
+                this.selectedMotif = this.demande.motif;
                 this.typeDemandeSelected = this.demande.typeDemande!;
-                console.warn("======================== ma demande :\n",this.typeDemandeSelected);
-                // this.demande.typeDemande = this.typeDemandeSelected;
+                /** charger la liste des pieces jointes */
+                this.getPieceByDmd(this.demande.id!);
                 this.onChangeMatricule();
-                this.duree = this.demande.duree!;
                 if (this.demande.dateEffet) {
                     this.demande.dateEffet = new Date(this.demande.dateEffet)
                 }
-                /** charger la liste des pieces jointes */
-               // this.getPieceByDmd(this.demande.id!);
-                /** charger typeDemandeur */
-                this.selectedTypeDemandeur = this.typeDemandeurs.find(item=>item.libelle ==this.demande.motif?.typeDemandeur);
-                /** charger motif,duree,agent */
-                this.selectedMotif = this.demande.motif;
                 this.duree = this.demande.duree!;
                 this.agent = this.demande.agent!;
-                this.onMotifChange();
+
+            }
+        });
+    }
+
+    getPieceByDmd(dmdId: number){
+        this.demandeDisponibiliteService.findPiecesByDemande(dmdId).subscribe(result => {
+            if (result && result.body) {
+                this.pieceJointes = result.body;
+                this.cloneePieces = cloneDeep(result.body);
+                this.demande.pieceJointes = this.pieceJointes;
+                console.warn("piece recup", this.pieceJointes);
             }
         });
     }
@@ -302,9 +315,7 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     clear(): void {
-        // this.form.resetForm();
-        this.dialogRef.close();
-        this.dialogRef.destroy();
+
     }
 
     isEditing() {
@@ -337,9 +348,8 @@ export class CreerModifierDisponibiliteComponent implements OnInit{
                 this.demandeDisponibiliteService.update(this.demande).subscribe(
                     {
                         next: (response) => {
-                            this.dialogRef.close(response);
-                            this.dialogRef.destroy();
                             this.showMessage({severity: 'success', summary: 'demande modifié avec succès'});
+                            this.router.navigate(['detachements']);
 
                         },
                         error: (error) => {

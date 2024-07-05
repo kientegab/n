@@ -64,7 +64,7 @@ export class CreerModifierDetachementComponent {
 
     typeDemandes: ITypeDemande [] = [];
 
-    typeDemandeSelected: ITypeDemande = new TypeDemande(); 
+    typeDemandeSelected: ITypeDemande = new TypeDemande();
 
     // typeDemande?: number;
     typeDemandeurs: ITypeDemandeur[] = [{
@@ -440,7 +440,7 @@ console.warn("ALERT ICI",this.demande);
                 this.agent = this.demande.agent!;
                 this.onMotifChange();
             }
-        }); 
+        });
     }
 
     getPieceByDmd(dmdId: number){
