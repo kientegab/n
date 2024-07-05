@@ -3,17 +3,17 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { NgForm } from '@angular/forms';
 import { Message } from 'primeng/api';
 import { FileUpload } from 'primeng/fileupload';
-import { FileUploadServiceService } from '../shared/service/file-upload-service.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Demande, IDemande } from '../shared/model/demande.model';
 import { cloneDeep } from 'lodash';
+import { Demande, IDemande } from 'src/app/shared/model/demande.model';
+import { FileUploadServiceService } from 'src/app/shared/service/file-upload-service.service';
 
 @Component({
-  selector: 'app-document-upload',
-  templateUrl: './document-upload.component.html',
-  styleUrls: ['./document-upload.component.css']
+  selector: 'app-document-upload-file',
+  templateUrl: './document-upload-file.component.html',
+  styleUrls: ['./document-upload-file.component.css']
 })
-export class DocumentUploadComponent implements OnInit {
+export class DocumentUploadFileComponent implements OnInit {
 
   @ViewChild('df') form!: NgForm;
   @ViewChild('fileUpload') fileUpload!: FileUpload;
@@ -22,7 +22,6 @@ export class DocumentUploadComponent implements OnInit {
   uploadPanelHasFiles: boolean | false = false;
   @Input() data: IDemande = new Demande();
   demande: IDemande = new Demande();
-  uploadedFiles: any[] = [];
 
   error: string | undefined;
   showDialog = false;
@@ -32,6 +31,7 @@ export class DocumentUploadComponent implements OnInit {
   timeoutHandle: any;
   isOpInProgress!: boolean;
   formData!: FormData;
+  isFile: boolean | boolean = false;
 
   selectedFile: File | null = null;
 
@@ -44,7 +44,6 @@ export class DocumentUploadComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(this.dynamicDialog.data);
     if (this.dynamicDialog.data) {
       this.demande = cloneDeep(this.dynamicDialog.data);
       console.log(this.demande);
@@ -52,6 +51,7 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   clear(): void {
+    this.isFile = false;
     this.form.resetForm();
     this.dialogRef.close();
     this.dialogRef.destroy();
@@ -77,10 +77,11 @@ export class DocumentUploadComponent implements OnInit {
 
   save() {
     //this.fileUpload.upload();
-    this.fileUploadService.upload(this.formData, this.demande.id!).subscribe({
+    this.fileUploadService.uploadDispo(this.formData, this.demande.id!).subscribe({
       next: (response) => {
         this.dialogRef.close(response);
         this.dialogRef.destroy();
+        this.isFile = false;
         this.showMessage({
           severity: 'success',
           summary: 'Document sauvegardé avec succès',
@@ -90,6 +91,7 @@ export class DocumentUploadComponent implements OnInit {
         this.message = { severity: 'error', summary: error.error };
         console.error("error" + JSON.stringify(error));
         this.isOpInProgress = false;
+        this.isFile = false;
         this.showMessage({ severity: 'error', summary: error.error.message });
 
       }
@@ -110,7 +112,6 @@ export class DocumentUploadComponent implements OnInit {
           severity: 'success',
           summary: 'Document sauvegardé avec succès',
         });
-  //      window.location.reload();
       },
       error: (error) => {
         this.message = { severity: 'error', summary: error.error };
@@ -119,19 +120,13 @@ export class DocumentUploadComponent implements OnInit {
         this.showMessage({ severity: 'error', summary: error.error.message });
 
       }
-
-      
-    }
-  
-  
-  );
-
-    window.location.reload();
+    });
   }
    
 
   onFileSelect(event: any): void {
     this.formData = this.fileUploadService.uploadDocument(event);
+    this.isFile = true;
   }
 
 }

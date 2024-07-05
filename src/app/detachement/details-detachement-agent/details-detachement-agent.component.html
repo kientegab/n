@@ -44,10 +44,48 @@
       </div>
     </div>
 
+<section class="formgrid">
+    <div class="row">
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">nombre d'années : </span> {{ demande.duree?.annee }}</span>
+      </div>
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">nombre de mois : </span> {{ demande.duree?.mois }} </span>
+      </div>
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">nombre de jours : </span> {{ demande.duree?.jours }} </span>
+      </div>
+    </div>
+  </section>
+
     <div class="row">
       <div class="col-md-6 details-item">
         <span class="va-m"><span class="font-bold">Statut demande :
-           </span> {{ demande.statut }}</span>
+           </span> <span class="statut-label" [ngClass]="{
+            'statut-initiee': demande.statut === 'INITIEE',
+            'statut-avis-sh': demande.statut === 'AVIS_SH',
+            'statut-avis-drh': demande.statut === 'AVIS_DRH',
+            'statut-avis-dgfp': demande.statut === 'AVIS_DGFP',
+            'statut-receptionee': demande.statut === 'RECEPTIONEE',
+            'statut-imputee': demande.statut === 'IMPUTEE',
+            'statut-conforme': demande.statut === 'CONFORME',
+            'statut-rejet-ca': demande.statut === 'REJET_CA',
+            'statut-rejet-drh': demande.statut === 'REJET_DRH',
+            'statut-validee': demande.statut === 'VALIDEE',
+            'statut-refusee': demande.statut === 'REFUSEE',
+            'statut-rejet-sg': demande.statut === 'REJET_SG',
+            'statut-abandonnee': demande.statut === 'ABANDONNEE',
+            'statut-elaboration': demande.statut === 'ELABORATION',
+            'statut-clos': demande.statut === 'CLOS',
+            'statut-demande-validee': demande.statut === 'DEMANDE_VALIDEE',
+            'statut-demande-rejetee': demande.statut === 'DEMANDE_REJETEE',
+            'statut-projet-elabore': demande.statut === 'PROJET_ELABORE',
+            'statut-projet-valide': demande.statut === 'PROJET_VALIDE',
+            'statut-projet-verifie': demande.statut === 'PROJET_VERIFIE',
+            'statut-projet-vise': demande.statut === 'PROJET_VISE',
+            'statut-projet-signe': demande.statut === 'PROJET_SIGNE',
+            'statut-projet-rejete': demande.statut === 'PROJET_REJETE'
+          }">{{ demande.statut }}</span></span>
       </div>
     </div>
   </p-fieldset>
@@ -242,7 +280,7 @@
       </div>
 
       <div class="p-ml-auto text-right">
-          <button description="telecharger" icon="pi pi-file-pdf" [hidden]="disableGenerateDemande" label="Exporter l'arrete signé" (click)="generateDemande(demande)" class="p-button-raised p-button-success mr-2 "
+          <button description="telecharger" icon="pi pi-file-pdf" [hidden]="disableGenerateDemande" label="Imprimer la demande" (click)="generateDemande(demande)" class="p-button-raised p-button-success mr-2 "
                   pButton></button>
       </div>
 

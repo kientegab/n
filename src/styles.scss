@@ -842,3 +842,15 @@ table.blueTable tfoot .links a{
   .p-menubar .p-menubar-root-list > .p-menuitem > .btn-blue:hover{
     color: black
   }
+
+  .layout-topbar {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #28a745!important;;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
