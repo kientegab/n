@@ -12,6 +12,7 @@ import { ValiderProjetComponent } from './valider-projet/valider-projet.componen
 import {TokenService} from "../shared/service/token.service";
 import {Actions, Commande, CustomData, Invoice, Item, Paiement, Store} from "../shared/model/paiement/paiementDto";
 import {RedirectService} from "../shared/service/redirect.service";
+import {ITransaction, Transaction} from "../shared/model/paiement/transactionDto";
 
 @Component({
   selector: 'app-detachement',
@@ -55,6 +56,7 @@ export class DetachementComponent {
 
   filtreNumero: string | undefined;
   items: MenuItem[] = [];
+  paiementComplete = false
 
 
 
@@ -70,6 +72,10 @@ export class DetachementComponent {
 
 
   ngOnInit(): void {
+      if(localStorage.getItem('token')){
+          //verifier si la transaction s'est bien passée
+          this.getTransaction(localStorage.getItem('token')!);
+      }
     this.activatedRoute.data.subscribe(
       () => {
         //this.loadAll();
@@ -390,7 +396,31 @@ export class DetachementComponent {
 
         this.redirectService.postWithHeaders(url, paiement, headers).subscribe(response => {
             console.warn("RESP",response);
+            // enregistrer le token
+            localStorage.setItem('token',response.token);
             window.location.href = response.response_text;
+            //this.getTransaction(response.token, urlRedirect);
+
+          //
+        }, error => {
+            console.error('Error:', error);
+        });
+    }
+
+    saveTransaction(transaction: ITransaction){
+        this.redirectService.createTransaction(transaction).subscribe(response => {
+            console.warn("RESP",response);
+        }, error => {
+            console.error('Error:', error);
+        });
+    }
+
+    private getTransaction(token: string) {
+        this.redirectService.getTransaction(token).subscribe(response => {
+            if(response){
+
+                this.saveTransaction(response.body!);
+            }
         }, error => {
             console.error('Error:', error);
         });

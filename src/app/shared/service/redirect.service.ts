@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Paiement} from "../model/paiement";
+import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
+import {ITransaction, Transaction} from "../model/paiement/transactionDto";
+import {IProfil} from "../model/profil.model";
 
 @Injectable({
   providedIn: 'root'
@@ -91,6 +92,19 @@ export class RedirectService {
                 })
             );
 
+    }
+
+
+    getTransaction(token_de_la_transaction?: string): Observable<HttpResponse<ITransaction>> {
+      const uri = "https://app.ligdicash.com/pay/v01/redirect/checkout-invoice/confirm/?invoiceToken"
+        return this.http.get<ITransaction>(`${uri}=${token_de_la_transaction}`, { observe: 'response' });
+    }
+
+
+
+    createTransaction(transaction: ITransaction): Observable<HttpResponse<ITransaction>> {
+        const url = ""
+        return this.http.post<ITransaction>(url, transaction, { observe: 'response' });
     }
 
 

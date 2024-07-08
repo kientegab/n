@@ -1,7 +1,7 @@
 
 <p-card>
   <div class="_m-t-15">
-
+<div class="alert alert-success" *ngIf="paiementComplete">L'opération a reussi</div>
     <div class="p-d-flex">
       <div class="p-ml-auto">
         <p-message *ngIf="message" [severity]="message.severity" [text]="message.summary"></p-message>
