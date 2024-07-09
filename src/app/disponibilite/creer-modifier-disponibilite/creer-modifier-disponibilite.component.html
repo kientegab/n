@@ -27,7 +27,7 @@
             </div>-->
 
             <div class="col-12 md:col-4">
-                <label for="typeDemandes">Type Demande  </label>
+                <label for="typeDemandes">Nature de l'acte </label>
                 <p-dropdown autoWidth="false" id="typeDemandes" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="typeDemandes"
                             [(ngModel)]="typeDemandeSelected" optionLabel="libelle"  inputId="typeDemandeSelected" optionValue="code"
                             name="typeDemandeSelected" [filter]="true" appendTo="body" [showClear]="true" >
@@ -36,7 +36,7 @@
 
 
             <div class="col-12 md:col-4">
-                <label for="motif">Motif :</label>
+                <label for="motif">Motif de l'acte:</label>
                 <p-dropdown autoWidth="false" id="motif" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="motifs"
                             [(ngModel)]="selectedMotif" optionLabel="libelle" inputId="motif" name="motif"
                             placeholder="Sélectionner le motif..." [filter]="true" appendTo="body" [showClear]="true"
