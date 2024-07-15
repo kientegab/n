@@ -27,6 +27,7 @@ export class CreerModifierMinistereComponent {
   dialogErrorMessage: any;
   timeoutHandle: any;
   isOpInProgress!: boolean;
+  binary: boolean = false;
   avis = CIVILITE;
 
   constructor(

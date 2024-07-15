@@ -18,6 +18,7 @@ import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { FileUploadModule } from 'primeng/fileupload';
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 
@@ -44,6 +45,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     TableModule, 
     CardModule,
     TableModule,
+    CheckboxModule,
     ArchwizardModule.forRoot()
   ],
   exports: [

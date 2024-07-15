@@ -88,6 +88,9 @@ const routes: Routes = [
         ]
     },
     { path: 'auth/login', data: { breadcrumb: 'Auth' }, loadChildren: () => import('./account/login/login.module').then(m => m.LoginModule) },
+    { path: 'account/activate-compte', data: { breadcrumb: 'activation' }, loadChildren: () => import('./account/activation-compte/activation-compte.module').then(m => m.ActivationCompteModule) },
+
+
     { path: 'detachements', data: { breadcrumb: 'Gestion des détachements' }, component: AppLayoutComponent, loadChildren: () => import('./detachement/detachement.module').then(m => m.DetachementModule) },
     { path: 'disponibilites', data: { breadcrumb: 'Gestion des disponibilités' },component: AppLayoutComponent, loadChildren: () => import('./disponibilite/disponibilite.module').then(m => m.DisponibiliteModule) },
     { path: 'stat-demandes', data: { breadcrumb: 'Gestion des statistiques de demandes' },component: AppLayoutComponent, loadChildren: () => import('./statistique/demande/demande.module').then(m => m.DemandeModule) },

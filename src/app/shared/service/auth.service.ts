@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 
 const authRessourceUrl = environment.authResource;
 const accountRessourceUrl = environment.accountResource;
+const authentificationFRessourceUrl = environment.authentificationUrl;
 
 const tokne_url = environment.token_url;
 
@@ -309,5 +310,10 @@ export class AuthenticationService {
     const httpOptions = { headers: headers_object};
     return this.http.post<any>(tokne_url, body, httpOptions);
   }
+
+  activateAccount(token: string): Observable<any> {
+    return this.http.post(authentificationFRessourceUrl+'/activate',{ token: token });
+  }
+  
 }
 

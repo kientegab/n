@@ -90,4 +90,7 @@ export class UserService {
   findByLogin(login: string): Observable<IUser> {
     return this.http.get<IUser>(`${resourceUrl}/${login}`);
   }
+
+  
+ 
 }

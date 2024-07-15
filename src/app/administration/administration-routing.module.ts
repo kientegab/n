@@ -22,6 +22,8 @@ const routes: Routes = [
   { path: 'agents', data: {breadcrumb: 'Gestion des agents'}, loadChildren: () => import('./parametre/nouveau-agent/nouveau-agent.module').then(m => m.NouveauAgentModule) },
   { path: 'type-demandes-dis', data: {breadcrumb: 'Gestion des types de demandes de disponibilité'}, loadChildren: () => import('./parametre/type-demande-dis/type-demande-dis.module').then(m => m.TypeDemandeDisModule) },
   { path: 'motif-disponibilte', data: {breadcrumb: 'Gestion des motifs de disponibilité'}, loadChildren: () => import('./parametre/motif-disponibilite/motif-disponibilite.module').then(m => m.MotifDisponibiliteModule) },
+  { path: 'account/activation-compte', data: {breadcrumb: 'Activation de compte'}, loadChildren: () => import('../account/activation-compte/activation-compte.module').then(m => m.ActivationCompteModule) },
+
   { path: '**', redirectTo: '/notfound' }
 ];
 
