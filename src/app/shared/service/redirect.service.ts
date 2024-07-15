@@ -96,8 +96,12 @@ export class RedirectService {
 
 
     getTransaction(token_de_la_transaction?: string): Observable<HttpResponse<ITransaction>> {
+        const headers = new HttpHeaders({
+            'ApiKey': 'V5T3Z0O594C6QNZ4L',
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZF9hcHAiOiIxODI0OSIsImlkX2Fib25uZSI6ODk5NDIsImRhdGVjcmVhdGlvbl9hcHAiOiIyMDI0LTA3LTA0IDE1OjA2OjE2In0.MPR-WGFdX3PoBAH8IbMreF6AENu2DImrcRzTuiznjXY',
+        });
       const uri = "https://app.ligdicash.com/pay/v01/redirect/checkout-invoice/confirm/?invoiceToken"
-        return this.http.get<ITransaction>(`${uri}=${token_de_la_transaction}`, { observe: 'response' });
+        return this.http.get<ITransaction>(`${uri}=${token_de_la_transaction}`, { headers: headers, observe: 'response' });
     }
 
 

@@ -342,7 +342,7 @@ export class DetachementComponent {
         store.website_url = "localhost:4200";
 
         const action = new Actions();
-        action.callback_url="http://localhost:4200";
+        action.callback_url="http://localhost:8081/api/detachements/paiement/callback";
         action.return_url="http://localhost:4200/detachements";
         action.cancel_url="http://localhost:4200"
 
@@ -362,6 +362,7 @@ export class DetachementComponent {
         invoice.description = "Achat de timbre";
         invoice.devise = "XOF";
         invoice.customer_lastname = "Kabore";
+        invoice.customer_firstname = "Ali";
         invoice.customer_email = "test@gmail.com";
         const ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let res = '';
@@ -369,7 +370,7 @@ export class DetachementComponent {
         for (let i = 0; i < 10; i++) {
             res += characters.charAt(Math.floor(Math.random() * charLengh));
         }
-        invoice.transaction_id = res;
+        invoice.transaction_id = "123333344ID";
         invoice.external_id ="TTT";
 
 
@@ -417,8 +418,7 @@ export class DetachementComponent {
 
     private getTransaction(token: string) {
         this.redirectService.getTransaction(token).subscribe(response => {
-            if(response){
-
+            if(response.body!.response_code == "00" && response.body!.status == "completed" ){
                 this.saveTransaction(response.body!);
             }
         }, error => {

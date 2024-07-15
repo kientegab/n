@@ -1,6 +1,6 @@
-import {IItem} from "./paiementDto";
 
 export interface ITransaction {
+    id?:           number;
     date?:           string;
     response_code?:  string;
     token?:          string;
@@ -19,6 +19,7 @@ export interface ITransaction {
 
 export class Transaction implements ITransaction {
     constructor(
+    public id?:  number,
     public date?:  string,
     public response_code?:  string,
     public token?:          string,
