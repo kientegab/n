@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Paiement} from "../model/paiement";
+import {HttpClient, HttpHeaders, HttpResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
+import {ITransaction, Transaction} from "../model/paiement/transactionDto";
+import {IProfil} from "../model/profil.model";
 
 @Injectable({
   providedIn: 'root'
@@ -91,6 +92,23 @@ export class RedirectService {
                 })
             );
 
+    }
+
+
+    getTransaction(token_de_la_transaction?: string): Observable<HttpResponse<ITransaction>> {
+        const headers = new HttpHeaders({
+            'ApiKey': 'V5T3Z0O594C6QNZ4L',
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZF9hcHAiOiIxODI0OSIsImlkX2Fib25uZSI6ODk5NDIsImRhdGVjcmVhdGlvbl9hcHAiOiIyMDI0LTA3LTA0IDE1OjA2OjE2In0.MPR-WGFdX3PoBAH8IbMreF6AENu2DImrcRzTuiznjXY',
+        });
+      const uri = "https://app.ligdicash.com/pay/v01/redirect/checkout-invoice/confirm/?invoiceToken"
+        return this.http.get<ITransaction>(`${uri}=${token_de_la_transaction}`, { headers: headers, observe: 'response' });
+    }
+
+
+
+    createTransaction(transaction: ITransaction): Observable<HttpResponse<ITransaction>> {
+        const url = "http://localhost:8081/api/detachements/paiements/save"
+        return this.http.post<ITransaction>(url, transaction, { observe: 'response' });
     }
 
 

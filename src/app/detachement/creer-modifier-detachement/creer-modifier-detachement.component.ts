@@ -23,6 +23,7 @@ import {IPieceJointe, pieceJointe} from 'src/app/shared/model/pieceJointe.model'
 import { TokenService } from 'src/app/shared/service/token.service';
 import {RedirectService} from "../../shared/service/redirect.service";
 import {Actions, Commande, CustomData, Invoice, Item, Paiement, Store} from "../../shared/model/paiement/paiementDto";
+import {ITransaction} from "../../shared/model/paiement/transactionDto";
 
 
 interface UploadEvent {
@@ -186,9 +187,14 @@ export class CreerModifierDetachementComponent {
     }
 
     ngOnInit(): void {
+
+        if(localStorage.getItem('token')){
+            //verifier si la transaction s'est bien passée
+            this.getTransaction(localStorage.getItem('token')!);
+        }
         this.idDmd = +this.activatedRoute.snapshot.paramMap.get('id')!;
-this.onTypeDemandeurChange();
-      
+        this.onTypeDemandeurChange();
+
 
 
         this.loadStructure();
@@ -236,11 +242,29 @@ this.onTypeDemandeurChange();
             this.demande.agent = {prenom: ""};
         }
 
-   
+
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+    }
+
+    private getTransaction(token: string) {
+        this.redirectService.getTransaction(token).subscribe(response => {
+            if(response.body!.response_code == "00" && response.body!.status == "completed" ){
+                this.saveTransaction(response.body!);
+            }
+        }, error => {
+            console.error('Error:', error);
+        });
+    }
+
+    saveTransaction(transaction: ITransaction){
+        this.redirectService.createTransaction(transaction).subscribe(response => {
+            console.warn("RESP AFTER SAVE TRANSACTION",response);
+        }, error => {
+            console.error('Error AFTER SAVE TRANSACTION :', error);
+        });
     }
 
     getSuperieurNomComplet(): string {
@@ -279,7 +303,7 @@ this.onTypeDemandeurChange();
             else (this.selectedTypeDemandeur?.libelle!=="AGENT")
             {
 
-                
+
             }
 
     }
@@ -290,7 +314,7 @@ this.onTypeDemandeurChange();
         return `${this.agent.superieurHierarchique!.prenom} ${this.agent.superieurHierarchique!.nom}`;
       }
 
-    
+
     onMotifChange(): void {
         if (this.selectedMotif) {
             this.piecesFilters = this.pieces.filter((piece) => piece.motif?.libelle === this.selectedMotif?.libelle);
@@ -419,13 +443,18 @@ console.warn("ALERT ICI",this.demande);
                     next: (response) => {
                         this.dialogRef.close(response);
                         this.dialogRef.destroy();
-                        this.router.navigate(['detachements']);
+                        this.isDialogOpInProgress = false;
+
+                        /** Redirection du paiement **/
+
+                       /* this.router.navigate(['detachements']);
                         this.showMessage({
                             severity: 'success',
                             summary: 'demande creer avec succès',
 
-                        });
-                        this.isDialogOpInProgress = false;
+                        });*/
+                        this.goToPaiement(response.body!);
+
                     },
                     error: (error) => {
                         console.error("error" + JSON.stringify(error));
@@ -520,9 +549,7 @@ console.warn("ALERT ICI",this.demande);
         this.isDisplay = true;
     }
 
-
-    goToPaiement() {
-
+    goToPaiement(demande: IDemande) {
         const items: Item[] = []
         const item = new Item();
         item.description ='Mon super produit';
@@ -538,7 +565,7 @@ console.warn("ALERT ICI",this.demande);
         store.website_url = "localhost:4200";
 
         const action = new Actions();
-        action.callback_url="http://localhost:4200";
+        action.callback_url="http://localhost:8081/api/detachements/paiement/callback";
         action.return_url="http://localhost:4200/detachements";
         action.cancel_url="http://localhost:4200"
 
@@ -558,6 +585,7 @@ console.warn("ALERT ICI",this.demande);
         invoice.description = "Achat de timbre";
         invoice.devise = "XOF";
         invoice.customer_lastname = "Kabore";
+        invoice.customer_firstname = "Ali";
         invoice.customer_email = "test@gmail.com";
         const ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let res = '';
@@ -565,8 +593,8 @@ console.warn("ALERT ICI",this.demande);
         for (let i = 0; i < 10; i++) {
             res += characters.charAt(Math.floor(Math.random() * charLengh));
         }
-        invoice.transaction_id = res;
-        invoice.external_id ="TTT";
+        invoice.transaction_id = demande.id?.toString();
+        invoice.external_id = demande.id?.toString();
 
 
         const commande = new Commande();
@@ -590,64 +618,16 @@ console.warn("ALERT ICI",this.demande);
         });
 
 
-     this.redirectService.postWithHeaders(url, paiement, headers).subscribe(response => {
+        this.redirectService.postWithHeaders(url, paiement, headers).subscribe(response => {
             console.warn("RESP",response);
-         window.location.href = response.response_text;
+            // enregistrer le token
+            localStorage.setItem('token',response.token);
+            window.location.href = response.response_text;
+            //this.getTransaction(response.token, urlRedirect);
+
+            //
         }, error => {
             console.error('Error:', error);
-        });
-    }
-
-
-    onRedirect() {
-        const items: Item[] = []
-        const item = new Item();
-        item.description ='Mon super produit';
-        item.unit_price = 1
-        item.total_price = 200;
-        item.name = "test";
-        item.quantity= 5
-
-        items.push(item);
-
-        const store = new Store();
-        store.name ='localhost:4200';
-        store.website_url = "localhost:4200";
-
-        const action = new Actions();
-        action.callback_url="localhost:4200/payment-cancel";
-        action.return_url="localhost:4200/payment-return";
-        action.callback_url="localhost:4200/payment-callback";
-
-        const customeData = new CustomData();
-        customeData.order_id = "MonSiteOrder234";
-        customeData.transaction_id = "TRNS.36887";
-
-        const invoice = new Invoice();
-        invoice.items = items;
-        invoice.total_amount= 5000;
-        invoice.description = "Achat de timbre";
-        invoice.devise = "XOF";
-        invoice.customer_lastname = "Kabore";
-        invoice.customer_email = "test@gmail.com";
-        invoice.transaction_id ="fjfj";
-        invoice.external_id ="TTT";
-
-
-        const commande = new Commande();
-        commande.invoice = invoice;
-        commande.actions = action;
-        commande.custom_data = customeData;
-        commande.store = store;
-
-        const paiement = new Paiement();
-
-        paiement.commande = commande;
-        const externalUrl = 'https://app.ligdicash.com/pay/v01/redirect/checkout-invoice/create';
-        this.redirectService.redirectToExternalUrl(externalUrl, paiement).subscribe(response => {
-            console.warn('Redirect successful:', response);
-        }, error => {
-            console.error('Error during redirect:', error);
         });
     }
 

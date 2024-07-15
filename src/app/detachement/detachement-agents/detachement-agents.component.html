@@ -39,7 +39,7 @@
     </div>
 
   </div>
-  <p-table #dtf [value]="demandes" [paginator]="true" [rows]="recordsPerPage" (onPage)="loadPage($event)"
+  <p-table #dtf [value]="demandes" [paginator]="true" [rows]="recordsPerPage" (onPage)="loadAgentDmds()"
     [totalRecords]="totalRecords" (onLazyLoad)="loadAgentDmds()" [lazy]="true"
     [globalFilterFields]="['numero','dateDemande','structDestination']"
     currentPageReportTemplate="Affichage {first} à {last} de {totalRecords} élements" [showCurrentPageReport]=true
@@ -66,6 +66,7 @@
         <td>
           <span class="statut-label" [ngClass]="{
             'statut-initiee': demande.statut === 'INITIEE',
+            'statut-payee': demande.statut === 'PAYEE',
             'statut-avis-sh': demande.statut === 'AVIS_SH',
             'statut-avis-drh': demande.statut === 'AVIS_DRH',
             'statut-avis-dgfp': demande.statut === 'AVIS_DGFP',

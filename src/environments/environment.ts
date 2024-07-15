@@ -7,7 +7,7 @@ const domaineUrl: string='localhost:4200'
 export const environment = {
   production: false,
   domaine:`${domaineUrl}`,
-  recordsPerPage: 20,
+  recordsPerPage: 25,
 
   // detachementUrl: 'http://10.53.218.146:8081/api',
   detachementUrl: 'http://localhost:8081/api/detachements',

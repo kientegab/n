@@ -63,6 +63,7 @@
         <span class="va-m"><span class="font-bold">Statut demande :
            </span> <span class="statut-label" [ngClass]="{
             'statut-initiee': demande.statut === 'INITIEE',
+            'statut-payee': demande.statut === 'PAYEE',
             'statut-avis-sh': demande.statut === 'AVIS_SH',
             'statut-avis-drh': demande.statut === 'AVIS_DRH',
             'statut-avis-dgfp': demande.statut === 'AVIS_DGFP',
