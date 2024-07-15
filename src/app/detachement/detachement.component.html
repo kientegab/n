@@ -99,7 +99,8 @@
 
 
         <td class="actionsStyle">
-          <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(demande)" [enableBtnPaiement]="enableBtnPaiement" (paiement)="goToPaiement(demande)"
+          <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(demande)"  [enableBtnPaiement]="enableBtnPaiement && (demande.statut !== 'PAYEE' && demande.statut !== 'AVIS_SH' && demande.statut !== 'AVIS_DRH'  && demande.statut !== 'RECEPTIONEE'&& demande.statut !== 'IMPUTEE'  && demande.statut !== 'VALIDEE' && demande.statut !== 'CONFORME' && demande.statut !== 'ELABORATION' && demande.statut !== 'CLOS' && demande.statut !== 'DEMANDE_VALIDEE' && demande.statut !== 'REJET_CA' && demande.statut !== 'REJET_DRH' && demande.statut !== 'REJET_SG' && demande.statut !== 'PROJET_SIGNE' && demande.statut !== 'PROJET_REJETE' )" 
+          (paiement)="goToPaiement(demande)"
           [enableBtnInfo]="enableBtnInfo" (generate)="generateRecipisse(demande)" [enableBtnRecipisse]="enableBtnRecipisse&& (demande.statut !== 'CLOS')"
           (download)="downloadActe(demande)" [enableBtnDownload]="enableBtnDownload && (demande.statut === 'CLOS')"
           (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'REJET_CA')"

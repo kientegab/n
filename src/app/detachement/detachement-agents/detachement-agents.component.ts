@@ -105,24 +105,24 @@ export class DetachementAgentsComponent {
     this.filtrer();
   }
 
-  loadPage(event: any): void {
-    if (event) {
-      this.page = event.first / event.rows + 1;
+  loadPage(event:any): void {
+    if(event){
+      this.page = event.first/event.rows + 1;
       this.recordsPerPage = event.rows;
     }
     this.transition();
   }
 
   transition(): void {
-    this.router.navigate(['./'], {
+    this.router.navigate(['./agents'], {
       relativeTo: this.activatedRoute.parent,
       queryParams: {
         page: this.page,
         sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc'),
       },
     });
-    //  this.loadAll();
-    this.loadAgentDmds();
+   // this.loadAll();
+      this.loadAgentDmds();
   }
 
   loadAllDemande(): void {

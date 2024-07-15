@@ -39,8 +39,8 @@
     </div>
 
   </div>
-  <p-table #dtf [value]="demandes" [paginator]="true" [rows]="recordsPerPage" (onPage)="loadAgentDmds()"
-    [totalRecords]="totalRecords" (onLazyLoad)="loadAgentDmds()" [lazy]="true"
+  <p-table #dtf [value]="demandes" [paginator]="true" [rows]="recordsPerPage"  (onPage)="loadPage($event)"
+    [totalRecords]="totalRecords"  (onLazyLoad)="loadAgentDmds()" [lazy]="true"
     [globalFilterFields]="['numero','dateDemande','structDestination']"
     currentPageReportTemplate="Affichage {first} à {last} de {totalRecords} élements" [showCurrentPageReport]=true
     [rowsPerPageOptions]="[20, 50, 100, 500]" styleClass="p-datatable-gridlines">
