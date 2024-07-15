@@ -75,6 +75,7 @@ export class DetachementComponent {
       if(localStorage.getItem('token')){
           //verifier si la transaction s'est bien passée
           this.getTransaction(localStorage.getItem('token')!);
+          
       }
     this.activatedRoute.data.subscribe(
       () => {
@@ -142,7 +143,7 @@ export class DetachementComponent {
             if (result && result.body) {
                 this.totalRecords = Number(result.headers.get('X-Total-Count'));
                 this.demandes = result.body || [];
-                console.log("====== demandes personnelles =======", result);
+                console.log("====== demandes personnelles =======", this.demandes);
             }
         });
     }
@@ -325,92 +326,96 @@ export class DetachementComponent {
     return demande.statut === 'REJET_CA';
   }
 
+  goToPaiement(demande: IDemande) {
+    const items: Item[] = []
+    const item = new Item();
+    item.description ='Mon super produit';
+    item.unit_price = 200
+    item.total_price = 200;
+    item.name = "Timbre";
+    item.quantity= 1
 
-    goToPaiement() {
-        const items: Item[] = []
-        const item = new Item();
-        item.description ='Mon super produit';
-        item.unit_price = 200
-        item.total_price = 200;
-        item.name = "Timbre";
-        item.quantity= 1
+    items.push(item);
 
-        items.push(item);
+    const store = new Store();
+    store.name ='eDAC';
+    store.website_url = "localhost:4200";
 
-        const store = new Store();
-        store.name ='eDAC';
-        store.website_url = "localhost:4200";
+    const action = new Actions();
+    action.callback_url="http://localhost:8081/api/detachements/paiement/callback";
+    action.return_url="http://localhost:4200/detachements";
+    action.cancel_url="http://localhost:4200"
 
-        const action = new Actions();
-        action.callback_url="http://localhost:8081/api/detachements/paiement/callback";
-        action.return_url="http://localhost:4200/detachements";
-        action.cancel_url="http://localhost:4200"
-
-        const customeData = new CustomData();
-        customeData.order_id = "eDac";
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        const charactersLength = characters.length;
-        for (let i = 0; i < 10; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        customeData.transaction_id = result;
-
-        const invoice = new Invoice();
-        invoice.items = items;
-        invoice.total_amount= 100;
-        invoice.description = "Achat de timbre";
-        invoice.devise = "XOF";
-        invoice.customer_lastname = "Kabore";
-        invoice.customer_firstname = "Ali";
-        invoice.customer_email = "test@gmail.com";
-        const ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let res = '';
-        const charLengh = ch.length;
-        for (let i = 0; i < 10; i++) {
-            res += characters.charAt(Math.floor(Math.random() * charLengh));
-        }
-        invoice.transaction_id = "123333344ID";
-        invoice.external_id ="TTT";
-
-
-        const commande = new Commande();
-        commande.invoice = invoice;
-        commande.actions = action;
-        commande.custom_data = customeData;
-        commande.store = store;
-
-        const paiement = new Paiement();
-
-        paiement.commande = commande;
-
-
-        const url = 'https://app.ligdicash.com/pay/v01/redirect/checkout-invoice/create'; // Target URL
-        const data = paiement;
-        const headers = new HttpHeaders({
-            'ApiKey': 'V5T3Z0O594C6QNZ4L',
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZF9hcHAiOiIxODI0OSIsImlkX2Fib25uZSI6ODk5NDIsImRhdGVjcmVhdGlvbl9hcHAiOiIyMDI0LTA3LTA0IDE1OjA2OjE2In0.MPR-WGFdX3PoBAH8IbMreF6AENu2DImrcRzTuiznjXY',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        });
-
-
-        this.redirectService.postWithHeaders(url, paiement, headers).subscribe(response => {
-            console.warn("RESP",response);
-            // enregistrer le token
-            localStorage.setItem('token',response.token);
-            window.location.href = response.response_text;
-            //this.getTransaction(response.token, urlRedirect);
-
-          //
-        }, error => {
-            console.error('Error:', error);
-        });
+    const customeData = new CustomData();
+    customeData.order_id = "eDac";
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < 10; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
+    customeData.transaction_id = result;
+
+    const invoice = new Invoice();
+    invoice.items = items;
+    invoice.total_amount= 100;
+    invoice.description = "Achat de timbre";
+    invoice.devise = "XOF";
+    invoice.customer_lastname = "Kabore";
+    invoice.customer_firstname = "Ali";
+    invoice.customer_email = "test@gmail.com";
+    const ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let res = '';
+    const charLengh = ch.length;
+    for (let i = 0; i < 10; i++) {
+        res += characters.charAt(Math.floor(Math.random() * charLengh));
+    }
+    invoice.transaction_id = demande.id?.toString();
+    invoice.external_id = demande.id?.toString();
+
+
+    const commande = new Commande();
+    commande.invoice = invoice;
+    commande.actions = action;
+    commande.custom_data = customeData;
+    commande.store = store;
+
+    const paiement = new Paiement();
+
+    paiement.commande = commande;
+
+
+    const url = 'https://app.ligdicash.com/pay/v01/redirect/checkout-invoice/create'; // Target URL
+    const data = paiement;
+    const headers = new HttpHeaders({
+        'ApiKey': 'V5T3Z0O594C6QNZ4L',
+        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZF9hcHAiOiIxODI0OSIsImlkX2Fib25uZSI6ODk5NDIsImRhdGVjcmVhdGlvbl9hcHAiOiIyMDI0LTA3LTA0IDE1OjA2OjE2In0.MPR-WGFdX3PoBAH8IbMreF6AENu2DImrcRzTuiznjXY',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    });
+
+
+    this.redirectService.postWithHeaders(url, paiement, headers).subscribe(response => {
+        console.warn("RESP",response);
+        // enregistrer le token
+        localStorage.setItem('token',response.token);
+        window.location.href = response.response_text;
+        //this.getTransaction(response.token, urlRedirect);
+
+        //
+    }, error => {
+        console.error('Error:', error);
+    });
+}
+
+   
 
     saveTransaction(transaction: ITransaction){
         this.redirectService.createTransaction(transaction).subscribe(response => {
             console.warn("RESP",response);
+            // effacer le token
+            localStorage.removeItem('token');
+
         }, error => {
             console.error('Error:', error);
         });
@@ -419,6 +424,7 @@ export class DetachementComponent {
     private getTransaction(token: string) {
         this.redirectService.getTransaction(token).subscribe(response => {
             if(response.body!.response_code == "00" && response.body!.status == "completed" ){
+              this.paiementComplete=true;
                 this.saveTransaction(response.body!);
             }
         }, error => {

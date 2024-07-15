@@ -162,7 +162,7 @@ export class DetachementAgentsComponent {
       this.profil = user.profil;
       this.enableBtnActe = (this.profil === 'SAD');
 
-      if (this.profil === 'STDRH' || this.profil === 'STDGFP' || this.profil === 'DRH' ||
+      if (this.profil === 'SH' || this.profil === 'STDRH' || this.profil === 'STDGFP' || this.profil === 'DRH' ||
         this.profil === 'DGFP' || this.profil === 'SG' || this.profil === 'DCMEF' || this.profil === 'STDCMEF' || this.profil === 'CSTDRH'|| this.profil === 'SAD') {
         this.demandeService.findMinistereDmds(req, this.tokenStorage.getUser().matricule).subscribe(result => {
           if (result && result.body) {

@@ -453,6 +453,7 @@ console.warn("ALERT ICI",this.demande);
                             summary: 'demande creer avec succès',
 
                         });*/
+                        this.goToPaiement(response.body!);
 
                     },
                     error: (error) => {

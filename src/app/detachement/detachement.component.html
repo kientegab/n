@@ -1,8 +1,8 @@
 
 <p-card>
   <div class="_m-t-15">
-<div class="alert alert-success" *ngIf="paiementComplete">L'opération a reussi</div>
-      <div class="btn btn-secondary" (click)="goToPaiement()">Ligdicash</div>
+<div class="alert alert-success" *ngIf="paiementComplete">L'opération de paiement a reussi!!</div>
+      <!-- <div class="btn btn-secondary" (click)="goToPaiement()">Ligdicash</div> -->
     <div class="p-d-flex">
       <div class="p-ml-auto">
         <p-message *ngIf="message" [severity]="message.severity" [text]="message.summary"></p-message>
@@ -71,6 +71,7 @@
         <td>
           <span class="statut-label" [ngClass]="{
             'statut-initiee': demande.statut === 'INITIEE',
+            'statut-payee': demande.statut === 'PAYEE',
             'statut-avis-sh': demande.statut === 'AVIS_SH',
             'statut-avis-drh': demande.statut === 'AVIS_DRH',
             'statut-avis-dgfp': demande.statut === 'AVIS_DGFP',
@@ -98,7 +99,7 @@
 
 
         <td class="actionsStyle">
-          <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(demande)" [enableBtnPaiement]="enableBtnPaiement" (paiement)="goToPaiement()"
+          <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(demande)" [enableBtnPaiement]="enableBtnPaiement" (paiement)="goToPaiement(demande)"
           [enableBtnInfo]="enableBtnInfo" (generate)="generateRecipisse(demande)" [enableBtnRecipisse]="enableBtnRecipisse&& (demande.statut !== 'CLOS')"
           (download)="downloadActe(demande)" [enableBtnDownload]="enableBtnDownload && (demande.statut === 'CLOS')"
           (edit)="isEditButtonVisible(demande) ? openModalEdit(demande) : null" [enableBtnEdit]="enableBtnEdit && (demande.statut === 'REJET_CA')"

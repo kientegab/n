@@ -107,7 +107,7 @@ export class RedirectService {
 
 
     createTransaction(transaction: ITransaction): Observable<HttpResponse<ITransaction>> {
-        const url = ""
+        const url = "http://localhost:8081/api/detachements/paiements/save"
         return this.http.post<ITransaction>(url, transaction, { observe: 'response' });
     }
 

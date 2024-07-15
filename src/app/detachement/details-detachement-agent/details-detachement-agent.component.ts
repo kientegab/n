@@ -385,7 +385,7 @@ downloadActe(demande: IDemande): void {
           this.username = user.username;
           this.profil = user.profil;
 
-          if(this.demande.statut === 'INITIEE' && this.profil === 'SH') {
+          if(this.demande.statut === 'PAYEE' && this.profil === 'SH') {
             this.disableAviserSH = false;
           }
 
