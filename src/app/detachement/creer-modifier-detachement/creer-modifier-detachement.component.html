@@ -35,7 +35,7 @@
             </div>
 
             <div class="col-12 md:col-4">
-                <label for="typeDemandes">Type Demande </label>
+                <label for="typeDemandes">Nature de l'acte </label>
                 <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="typeDemandes"
                     [(ngModel)]="typeDemandeSelected" optionLabel="libelle" inputId="typeDemandeSelected"
                     name="typeDemandeSelected" [filter]="true" appendTo="body" [showClear]="true">
@@ -44,7 +44,7 @@
 
 
             <div class="col-12 md:col-4">
-                <label for="motif">Motif :</label>
+                <label for="motif">Motif de l'acte :</label>
                 <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{ 'width': '100%' }" [options]="motifsFiltres"
                     [(ngModel)]="selectedMotif" optionLabel="libelle" inputId="motif" name="motif"
                     placeholder="Sélectionner le motif..." [filter]="true" appendTo="body" [showClear]="true"
@@ -152,6 +152,12 @@
 
 
 
+        <!-- Nouvelle section pour la durée -->
+        <div class="formgrid grid" >
+            <div class="col-12">
+                <h4>Durée</h4>
+            </div>
+
             <div class="col-12 md:col-4">
                 <div class="p-field p-fluid">
                     <label for="annee">Nombre d'année</label>
@@ -160,7 +166,6 @@
                         min="0" max="5">
                 </div>
             </div>
-
 
             <div class="col-12 md:col-4">
                 <div class="p-field p-fluid">
@@ -171,7 +176,6 @@
                 </div>
             </div>
 
-
             <div class="col-12 md:col-4">
                 <div class="p-field p-fluid">
                     <label for="jours">Nombre de jours</label>
@@ -179,8 +183,14 @@
                         name="mois" min="0" max="31"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 </div>
+                <br>
+           
             </div>
+         
+        </div>
+      
             <div class="col-12 md:col-12" *ngIf="demande.id">
+                
                 <p-fieldset legend="Liste des pièces existantes" [toggleable]="true">
                     <table class="table table-sm">
                         <thead>
@@ -234,7 +244,7 @@
                     </table>
                 </div>
             </div>
-
+      <br>
 
         </div>
 

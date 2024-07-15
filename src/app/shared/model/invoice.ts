@@ -14,6 +14,7 @@ export interface IInvoice {
 
 }
 export class Invoice implements IInvoice {
+
     constructor(
         public items?: LigneItems[],
         public total_amount?: number,

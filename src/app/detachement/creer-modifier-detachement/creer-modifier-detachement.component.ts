@@ -20,6 +20,7 @@ import {IStructure} from 'src/app/shared/model/structure.model';
 import {Duree, IDuree} from 'src/app/shared/model/duree.model';
 import {UploadFileService} from 'src/app/shared/service/upload.service';
 import {IPieceJointe, pieceJointe} from 'src/app/shared/model/pieceJointe.model';
+import { TokenService } from 'src/app/shared/service/token.service';
 import {RedirectService} from "../../shared/service/redirect.service";
 import {Actions, Commande, CustomData, Invoice, Item, Paiement, Store} from "../../shared/model/paiement/paiementDto";
 
@@ -48,7 +49,7 @@ export class CreerModifierDetachementComponent {
     pieceJointes: IPieceJointe[] = [];
     isDisplay = true;
     cloneePieces: IPieceJointe[] = [];
-
+      matriculeVide?: any
 
     pieces: IPiece[] = [];
     file: Blob | string = '';
@@ -64,6 +65,7 @@ export class CreerModifierDetachementComponent {
     selectedTypeDemandeur?: ITypeDemandeur | undefined;
     idDmd: number | undefined;
     duree: IDuree = new Duree();
+    superieur: string | undefined;
 
     typeDemandes: ITypeDemande [] = [];
 
@@ -133,6 +135,7 @@ export class CreerModifierDetachementComponent {
                         // Vérifiez que la réponse est réussie
                         if (response && response.body) {
                             this.agent = response.body;
+                            this.superieur = (response.body.superieurHierarchique ? response.body.superieurHierarchique.nom: '') + ' ' + (response.body.superieurHierarchique ? response.body.superieurHierarchique!.prenom: '');
                             this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement une fois les données obtenues
                             console.warn("agent================================================", this.agent)
                             console.warn("agent================================================", this.agentInfo)
@@ -177,12 +180,17 @@ export class CreerModifierDetachementComponent {
         private structureService: StructureService,
         private pieceService: PieceService,
         private agentService: AgentService,
+        private tokenStorage: TokenService,
         private redirectService: RedirectService
     ) {
     }
 
     ngOnInit(): void {
         this.idDmd = +this.activatedRoute.snapshot.paramMap.get('id')!;
+this.onTypeDemandeurChange();
+      
+
+
         this.loadStructure();
         this.loadPieces();
         this.loadTypeDemande();
@@ -209,6 +217,13 @@ export class CreerModifierDetachementComponent {
         if (!this.agent.structure.ministere) {
             this.agent.structure.ministere = {libelle: ''};
         }
+
+        if (!this.agent.superieurHierarchique) {
+            this.agent.superieurHierarchique = {nom: ''};
+        }
+        if (!this.agent.superieurHierarchique) {
+            this.agent.superieurHierarchique = {prenom: ''};
+        }
         // Assurez-vous que libelle est défini
         if (!this.agent.structure.libelle) {
             this.agent.structure.libelle = '';
@@ -221,11 +236,19 @@ export class CreerModifierDetachementComponent {
             this.demande.agent = {prenom: ""};
         }
 
-
+   
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
+    }
+
+    getSuperieurNomComplet(): string {
+        if (this.agent && this.agent.superieurHierarchique) {
+            const { prenom, nom } = this.agent.superieurHierarchique;
+            return `${prenom ? prenom + ' ' : ''}${nom || ''}`;
+        }
+        return '';
     }
 
     onTypeDemandeurChange(): void {
@@ -242,8 +265,32 @@ export class CreerModifierDetachementComponent {
             this.selectedMotif = undefined;
         }
 
+        if (this.selectedTypeDemandeur?.libelle=="AGENT")
+            {
+                console.warn("type demandeur choisit::::",this.selectedTypeDemandeur?.libelle)
+
+                console.warn("Matricule de l'agent connecté::::",this.tokenStorage.getUser().matricule)
+
+                this.demande.agent!.matricule = this.tokenStorage.getUser().matricule;
+                this.onChangeMatricule();
+
+                console.warn("Matricule de l'agent renseigné::::",this.demande.agent!.matricule)
+            }
+            else (this.selectedTypeDemandeur?.libelle!=="AGENT")
+            {
+
+                
+            }
+
     }
 
+
+
+    get superieurHierarchique(): string {
+        return `${this.agent.superieurHierarchique!.prenom} ${this.agent.superieurHierarchique!.nom}`;
+      }
+
+    
     onMotifChange(): void {
         if (this.selectedMotif) {
             this.piecesFilters = this.pieces.filter((piece) => piece.motif?.libelle === this.selectedMotif?.libelle);

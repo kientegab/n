@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IDemande } from '../model/demande.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { createRequestOption } from '../util/request-util';
 import { LazyLoadEvent } from 'primeng/api';
 import { environment } from 'src/environments/environment';
@@ -23,6 +23,8 @@ const exportUrl= environment.detachementUrl+'/exports';
   providedIn: 'root'
 })
 export class DemandeService {
+  
+  public dataChangeDemande = new Subject<IDemande>();
 
   constructor(private http:HttpClient) { }
 
@@ -185,6 +187,11 @@ export class DemandeService {
 
 
 
+    }
+
+   
+    setDemande(data: IDemande){
+      this.dataChangeDemande.next(data);
     }
 
 
