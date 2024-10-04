@@ -1,0 +1,128 @@
+/* Styles pour chaque statut */
+.statut-label {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  
+  .statut-initiee {
+    background-color: #f0f0f0; /* Exemple de couleur de fond pour INITIEE */
+    color: #555; /* Exemple de couleur pour INITIEE */
+  }
+  
+  .statut-avis-sh {
+    background-color: #e8f5e9; /* Exemple de couleur de fond pour AVIS_SH */
+    color: #4CAF50; /* Exemple de couleur pour AVIS_SH */
+  }
+  
+  .statut-avis-drh {
+    background-color: #fff3e0; /* Exemple de couleur de fond pour AVIS_DRH */
+    color: #FF9800; /* Exemple de couleur pour AVIS_DRH */
+  }
+  
+  .statut-avis-dgfp {
+    background-color: #e3f2fd; /* Exemple de couleur de fond pour AVIS_DGFP */
+    color: #2196F3; /* Exemple de couleur pour AVIS_DGFP */
+  }
+  
+  .statut-receptionee {
+    background-color: #e8f5e9; /* Exemple de couleur de fond pour RECEPTIONEE */
+    color: #4CAF50; /* Exemple de couleur pour RECEPTIONEE */
+  }
+  .statut-payee {
+    background-color: #e8f5e9; /* Exemple de couleur de fond pour RECEPTIONEE */
+    color: #4CAF50; /* Exemple de couleur pour RECEPTIONEE */
+  }
+  
+  
+  .statut-imputee {
+    background-color: #f3e5f5; /* Exemple de couleur de fond pour IMPUTEE */
+    color: #9C27B0; /* Exemple de couleur pour IMPUTEE */
+  }
+  
+  .statut-conforme {
+    background-color: #e3f2fd; /* Exemple de couleur de fond pour CONFORME */
+    color: #2196F3; /* Exemple de couleur pour CONFORME */
+  }
+  
+  .statut-rejet-ca {
+    background-color: #ffebee; /* Exemple de couleur de fond pour REJET_CA */
+    color: #F44336; /* Exemple de couleur pour REJET_CA */
+  }
+  
+  .statut-rejet-drh {
+    background-color: #ffebee; /* Exemple de couleur de fond pour REJET_DRH */
+    color: #F44336; /* Exemple de couleur pour REJET_DRH */
+  }
+  
+  .statut-validee {
+    background-color: #e8f5e9; /* Exemple de couleur de fond pour VALIDEE */
+    color: #4CAF50; /* Exemple de couleur pour VALIDEE */
+  }
+  
+  .statut-refusee {
+    background-color: #ffebee; /* Exemple de couleur de fond pour REFUSEE */
+    color: #F44336; /* Exemple de couleur pour REFUSEE */
+  }
+  
+  .statut-rejet-sg {
+    background-color: #ffcdd2; /* Exemple de couleur de fond pour REJET_SG */
+    color: #D32F2F; /* Exemple de couleur pour REJET_SG */
+  }
+  
+  .statut-abandonnee {
+    background-color: #e0e0e0; /* Exemple de couleur de fond pour ABANDONNEE */
+    color: #757575; /* Exemple de couleur pour ABANDONNEE */
+  }
+  
+  .statut-elaboration {
+    background-color: #e1f5fe; /* Exemple de couleur de fond pour ELABORATION */
+    color: #03A9F4; /* Exemple de couleur pour ELABORATION */
+  }
+  
+  .statut-clos {
+    background-color: #bdbdbd; /* Exemple de couleur de fond pour CLOS */
+    color: #9E9E9E; /* Exemple de couleur pour CLOS */
+  }
+  
+  .statut-demande-validee {
+    background-color: #e8f5e9; /* Exemple de couleur de fond pour DEMANDE_VALIDEE */
+    color: #4CAF50; /* Exemple de couleur pour DEMANDE_VALIDEE */
+  }
+  
+  .statut-demande-rejetee {
+    background-color: #ffebee; /* Exemple de couleur de fond pour DEMANDE_REJETEE */
+    color: #F44336; /* Exemple de couleur pour DEMANDE_REJETEE */
+  }
+  
+  .statut-projet-elabore {
+    background-color: #fff9c4; /* Exemple de couleur de fond pour PROJET_ELABORE */
+    color: #FFEB3B; /* Exemple de couleur pour PROJET_ELABORE */
+  }
+  
+  .statut-projet-valide {
+    background-color: #e8f5e9; /* Exemple de couleur de fond pour PROJET_VALIDE */
+    color: #4CAF50; /* Exemple de couleur pour PROJET_VALIDE */
+  }
+  
+  .statut-projet-verifie {
+    background-color: #fff3e0; /* Exemple de couleur de fond pour PROJET_VERIFIE */
+    color: #FF9800; /* Exemple de couleur pour PROJET_VERIFIE */
+  }
+  
+  .statut-projet-vise {
+    background-color: #bbdefb; /* Exemple de couleur de fond pour PROJET_VISE */
+    color: #1976D2; /* Exemple de couleur pour PROJET_VISE */
+  }
+  
+  .statut-projet-signe {
+    background-color: #e1f5fe; /* Exemple de couleur de fond pour PROJET_SIGNE */
+    color: #03A9F4; /* Exemple de couleur pour PROJET_SIGNE */
+  }
+  
+  .statut-projet-rejete {
+    background-color: #ffcdd2; /* Exemple de couleur de fond pour PROJET_REJETE */
+    color: #D32F2F; /* Exemple de couleur pour PROJET_REJETE */
+  }
+  

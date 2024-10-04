@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IDemande } from '../model/demande.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { createRequestOption } from '../util/request-util';
 import { LazyLoadEvent } from 'primeng/api';
 import { environment } from 'src/environments/environment';
@@ -23,6 +23,8 @@ const exportUrl= environment.detachementUrl+'/exports';
   providedIn: 'root'
 })
 export class DemandeService {
+  
+  public dataChangeDemande = new Subject<IDemande>();
 
   constructor(private http:HttpClient) { }
 
@@ -60,6 +62,10 @@ export class DemandeService {
     return this.http.delete(`${demandeUrl}/${id}`, { observe: 'response' });
   }
 
+  abandonner(id: number): Observable<HttpResponse<{}>> {
+    return this.http.post<any>(`${demandeUrl}/abandonner/${id}`, { observe: 'response' });
+  }
+
   findListe(): Observable<EntityArrayResponseType> {
     return this.http.get<IDemande[]>(demandeUrl+'/list', { observe: 'response' });
   }
@@ -68,9 +74,11 @@ export class DemandeService {
     return this.http.post<IDemande>(`${demandeUrl}/receptionner/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
 
+  receptionV(groupe: IDemande): Observable<EntityResponseType> {
+    return this.http.post<IDemande>(`${demandeUrl}/receptionner/valided-sg/${groupe.id}`, groupe.historique, { observe: 'response' });
+  }
 
 
-  
   verifierProjetSTDCMEF(groupe: IDemande): Observable<EntityResponseType>{
     return this.http.post<IDemande>(`${demandeUrl}/verifier-projet/${groupe.id}`, groupe.historique, { observe: 'response' });
 
@@ -98,9 +106,15 @@ export class DemandeService {
   aviserSG(groupe: IDemande): Observable<EntityResponseType> {
     return this.http.post<IDemande>(`${demandeUrl}/valider-demande/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
+  analyserCA(groupe: IDemande): Observable<EntityResponseType> {
+    return this.http.post<IDemande>(`${demandeUrl}/analyser/${groupe.id}`, groupe.historique, { observe: 'response' });
+  }
 
   rejeterSG(groupe: IDemande): Observable<EntityResponseType> {
-    return this.http.post<IDemande>(`${demandeUrl}/rejet-new/${groupe.id}`, groupe.historique, { observe: 'response' });
+    return this.http.post<IDemande>(`${demandeUrl}/rejet-sg/${groupe.id}`, groupe.historique, { observe: 'response' });
+  }
+  rejeterDRH(groupe: IDemande): Observable<EntityResponseType> {
+    return this.http.post<IDemande>(`${demandeUrl}/rejet-drh/${groupe.id}`, groupe.historique, { observe: 'response' });
   }
 
 
@@ -141,7 +155,7 @@ export class DemandeService {
     validerElaborationDRH(demande: IDemande): Observable<EntityResponseType> {
         return this.http.post<IDemande>(`${demandeUrl}/valider-projet/${demande.id}`, demande.historique, { observe: 'response' });
     }
-    
+
 
     rejeterElaborationSG(demande: IDemande): Observable<EntityResponseType> {
       return this.http.post<IDemande>(`${demandeUrl}/rejeter-projet/${demande.id}`, demande.historique, { observe: 'response' });
@@ -151,5 +165,34 @@ export class DemandeService {
         return this.http.post<IDemande>(`${demandeUrl}/signer-projet/${demande.id}`, demande.historique, { observe: 'response' });
     }
 
-    
+  generateRecipisse(demandeId: number): Observable<Blob> {
+    return this.http.get(`${exportUrl}/recepisse-demande/${demandeId}`, { responseType: 'blob' });
+  }
+  downloadActe(id: number): Observable<Blob> {
+    return this.http.get(`${demandeUrl}/download/${id}`, { responseType: 'blob' });
+  }
+  generateDemande(id: number): Observable<Blob> {
+    return this.http.get(`${exportUrl}/demande-traitee/${id}`, { responseType: 'blob' });
+  }
+  
+
+
+ imputerCST(id: number, matriculeImputation: string, groupe: IDemande): Observable<EntityResponseType> {
+      return this.http.post<IDemande>(
+        `${demandeUrl}/imputer/${id}/${matriculeImputation}`,
+        groupe.historique,
+        { observe: 'response' }
+      );
+
+
+
+
+    }
+
+   
+    setDemande(data: IDemande){
+      this.dataChangeDemande.next(data);
+    }
+
+
 }

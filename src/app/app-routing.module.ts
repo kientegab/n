@@ -13,7 +13,7 @@ const routerOptions: ExtraOptions = {
 };
 
 const routes: Routes = [
-    
+
     {
         path: '', component: DashboardPublicComponent,
         children: [
@@ -35,13 +35,13 @@ const routes: Routes = [
             { path: 'public/contact', data: { breadcrumb: 'contactez nous' }, loadChildren: () => import('./public/contactez-nous/contactez-nous.module').then(m => m.ContactezNousModule) },
             { path: 'authorized', component: AuthorizedComponent },
             { path: 'oauth2/logout', component: LogoutComponent },
-           
+
         ]
     },
 
     {
        // path: 'admin', component: AppLayoutComponent, canActivate: [AuthGuard],
-        path: 'admin', component: AppLayoutComponent, 
+        path: 'admin', component: AppLayoutComponent,
         // data: {
         // authorities: [Authority.USER,Authority.ADMIN,
         //     Authority.ADD_PROFILE,Authority.VIEW_PROFILE,Authority.DELETE_PROFILE,Authority.ADD_USER,
@@ -80,7 +80,7 @@ const routes: Routes = [
         //    Authority.ADD_CAISSE,Authority.EDIT_CAISSE,Authority.VIEW_CAISSE,
         //    Authority.DELETE_CAISSE,Authority.ADD_TYPE_COTISATION,Authority.EDIT_TYPE_COTISATION,
         //    Authority.VIEW_TYPE_COTISATION,Authority.DELETE_TYPE_COTISATION,Authority.ADD_COTISATION,
-        //    Authority.EDIT_COTISATION,Authority.VIEW_COTISATION,Authority.DELETE_COTISATION     
+        //    Authority.EDIT_COTISATION,Authority.VIEW_COTISATION,Authority.DELETE_COTISATION
         // ],
         // },
         children: [
@@ -88,11 +88,14 @@ const routes: Routes = [
         ]
     },
     { path: 'auth/login', data: { breadcrumb: 'Auth' }, loadChildren: () => import('./account/login/login.module').then(m => m.LoginModule) },
+    { path: 'account/activate-compte', data: { breadcrumb: 'activation' }, loadChildren: () => import('./account/activation-compte/activation-compte.module').then(m => m.ActivationCompteModule) },
+
+
     { path: 'detachements', data: { breadcrumb: 'Gestion des détachements' }, component: AppLayoutComponent, loadChildren: () => import('./detachement/detachement.module').then(m => m.DetachementModule) },
     { path: 'disponibilites', data: { breadcrumb: 'Gestion des disponibilités' },component: AppLayoutComponent, loadChildren: () => import('./disponibilite/disponibilite.module').then(m => m.DisponibiliteModule) },
     { path: 'stat-demandes', data: { breadcrumb: 'Gestion des statistiques de demandes' },component: AppLayoutComponent, loadChildren: () => import('./statistique/demande/demande.module').then(m => m.DemandeModule) },
     { path: 'notfound', loadChildren: () => import('./shared/notfound/notfound.module').then(m => m.NotfoundModule) },
-    
+
     { path: '**', redirectTo: '/notfound' }
 ];
 

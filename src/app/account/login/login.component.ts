@@ -64,32 +64,31 @@ export class LoginComponent {
 	//   }
 
 	seConnecter(): void {
-		this.authService
-		  .login(this.account)
-		  .subscribe( 
+		this.authService.login(this.account).subscribe(
 			(data) => {
-				if(data.body){
-				//    console.warn("DATA::::::::::::::::::::::::::",data.body!);
-				   let user = data.body!;
-				   this.tokenService.saveToken(user.access_token);
-				   this.tokenService.saveUser(user);
-				   this.isLoginFailed = false;
-				   this.isLoggedIn = true;
-				   // this.setRoute(user.profil);
-				   this.router.navigate(['/admin']);
-				   this.saveSuccess = true;
-				   // this.message = 'Échec de la connexion, nom d\'utilisateur ou mot de passe incorrect';
-
-				   console.log("USER::::::::::::::",user)
-			    }
-		   },
-		   err => {
-			   this.errorMessage= 'Matricule ou mot de passe incorrect!!'
-			   // this.errorMessage = err.error.message;
-			   this.isLoginFailed = true;
+				if (data.body) {
+					let user = data.body!;
+					this.tokenService.saveToken(user.access_token);
+					this.tokenService.saveUser(user);
+					this.isLoginFailed = false;
+					this.isLoggedIn = true;
+					this.saveSuccess = true;
+	
+					// Redirection vers '/admin' en cas de succès
+					this.router.navigate(['/admin']);
+					console.log("USER::::::::::::::", user);
+				}
+			},
+			err => {
+				// Message d'erreur en cas d'échec
+				let errorMessage = "Matricule ou mot de passe incorrect!!";
+				this.message = { severity: 'error', summary: errorMessage };
+				this.isLoginFailed = true;
+				this.saveSuccess = false; // Assurez-vous que le flag de succès est désactivé en cas d'échec
 			}
 		);
 	}
+	
 
 
 	setRoute(profil: string) {

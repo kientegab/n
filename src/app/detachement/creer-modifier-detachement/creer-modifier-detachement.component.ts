@@ -20,6 +20,11 @@ import {IStructure} from 'src/app/shared/model/structure.model';
 import {Duree, IDuree} from 'src/app/shared/model/duree.model';
 import {UploadFileService} from 'src/app/shared/service/upload.service';
 import {IPieceJointe, pieceJointe} from 'src/app/shared/model/pieceJointe.model';
+import { TokenService } from 'src/app/shared/service/token.service';
+import {RedirectService} from "../../shared/service/redirect.service";
+import {Actions, Commande, CustomData, Invoice, Item, Paiement, Store} from "../../shared/model/paiement/paiementDto";
+import {ITransaction} from "../../shared/model/paiement/transactionDto";
+
 
 interface UploadEvent {
     originalEvent: Event;
@@ -45,7 +50,7 @@ export class CreerModifierDetachementComponent {
     pieceJointes: IPieceJointe[] = [];
     isDisplay = true;
     cloneePieces: IPieceJointe[] = [];
-
+      matriculeVide?: any
 
     pieces: IPiece[] = [];
     file: Blob | string = '';
@@ -61,10 +66,11 @@ export class CreerModifierDetachementComponent {
     selectedTypeDemandeur?: ITypeDemandeur | undefined;
     idDmd: number | undefined;
     duree: IDuree = new Duree();
+    superieur: string | undefined;
 
     typeDemandes: ITypeDemande [] = [];
 
-    typeDemandeSelected: ITypeDemande = new TypeDemande(); 
+    typeDemandeSelected: ITypeDemande = new TypeDemande();
 
     // typeDemande?: number;
     typeDemandeurs: ITypeDemandeur[] = [{
@@ -130,6 +136,7 @@ export class CreerModifierDetachementComponent {
                         // Vérifiez que la réponse est réussie
                         if (response && response.body) {
                             this.agent = response.body;
+                            this.superieur = (response.body.superieurHierarchique ? response.body.superieurHierarchique.nom: '') + ' ' + (response.body.superieurHierarchique ? response.body.superieurHierarchique!.prenom: '');
                             this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement une fois les données obtenues
                             console.warn("agent================================================", this.agent)
                             console.warn("agent================================================", this.agentInfo)
@@ -174,11 +181,22 @@ export class CreerModifierDetachementComponent {
         private structureService: StructureService,
         private pieceService: PieceService,
         private agentService: AgentService,
+        private tokenStorage: TokenService,
+        private redirectService: RedirectService
     ) {
     }
 
     ngOnInit(): void {
+
+        if(localStorage.getItem('token')){
+            //verifier si la transaction s'est bien passée
+            this.getTransaction(localStorage.getItem('token')!);
+        }
         this.idDmd = +this.activatedRoute.snapshot.paramMap.get('id')!;
+        this.onTypeDemandeurChange();
+
+
+
         this.loadStructure();
         this.loadPieces();
         this.loadTypeDemande();
@@ -205,6 +223,13 @@ export class CreerModifierDetachementComponent {
         if (!this.agent.structure.ministere) {
             this.agent.structure.ministere = {libelle: ''};
         }
+
+        if (!this.agent.superieurHierarchique) {
+            this.agent.superieurHierarchique = {nom: ''};
+        }
+        if (!this.agent.superieurHierarchique) {
+            this.agent.superieurHierarchique = {prenom: ''};
+        }
         // Assurez-vous que libelle est défini
         if (!this.agent.structure.libelle) {
             this.agent.structure.libelle = '';
@@ -224,6 +249,32 @@ export class CreerModifierDetachementComponent {
 
     }
 
+    private getTransaction(token: string) {
+        this.redirectService.getTransaction(token).subscribe(response => {
+            if(response.body!.response_code == "00" && response.body!.status == "completed" ){
+                this.saveTransaction(response.body!);
+            }
+        }, error => {
+            console.error('Error:', error);
+        });
+    }
+
+    saveTransaction(transaction: ITransaction){
+        this.redirectService.createTransaction(transaction).subscribe(response => {
+            console.warn("RESP AFTER SAVE TRANSACTION",response);
+        }, error => {
+            console.error('Error AFTER SAVE TRANSACTION :', error);
+        });
+    }
+
+    getSuperieurNomComplet(): string {
+        if (this.agent && this.agent.superieurHierarchique) {
+            const { prenom, nom } = this.agent.superieurHierarchique;
+            return `${prenom ? prenom + ' ' : ''}${nom || ''}`;
+        }
+        return '';
+    }
+
     onTypeDemandeurChange(): void {
         // this.loadMotif();
         if (this.selectedTypeDemandeur) {
@@ -238,7 +289,31 @@ export class CreerModifierDetachementComponent {
             this.selectedMotif = undefined;
         }
 
+        if (this.selectedTypeDemandeur?.libelle=="AGENT")
+            {
+                console.warn("type demandeur choisit::::",this.selectedTypeDemandeur?.libelle)
+
+                console.warn("Matricule de l'agent connecté::::",this.tokenStorage.getUser().matricule)
+
+                this.demande.agent!.matricule = this.tokenStorage.getUser().matricule;
+                this.onChangeMatricule();
+
+                console.warn("Matricule de l'agent renseigné::::",this.demande.agent!.matricule)
+            }
+            else (this.selectedTypeDemandeur?.libelle!=="AGENT")
+            {
+
+
+            }
+
     }
+
+
+
+    get superieurHierarchique(): string {
+        return `${this.agent.superieurHierarchique!.prenom} ${this.agent.superieurHierarchique!.nom}`;
+      }
+
 
     onMotifChange(): void {
         if (this.selectedMotif) {
@@ -368,13 +443,18 @@ console.warn("ALERT ICI",this.demande);
                     next: (response) => {
                         this.dialogRef.close(response);
                         this.dialogRef.destroy();
-                        this.router.navigate(['detachements']);
+                        this.isDialogOpInProgress = false;
+
+                        /** Redirection du paiement **/
+
+                       /* this.router.navigate(['detachements']);
                         this.showMessage({
                             severity: 'success',
                             summary: 'demande creer avec succès',
 
-                        });
-                        this.isDialogOpInProgress = false;
+                        });*/
+                        this.goToPaiement(response.body!);
+
                     },
                     error: (error) => {
                         console.error("error" + JSON.stringify(error));
@@ -440,7 +520,7 @@ console.warn("ALERT ICI",this.demande);
                 this.agent = this.demande.agent!;
                 this.onMotifChange();
             }
-        }); 
+        });
     }
 
     getPieceByDmd(dmdId: number){
@@ -468,4 +548,87 @@ console.warn("ALERT ICI",this.demande);
     display(){
         this.isDisplay = true;
     }
+
+    goToPaiement(demande: IDemande) {
+        const items: Item[] = []
+        const item = new Item();
+        item.description ='Mon super produit';
+        item.unit_price = 200
+        item.total_price = 200;
+        item.name = "Timbre";
+        item.quantity= 1
+
+        items.push(item);
+
+        const store = new Store();
+        store.name ='eDAC';
+        store.website_url = "localhost:4200";
+
+        const action = new Actions();
+        action.callback_url="http://localhost:8081/api/detachements/paiement/callback";
+        action.return_url="http://localhost:4200/detachements";
+        action.cancel_url="http://localhost:4200"
+
+        const customeData = new CustomData();
+        customeData.order_id = "eDac";
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        const charactersLength = characters.length;
+        for (let i = 0; i < 10; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        customeData.transaction_id = result;
+
+        const invoice = new Invoice();
+        invoice.items = items;
+        invoice.total_amount= 100;
+        invoice.description = "Achat de timbre";
+        invoice.devise = "XOF";
+        invoice.customer_lastname = "Kabore";
+        invoice.customer_firstname = "Ali";
+        invoice.customer_email = "test@gmail.com";
+        const ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let res = '';
+        const charLengh = ch.length;
+        for (let i = 0; i < 10; i++) {
+            res += characters.charAt(Math.floor(Math.random() * charLengh));
+        }
+        invoice.transaction_id = demande.id?.toString();
+        invoice.external_id = demande.id?.toString();
+
+
+        const commande = new Commande();
+        commande.invoice = invoice;
+        commande.actions = action;
+        commande.custom_data = customeData;
+        commande.store = store;
+
+        const paiement = new Paiement();
+
+        paiement.commande = commande;
+
+
+        const url = 'https://app.ligdicash.com/pay/v01/redirect/checkout-invoice/create'; // Target URL
+        const data = paiement;
+        const headers = new HttpHeaders({
+            'ApiKey': 'V5T3Z0O594C6QNZ4L',
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZF9hcHAiOiIxODI0OSIsImlkX2Fib25uZSI6ODk5NDIsImRhdGVjcmVhdGlvbl9hcHAiOiIyMDI0LTA3LTA0IDE1OjA2OjE2In0.MPR-WGFdX3PoBAH8IbMreF6AENu2DImrcRzTuiznjXY',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        });
+
+
+        this.redirectService.postWithHeaders(url, paiement, headers).subscribe(response => {
+            console.warn("RESP",response);
+            // enregistrer le token
+            localStorage.setItem('token',response.token);
+            window.location.href = response.response_text;
+            //this.getTransaction(response.token, urlRedirect);
+
+            //
+        }, error => {
+            console.error('Error:', error);
+        });
+    }
+
 }

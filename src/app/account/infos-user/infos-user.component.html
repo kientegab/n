@@ -22,11 +22,11 @@
                                 <tbody>
                                 <tr>
                                     <th scope="col">Nom</th>
-                                    <td>: {{ user.nom }}</td>
+                                    <td>: {{ agent.nom }}</td>
                                     <th scope="col">Prenom</th>
-                                    <td>: {{ user.prenom }}</td>
+                                    <td>: {{ agent.prenom }}</td>
                                     <th scope="col">Matricule</th>
-                                    <td>: {{ user.matricule }}</td>
+                                    <td>: {{ agent.matricule }}</td>
                                 </tr>
                                 <!-- <tr>
                                     <th scope="col">Matricule</th>
@@ -36,13 +36,13 @@
                                 </tr> -->
                                 <tr>
                                     <th scope="col">Téléphone</th>
-                                    <td>: {{ user.telephone }}</td>
+                                    <td>: {{ agent.telephone }}</td>
                                     <th scope="col">Email</th>
-                                    <td>: {{ user.email }}</td>
+                                    <td>: {{ agent.email }}</td>
                                 </tr>
                                 <tr>
                                 </tr>
-                     
+
                                 </tbody>
                             </table>
                         </div>
@@ -90,7 +90,7 @@
                                     <button (click)="changeMail()" [disabled]="mailForm.form.invalid"
                                             class="btn btn-sm btn-success"
                                             type="button">
-                                         <fa-icon [icon]="faSave"></fa-icon> 
+                                         <fa-icon [icon]="faSave"></fa-icon>
                                         <span class="ml-2">Modifier mon adresse email</span>
                                     </button>
                                 </div>
@@ -114,7 +114,7 @@
                                             </div>
                                         </div>
                                         <input #oldPassword (keyup.enter)="changePassword()"
-                                               [(ngModel)]="changePasswordDTO.oldPassword" 
+                                               [(ngModel)]="changePasswordDTO.password"
                                                class="form-control form-control-sm" id="oldPassword"
                                                name="oldPassword" placeholder="Mot de passe actuel"
                                                [type]="isTypePassword ? 'password' : 'text'" required/>
@@ -158,7 +158,7 @@
                                                 <!-- <fa-icon [icon]="faLock"></fa-icon> -->
                                             </div>
                                         </div>
-                                        <input #newpassword [(ngModel)]="newPassword"
+                                        <input #newpassword [(ngModel)]="changePasswordDTO.newPassword"
                                                class="form-control form-control-sm" id="newPassword" name="newPassword"
                                                pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{8,20})$"
                                                [type]="isTypePassword ? 'password' : 'text'"
@@ -211,7 +211,7 @@
                                             </div>
                                         </div>
                                         <input #confirmpassword="ngModel" (keyup)="checkIdentiquePassword()"
-                                               [(ngModel)]="confirmPassword" class="form-control form-control-sm"
+                                               [(ngModel)]="changePasswordDTO.confirmPassword" class="form-control form-control-sm"
                                                id="confirmPassword" name="confirmPassword"
                                                pattern="^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{8,20})$"
                                                [type]="isTypePassword ? 'password' : 'text'"

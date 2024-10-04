@@ -12,6 +12,12 @@
     <button pButton pRipple type="button" icon="pi pi-check" label="" class="btn-sm btn-success mr-2" pTooltip="Modifier profil" [hidden]="!enableBtnEditProfil" (click)="fireEditProfil()"></button>
     <button pButton pRipple type="button" icon="pi pi-chart-line" label="" class="btn-sm btn-success mr-2" pTooltip="Validation" [hidden]="!enableBtnValidation" (click)="fireValidation()"></button>
     <button pButton pRipple type="button" icon="pi pi-check" label="" class="p-button-raised p-button-success mr-2" pTooltip="Valider" [hidden]="!enableBtnValider" (click)="fireValider()"></button>
+    <button pButton pRipple type="button" icon="pi pi-upload" label="" class="btn-sm btn-success mr-2" pTooltip="Charger" [hidden]="!enableBtnActe" (click)="fireActe()"></button>
+    <button pButton pRipple type="button" icon="pi pi-file-pdf" label="" class="p-button-raised p-button-success mr-2" pTooltip="Génerer récepissé" [hidden]="!enableBtnRecipisse" (click)="fireGenerate()"></button>
+    <button pButton pRipple type="button" icon="pi pi-eject" label="" class="btn-sm btn-secondary mr-2" pTooltip="Abandonner" [hidden]="!enableBtnAbandonner" (click)="fireAbandonner()"></button>
+    <button pButton pRipple type="button" icon="pi pi-check" label="" class="btn-sm btn-success mr-2" pTooltip="Paiement" [hidden]="!enableBtnPaiement" (click)="firePaiement()"></button>
+
+
 </div>
 
 <!-- <p-panelMenu [model]="items" [style]="{'width':'auto'}"></p-panelMenu> -->

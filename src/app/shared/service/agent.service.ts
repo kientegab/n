@@ -5,6 +5,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { createRequestOption } from '../util/request-util';
 import { LazyLoadEvent } from 'primeng/api';
+import { ICanActivateRequest } from '../model/can-activate-request';
 
 
 type EntityResponseType = HttpResponse<IAgent>;
@@ -14,6 +15,9 @@ type EntityArrayResponseType = HttpResponse<IAgent[]>;
 //const agentUrl = environment.authentificationUrl;
 
 const agentUrl = environment.detachementUrl+'/agents';
+const agentUrl2 = environment.authentificationUrl;
+
+const agentMatriculeUrl=environment.authentificationUrl
 // const agentUrl = "assets/data/agents.json";
 
 
@@ -30,6 +34,9 @@ export class AgentService {
 
   update(agent: IAgent): Observable<EntityResponseType> {
     return this.http.put<IAgent>(agentUrl+'/update', agent, { observe: 'response' });
+  }
+  updateAgent(agent: ICanActivateRequest): Observable<EntityResponseType> {
+    return this.http.put<IAgent>(agentUrl2+'/update', agent, { observe: 'response' });
   }
 
   find(matricule: number): Observable<EntityResponseType> {
@@ -56,6 +63,11 @@ export class AgentService {
 
   getAgentInfoByMatricule(matricule: string): Observable<EntityResponseType> {
     return this.http.get<IAgent>(`${agentUrl}/matricule/${matricule}`, { observe: 'response' });
+  }
+
+  //microservice auth
+  getAgentByMatricule(matricule: string): Observable<EntityResponseType> {
+    return this.http.get<IAgent>(`${agentMatriculeUrl}/matricule/${matricule}`, { observe: 'response' });
   }
 
 }

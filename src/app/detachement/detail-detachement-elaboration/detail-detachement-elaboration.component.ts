@@ -61,7 +61,8 @@ export class DetailDetachementElaborationComponent {
     disableSignerElaboration = true;
     disableVerifierSTDCMEF = true;
     diableViserDCMEF = true;
-    disableExporterElaboration = true
+    disableReceptionner2=true;
+    disableExporterElaboration = true;
     disableRejeterDemande = true;
     disableRejeterProjet = true;
     disableVisaProjet = true;
@@ -383,7 +384,7 @@ openModalArticleEdit(articleDemande: IArticleDemande): void {
                     this.username = user.username;
                     this.profil = user.profil;
 
-                    if(this.demande.statut === 'INITIEE' && this.profil === 'SH') {
+                    if(this.demande.statut === 'PAYEE' && this.profil === 'SH') {
                         this.disableAviserSH = false;
                     }
 

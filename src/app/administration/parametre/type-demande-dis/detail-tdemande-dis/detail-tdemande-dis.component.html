@@ -1,0 +1,66 @@
+<p-fieldset legend="Informations générales" [toggleable]="true">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-sm no-border">
+                    <tbody>
+                    <tr>
+                        <th>Code</th>
+                        <td>: {{ typedemande.code}}</td>
+                        <th>Libelle</th>
+                        <td>: {{ typedemande.libelle}}</td>
+                        <th>Plafond année</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</p-fieldset>
+<p-fieldset legend="Liste des visas" [toggleable]="true">
+    <p-table [value]="typedemande.visas!" [tableStyle]="{ 'min-width': '50rem' }" [styleClass]="'p-datatable-sm'">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Code</th>
+                <th>Libelle</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-visa>
+            <tr>
+                <td>{{visa.code}}</td>
+                <td>{{visa.libelle}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-fieldset>
+<p-fieldset legend="Liste des articles" [toggleable]="true">
+    <p-table [value]="typedemande.articles!" [tableStyle]="{ 'min-width': '50rem' }" [styleClass]="'p-datatable-sm'">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Code</th>
+                <th>Libelle</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-article>
+            <tr>
+                <td>{{article.code}}</td>
+                <td>{{article.libelle}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-fieldset>
+<p-fieldset legend="Liste des ampliations" [toggleable]="true">
+    <p-table [value]="typedemande.ampliations!" [tableStyle]="{ 'min-width': '50rem' }" [styleClass]="'p-datatable-sm'">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Code</th>
+                <th>Libelle</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-ampliation>
+            <tr>
+                <td>{{ampliation.code}}</td>
+                <td>{{ampliation.libelle}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-fieldset>

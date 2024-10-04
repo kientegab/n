@@ -11,6 +11,8 @@ import { DemandeService } from '../shared/service/demande-service.service';
 import { CreerModifierDisponibiliteComponent } from './creer-modifier-disponibilite/creer-modifier-disponibilite.component';
 import { DetailsDisponibiliteComponent } from './details-disponibilite/details-disponibilite.component';
 import { IAgent } from '../shared/model/agent.model';
+import {DemandeDisponibiliteService} from "../shared/service/demande-disponibilite-service.service";
+import { TokenService } from '../shared/service/token.service';
 
 @Component({
   selector: 'app-disponibilite',
@@ -52,23 +54,26 @@ export class DisponibiliteComponent {
 
 
   constructor(
-    private demandeService: DemandeService,
+    private demandeService: DemandeDisponibiliteService,
     private activatedRoute: ActivatedRoute,
     private dialogService: DialogService,
     private dialogRef: DynamicDialogRef,
     private router: Router,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private tokenStorage: TokenService
     ){}
 
 
    ngOnInit(): void {
         this.activatedRoute.data.subscribe(
           () => {
-            this.loadAll();
+            this.loadMesDemandes();
           }
         );
 
       }
+
+
 
       ngOnDestroy(): void {
         if (this.routeData) {
@@ -80,7 +85,7 @@ export class DisponibiliteComponent {
       }
 
       filtrer(): void {
-        this.loadAll();
+        this.loadMesDemandes();
       }
 
       resetFilter(): void {
@@ -104,19 +109,23 @@ export class DisponibiliteComponent {
             sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc'),
           },
         });
-        this.loadAll();
+        this.loadMesDemandes();
       }
 
-      loadAll(): void {
+
+
+
+      loadMesDemandes(): void {
         const req = this.buildReq();
-        this.demandeService.query(req).subscribe(result => {
-          if (result && result.body) {
-            this.totalRecords = Number(result.headers.get('X-Total-Count'));
-            this.demandes = result.body || [];
-            console.log("=============", this.demandes);
-          }
+        this.demandeService.findMyDmds(req,this.tokenStorage.getUser().matricule).subscribe(result => {
+            if (result && result.body) {
+                this.totalRecords = Number(result.headers.get('X-Total-Count'));
+                this.demandes = result.body || [];
+                console.log("====== demandes personnelles =======", result);
+            }
         });
-      }
+    }
+
 
       sortMethod(): string[] {
         this.predicate = 'id';
@@ -147,23 +156,7 @@ export class DisponibiliteComponent {
 
       /** Permet d'afficher un modal pour la modification */
       openModalEdit(demande: IDemande): void {
-        this.dialogService.open(CreerModifierDisponibiliteComponent,
-          {
-            header: 'Modifier un demande',
-            width: '60%',
-            contentStyle: { overflow: 'auto' },
-            baseZIndex: 10000,
-            maximizable: true,
-            closable: true,
-            data: demande
-          }).onClose.subscribe(result => {
-            if(result){
-              this.isDialogOpInProgress = false;
-              this.loadAll();
-              this.showMessage({ severity: 'success', summary: 'Demande modifiée avec succès' });
-            }
-
-          });
+          this.router.navigate(['disponibilites','edit', demande.id]);
 
       }
 

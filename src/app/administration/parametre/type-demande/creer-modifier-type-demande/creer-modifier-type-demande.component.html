@@ -16,27 +16,27 @@
 <p-message *ngIf="message" [severity]="message.severity" [text]="message.summary"></p-message>
 <form (ngSubmit)="saveEntity()" #dtf="ngForm" style="margin-top:20px;">
     <div class="formgrid grid">
-        <div class="field col-4 md:col-4">
+        <div class="col-12 md:col-6">
             <label for="code">Code :</label>
             <input type="text" id="code" name="code" #code="ngModel" [(ngModel)]="typeDemande.code" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
-        <div class="field col-4 md:col-4">
+        <div class="col-12 md:col-6">
             <label for="libelle">Libelle :</label>
             <input type="text" id="libelle" name="libelle" #libelle="ngModel" [(ngModel)]="typeDemande.libelle" required   class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
         </div>
-        <div class="field col-4 md:col-4">
+        <div class="col-12 md:col-6">
             <label for="libelle">Visa :</label>
             <div>
                 <p-multiSelect name="visas" appendTo="body" [style]="{'minWidth':'100%'}" [options]="visas" [(ngModel)]="visasSelected" defaultLabel="Selectionner les visas" optionLabel="libelle" display="chip"></p-multiSelect>
             </div>
         </div>
-        <div class="field col-4 md:col-4">
+        <div class="col-12 md:col-6">
             <label for="libelle">Ampliations :</label>
             <div>
                 <p-multiSelect name="Ampliations" appendTo="body" [style]="{'minWidth':'100%'}" [options]="ampliations" [(ngModel)]="ampliationsSelected" defaultLabel="Selectionner les avis" optionLabel="libelle" display="chip"></p-multiSelect>
             </div>
         </div>
-        <div class="field col-4 md:col-4">
+        <div class="col-12 md:col-6">
             <label for="libelle">Articles :</label>
             <div>
                 <p-multiSelect name="Articles" appendTo="body" [style]="{'minWidth':'100%'}" [options]="articles" [(ngModel)]="articlesSelected" defaultLabel="Selectionner les articles" optionLabel="libelle" display="chip"></p-multiSelect>

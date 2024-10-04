@@ -15,25 +15,29 @@ import { CrudToolbarComponent } from '../shared/comon/crud-toolbar/crud-toolbar.
 import {ArchwizardModule} from "angular-archwizard";
 import { CircuitComponent } from './parametre/circuit/circuit.component';
 import { CardModule } from 'primeng/card';
+import { DialogModule } from 'primeng/dialog';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { FileUploadModule } from 'primeng/fileupload';
+import { CheckboxModule } from 'primeng/checkbox';
 
-import { AmpliationComponent } from './parametre/ampliation/ampliation.component';
-import {
-    CreerModifierAmpliationComponent
-} from "./parametre/ampliation/creer-modifier-ampliation/creer-modifier-ampliation.component";
-import { MotifComponent } from './parametre/motif/motif.component';
+
 
 @NgModule({
   declarations: [
-   
     DashboardAdministrationComponent,
     ActionsToolbarIudComponent,
     CrudToolbarComponent,
+   // PieceDisponibiliteComponent,
   ],
   imports: [
   CommonModule,
     AdministrationRoutingModule,
     DividerModule,
     FormsModule,
+    DialogModule,
+    MessagesModule,
+    ProgressBarModule,
+    FileUploadModule,
     MessagesModule,
     ButtonModule,
     KnobModule,
@@ -41,6 +45,7 @@ import { MotifComponent } from './parametre/motif/motif.component';
     TableModule, 
     CardModule,
     TableModule,
+    CheckboxModule,
     ArchwizardModule.forRoot()
   ],
   exports: [

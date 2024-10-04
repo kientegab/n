@@ -139,6 +139,23 @@ export class AviserDetachementComponent {
             }
           );
         }
+        if(this.profil === "CA") {
+          this.demandeService.analyserCA(this.demande).subscribe(
+            {
+              next: (response: any) => {
+                this.dialogRef.close(response);
+                this.dialogRef.destroy();
+                this.showMessage({ severity: 'success', summary: 'Demande Analysée avec succès' });
+              
+              },
+              error: (error: { error: { message: any; }; }) => {
+                console.error("error" + JSON.stringify(error));
+                this.isOpInProgress = false;
+                this.showMessage({ severity: 'error', summary: error.error.message });
+              }
+            }
+          );
+        }
       }
     }
   }

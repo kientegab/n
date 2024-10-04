@@ -26,6 +26,10 @@ import { CalendarModule } from 'primeng/calendar';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FileUploadModule } from 'primeng/fileupload';
 import { ReceptionDisponibiliteComponent } from './reception-disponibilite/reception-disponibilite.component';
+import {FieldsetModule} from "primeng/fieldset";
+import { ReceptionDisponibiliteVComponent } from './reception-disponibilite-v/reception-disponibilite-v.component';
+import { DetailsDisponibiliteAgentComponent } from './details-disponibilite-agent/details-disponibilite-agent.component';
+import { DocumentUploadFileComponent } from './document-upload-file/document-upload-file.component';
 
 
 
@@ -38,34 +42,38 @@ import { ReceptionDisponibiliteComponent } from './reception-disponibilite/recep
     DetailsDisponibiliteComponent,
     AviserDisponibiliteComponent,
     DisponibiliteAgentsComponent,
-    ReceptionDisponibiliteComponent
+    ReceptionDisponibiliteComponent,
+    ReceptionDisponibiliteVComponent,
+    DetailsDisponibiliteAgentComponent,
+    DocumentUploadFileComponent
   ],
-  imports: [
-    CommonModule,
-    DisponibiliteRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
-    ButtonModule,
-    DynamicDialogModule,
-    TableModule,
-    CardModule,
-    InputTextModule,
-    DialogModule,
-    DividerModule,
-    ProgressBarModule,
-    MessageModule,
-    DropdownModule,
-    AppCommonModule,
-    ConfirmDialogModule,
-    ProgressSpinnerModule,
-    PaginatorModule,
-    CalendarModule,
+    imports: [
+        CommonModule,
+        DisponibiliteRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        ButtonModule,
+        DynamicDialogModule,
+        TableModule,
+        CardModule,
+        InputTextModule,
+        DialogModule,
+        DividerModule,
+        ProgressBarModule,
+        MessageModule,
+        DropdownModule,
+        AppCommonModule,
+        ConfirmDialogModule,
+        ProgressSpinnerModule,
+        PaginatorModule,
+        CalendarModule,
 
-    MultiSelectModule,
+        MultiSelectModule,
 
- 
-    FileUploadModule
 
-  ]
+        FileUploadModule,
+        FieldsetModule
+
+    ]
 })
 export class DisponibiliteModule { }

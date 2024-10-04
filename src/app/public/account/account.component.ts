@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MenuItem, Message, MessageService } from 'primeng/api';
+import { DynamicDialogRef } from 'primeng/dynamicdialog';
 import { LISTE_TYPE_AGENT } from 'src/app/shared/constants/liste.constants';
 import { Agent, IAgent } from 'src/app/shared/model/agent.model';
 import { CanActivateRequest, CreateAccountRequest, ICanActivateRequest, ICreateAccountRequest } from 'src/app/shared/model/can-activate-request';
@@ -54,7 +55,7 @@ export class AccountComponent implements OnInit {
   isFetchingAgentInfo: boolean = false; // Pour gérer l'état de chargement
   dossierTypes!: any[];
   selectedType: any;
-  
+
 
   profil: IProfil = new Profil()
 
@@ -62,6 +63,7 @@ export class AccountComponent implements OnInit {
 
   constructor(
     private accountService: UserService,
+    private dialogRef: DynamicDialogRef,
     private ministereService: MinistereService,
     private profilService: ProfilService,
     private structureService: StructureService,
@@ -82,7 +84,7 @@ export class AccountComponent implements OnInit {
         matricule: '' // Valeur par défaut ou vide
       };
     }
-    
+
     this.stepItems = [
       { label: 'Verification' },
       { label: 'Creation du Compte' }
@@ -102,9 +104,9 @@ loadProfil(): void {
       if (result && result.body) {
         console.log("Profil::===============================",result.body)
           this.profils = result.body || [];
-         
-          
-        
+
+
+
       }
   });
 
@@ -136,6 +138,21 @@ loadStructure() {
       console.error(JSON.stringify(error));
   });
 }
+
+loadAgentByMatricule(matricule :string) {
+    this.agentService.getAgentByMatricule(matricule).subscribe(response => {
+
+        this.request = response.body!;
+        this.request.nom=response.body!.nom;
+        this.request.matricule=response.body!.matricule;
+        this.request.superieurHierarchique?.matricule!=response.body!.superieurHierarchique?.matricule;
+        console.log("agent================", this.request)
+        console.log("matricule================", this.request.matricule)
+    }, error => {
+        this.message = {severity: 'error', summary: error.error};
+        console.error(JSON.stringify(error));
+    });
+  }
 
 
   canActivate() {
@@ -197,84 +214,140 @@ LoadAgentByMatricule() {
 
 
 
+create() {
+  // Assurez-vous que les informations du supérieur hiérarchique sont correctement récupérées
+  if (this.request.superieurHierarchique && this.request.superieurHierarchique.matricule) {
+    this.isFetchingAgentInfo = true;
+    this.agentService.getAgentInfoByMatricule(this.request.superieurHierarchique.matricule)
+      .subscribe(
+        (response) => {
+          if (response && response.body) {
+            this.agent = response.body;
+            this.isFetchingAgentInfo = false;
+            this.request.superieurHierarchique = this.agent;
 
+            this.isOpInProgress = true;
+            this.accountService.create(this.request).subscribe(
+              {
+                next: (response) => {
+                  this.showMessage({
+                    severity: 'success',
+                    summary: 'Compte d\'utilisateur créé avec succès'
+                  });
 
+                  // Utilisez setTimeout pour afficher le message de succès avant la redirection
+                  setTimeout(() => {
+                    this.resetForm();
+                    this.router.navigate(['/login']);
+                  }, 10000); // 2 secondes de délai avant la redirection
 
-
-
-
-
-
-
-
-
-
-
-
-  create() {
-    // this.accountRequest.noMatricule = this.request.noMatricule;
-    // this.profil = { name: "SH" };
-
-   // this.request.profil = this.profil
-    //this.request.profil = this.profil
-     this.request.profil= { id: 2 };
-
-    
-    this.request.superieurHierarchique = this.agent;
-    
-    
-    this.isOpInProgress = true;
-    // console.log("Profils=====================================================",this.profil)
-    console.log("Création de compte=====================================================",this.request);
-    console.warn("Supérieur à envoyé================================================", this.agent)
-
-    this.accountService.create(this.request).subscribe(() => {
-      this.showMessage({ severity: 'success', summary: 'Compte d\'utilisateur crée avec succès' });
-      this.resetForm();
-      this.router.navigate(['/login']);
-      setTimeout(() => {
-        this.accountService.login();
-      }, 2000);
-      this.accountRequest = {};
-      this.pwdConfirmation = null;
-      this.form.reset();
-      this.isOpInProgress = false;
-    }, error => {
-      this.isOpInProgress = false;
-      this.handleError(error);
-    });
-
-
-
+                  this.isOpInProgress = false;
+                },
+                error: (error) => {
+                  console.error("error" + JSON.stringify(error));
+                  this.isOpInProgress = false;
+                  let errorMessage = "Vous avez déjà un compte!! contactez l'admin"
+                  this.message = { severity: 'error', summary: errorMessage };
+                }
+              }
+            );
+          } else {
+            console.error("Erreur lors de la récupération des informations de l'agent", response);
+            this.isFetchingAgentInfo = false;
+          }
+        },
+        (error: any) => {
+          console.error("Erreur lors de la récupération des informations de l'agent", error);
+          this.isFetchingAgentInfo = false;
+        }
+      );
+  } else {
+    console.log("agent================================================", this.agent);
+    console.log("agent================================================", this.agentInfo);
+    this.agent = new Agent();
   }
+}
+
+resetForm() {
+  this.request = {} // Réinitialisez le modèle du formulaire (request) à un nouvel objet CreateAccountRequest.
+  this.pwdConfirmation = null;
+  this.form.reset(); // Réinitialisez le formulaire lui-même.
+}
+
+showMessage(message: Message) {
+  this.message = message;
+  this.timeoutHandle = setTimeout(() => {
+    this.message = null;
+  }, 5000);
+}
 
 
-  // create() {
-  //   this.isOpInProgress = true;
-  
-  //   // Traitement de la création du compte ici
-  
-  //   this.accountService.create(this.request).subscribe(
-  //     () => {
-  //       this.showMessage({ severity: 'success', summary: 'Compte d\'utilisateur crée avec succès' });;
-  //       this.resetForm();
-  //       this.isOpInProgress = false;
-  //     },
-  //     (error) => {
-  //       this.isOpInProgress = false;
-  //       this.handleError(error);
-  //     }
-  //   );
-  // }
-  
 
-  
+//   create() {
+//     // this.accountRequest.noMatricule = this.request.noMatricule;
+//     // this.profil = { name: "SH" };
+
+//    // this.request.profil = this.profil
+//     //this.request.profil = this.profil
+//      this.request.profil= { id: 2 };
+
+
+//     this.request.superieurHierarchique = this.agent;
+
+//     //creation de l objet siperieur hierarchique
+
+//     this.agentService.getAgentByMatricule(this.request.superieurHierarchique.matricule!).subscribe(response => {
+
+//         this.request = response.body!;
+//         this.request.superieurHierarchique = response.body!.superieurHierarchique;
+//         this.request.superieurHierarchique?.matricule!=response.body!.superieurHierarchique?.matricule;
+//         console.log("agent================", this.request.superieurHierarchique);
+//         //console.log("matricule================", this.request.matricule)
+//     }, error => {
+//         this.message = {severity: 'error', summary: error.error};
+//         console.error(JSON.stringify(error));
+//     });
+
+//     //fin
+
+
+
+//     this.isOpInProgress = true;
+//     // console.log("Profils=====================================================",this.profil)
+//     console.log("Création de compte=====================================================",this.request);
+//    // console.warn("Supérieur à envoyé================================================", this.agent)
+//     console.log("agentttttttttttt: ",this.request);
+//     this.accountService.create(this.request).subscribe(() => {
+//       this.showMessage({ severity: 'success', summary: 'Compte d\'utilisateur crée avec succès' });
+//       this.resetForm();
+//       this.router.navigate(['/login']);
+//       setTimeout(() => {
+//         this.accountService.login();
+//       }, 2000);
+//       this.accountRequest = {};
+//       this.pwdConfirmation = null;
+//       this.form.reset();
+//       this.isOpInProgress = false;
+//     }, error => {
+//       this.isOpInProgress = false;
+//       this.handleError(error);
+//     });
+
+
+
+//   }
+
+
+
+
+
+/* 
   resetForm() {
     this.request = {}; // Réinitialisez le modèle du formulaire (request) à un objet vide.
     this.pwdConfirmation = null;
     this.form.reset(); // Réinitialisez le formulaire lui-même si vous avez accès à l'objet FormGroup.
   }
-
+ */
 
 
   clearDialogMessages() {
@@ -288,10 +361,12 @@ handleError(error: HttpErrorResponse) {
     this.dialogErrorMessage = error.error.title;
 }
 
-showMessage(message: Message) {
+/* showMessage(message: Message) {
     this.message = message;
     this.timeoutHandle = setTimeout(() => {
         this.message = null;
     }, 5000);
-}
+} */
+
+
 }

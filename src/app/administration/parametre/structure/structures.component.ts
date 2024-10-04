@@ -149,7 +149,7 @@ export class StructuresComponent {
         this.dialogService.open(CreerModifierStructureComponent,
             {
                 header: 'Ajouter une structure',
-                width: '60%',
+                width: '70%',
                 contentStyle: { overflow: 'auto', },
                 baseZIndex: 10000,
                 maximizable: true,
@@ -170,7 +170,7 @@ export class StructuresComponent {
         this.dialogService.open(CreerModifierStructureComponent,
             {
                 header: 'Modifier un structure',
-                width: '60%',
+                width: '70%',
                 contentStyle: { overflow: 'auto' },
                 baseZIndex: 10000,
                 maximizable: true,
@@ -192,7 +192,7 @@ export class StructuresComponent {
         this.dialogService.open(DetailStructureComponent,
             {
                 header: 'Details de structure',
-                width: '60%',
+                width: '70%',
                 contentStyle: { overflow: 'auto' },
                 baseZIndex: 10000,
                 maximizable: true,

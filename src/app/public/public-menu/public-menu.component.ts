@@ -92,115 +92,123 @@ export class PublicMenuComponent implements  OnInit {
       this.items = [
         {
           label: 'Accueil',
-          icon: 'pi pi-home',
+          //icon: 'pi pi-home',
           routerLink: ['']
         },
         {
-          label: 'Détachement',
-          items: [
+          label: 'Formalités',
+          //icon: 'pi pi-home',
+          routerLink: [''],
+          items:[
             {
-              label: 'Nouvelle détachement',
-              routerLink: ['/public/N_detachement'],
-              routerLinkActiveOptions: {
-                exact: true
-              }
+              label: 'Détachement',
+              items: [
+                {
+                  label: 'Nouvelle détachement',
+                  routerLink: ['/public/N_detachement'],
+                  routerLinkActiveOptions: {
+                    exact: true
+                  }
+                },
+                {
+                  separator: true
+                },
+                {
+                  label: 'Renouvellement détachement',
+                  routerLink: ['/public/R_detachement'],
+                  routerLinkActiveOptions: {
+                    exact: true
+                  }
+                },
+                {
+                  separator: true
+                },
+                {
+                  label: 'Fin détachement',
+                  routerLink: ['/public/F_detachement'],
+                  routerLinkActiveOptions: {
+                    exact: true
+                  }
+                },
+                {
+                  separator: true
+                },
+                {
+                    label: 'Rectification détachement',
+                    routerLink: ['/public/RE_detachement'],
+                    routerLinkActiveOptions: {
+                      exact: true
+                    }
+                  },
+                  {
+                    separator: true
+                  },
+                {
+                  label: 'Annulation détachement',
+                  routerLink: ['/public/A_detachement'],
+                  routerLinkActiveOptions: {
+                    exact: true
+                  }
+                },
+    
+              ]
             },
             {
-              separator: true
+              label: 'Disponibilité',
+              items: [
+                {
+                  label: 'Nouvelle disponibilité',
+                  routerLink: ['/public/N_disponibilite'],
+                  routerLinkActiveOptions: {
+                    exact: true
+                  }
+                },
+                {
+                  separator: true
+                },
+                {
+                  label: 'Renouvellement disponibilité',
+                  routerLink: ['/public/R_disponibilite'],
+                  routerLinkActiveOptions: {
+                    exact: true
+                  }
+                },
+                {
+                  separator: true
+                },
+                {
+                  label: 'Fin disponibilité',
+                  routerLink: ['/public/F_disponibilite'],
+                  routerLinkActiveOptions: {
+                    exact: true
+                  }
+                },
+                {
+                  separator: true
+                },
+                {
+                    label: 'Rectification disponibilité',
+                    routerLink: ['/public/RE_disponibilite'],
+                    routerLinkActiveOptions: {
+                      exact: true
+                    }
+                  },
+                  {
+                    separator: true
+                  },
+                {
+                  label: 'Annulation disponibilité',
+                  routerLink: ['/public/A_disponibilite'],
+                  routerLinkActiveOptions: {
+                    exact: true
+                  }
+                },
+    
+              ]
             },
-            {
-              label: 'Renouvellement détachement',
-              routerLink: ['/public/R_detachement'],
-              routerLinkActiveOptions: {
-                exact: true
-              }
-            },
-            {
-              separator: true
-            },
-            {
-              label: 'Fin détachement',
-              routerLink: ['/public/F_detachement'],
-              routerLinkActiveOptions: {
-                exact: true
-              }
-            },
-            {
-              separator: true
-            },
-            {
-                label: 'Rectification détachement',
-                routerLink: ['/public/RE_detachement'],
-                routerLinkActiveOptions: {
-                  exact: true
-                }
-              },
-              {
-                separator: true
-              },
-            {
-              label: 'Annulation détachement',
-              routerLink: ['/public/A_detachement'],
-              routerLinkActiveOptions: {
-                exact: true
-              }
-            },
-
           ]
         },
-        {
-          label: 'Disponibilité',
-          items: [
-            {
-              label: 'Nouvelle disponibilité',
-              routerLink: ['/public/N_disponibilite'],
-              routerLinkActiveOptions: {
-                exact: true
-              }
-            },
-            {
-              separator: true
-            },
-            {
-              label: 'Renouvellement disponibilité',
-              routerLink: ['/public/R_disponibilite'],
-              routerLinkActiveOptions: {
-                exact: true
-              }
-            },
-            {
-              separator: true
-            },
-            {
-              label: 'Fin disponibilité',
-              routerLink: ['/public/F_disponibilite'],
-              routerLinkActiveOptions: {
-                exact: true
-              }
-            },
-            {
-              separator: true
-            },
-            {
-                label: 'Rectification disponibilité',
-                routerLink: ['/public/RE_disponibilite'],
-                routerLinkActiveOptions: {
-                  exact: true
-                }
-              },
-              {
-                separator: true
-              },
-            {
-              label: 'Annulation disponibilité',
-              routerLink: ['/public/A_disponibilite'],
-              routerLinkActiveOptions: {
-                exact: true
-              }
-            },
-
-          ]
-        },
+      
 
         {
           label: 'Manuel Utilisateur',
@@ -226,6 +234,7 @@ export class PublicMenuComponent implements  OnInit {
 
      download(){
         window.open(environment.domaine+'/assets/img/manuel.pdf','_blank');
+        window.location.reload()
       }
 
 

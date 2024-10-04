@@ -25,12 +25,12 @@ export class AppMenuComponent implements OnInit {
         if (this.isLoggedIn) {
             const user = this.tokenService.getUser();
             this.profil = user.profil;
-        
+
             if(this.profil === "ADMIN") {
                 this.model = [
                 {
                     // label: 'Dashboard',
-                    icon: 'pi pi-home',
+                    //icon: 'pi pi-home',
                     items: [
                         {
                             label: 'Tableau de bord',
@@ -40,16 +40,15 @@ export class AppMenuComponent implements OnInit {
                         {
                             label: 'Statistiques',
                             icon: 'pi pi-fw pi-chart-line',
-                            // visible: this.authService.checkPermission([Authority.ADMIN], AuthenticationService.privileges),
                             items: [
                                 {
                                     label: 'detachement',
-                                    icon: 'pi pi-fw pi-eye-slash',
+                                    icon: 'pi pi-fw pi-chart-line',
                                     routerLink: ['/stat-demandes']
                                 },
                                 {
                                     label: 'disponibilité',
-                                    icon: 'pi pi-fw pi-eye-slash',
+                                    icon: 'pi pi-fw pi-chart-line',
                                     routerLink: ['/stat-demandes']
                                 },
                             ]
@@ -57,12 +56,16 @@ export class AppMenuComponent implements OnInit {
                         {
                             label: 'Utilisateur',
                             icon: 'pi pi-lock',
-                            //visible: this.authService.checkPermission([Authority.ADMIN, Authority.VIEW_USER], AuthenticationService.privileges),
                             items: [
                                 {
                                     label: 'Agents',
-                                    icon: 'pi pi-fw pi-eye-slash',
+                                    icon: 'pi pi-fw pi-user',
                                     routerLink: ['/admin/agents']
+                                },
+                                {
+                                    label: 'Profil',
+                                    icon: 'pi pi-fw pi-list',
+                                    routerLink: ['/admin/profils']
                                 }
                             ]
                         },
@@ -72,65 +75,74 @@ export class AppMenuComponent implements OnInit {
                             items: [
                                         {
                                             label: 'Circuit',
-                                            icon: 'pi pi-fw pi-eye-slash',
+                                            icon: 'pi pi-fw pi-list',
                                             routerLink: ['/admin/circuit']
                                         },
                                         {   label: 'Structure',
-                                            icon: 'pi pi-fw pi-eye-slash',
+                                            icon: 'pi pi-fw pi-list',
                                             routerLink: ['/admin/structures']
                                         },
                                         {
-                                            label: 'Type Structure',
-                                            icon: 'pi pi-fw pi-eye-slash',
-                                            routerLink: ['/admin/type-structures']
-                                        },
-                                        {
-                                            label: 'Type Demande',
-                                            icon: 'pi pi-fw pi-eye-slash',
-                                            routerLink: ['/admin/type-demandes']
-                                        },
-
-                                        {
-                                            label: 'visa',
-                                            icon: 'pi pi-fw pi-eye-slash',
-                                            routerLink: ['/admin/visas']
-                                        },
-                                        {
-                                            label: 'ministere',
-                                            icon: 'pi pi-fw pi-eye-slash',
+                                            label: 'Ministere',
+                                            icon: 'pi pi-fw pi-list',
                                             routerLink: ['/admin/ministeres']
                                         },
                                         {
-                                            label: 'Profil',
-                                            icon: 'pi pi-fw pi-eye-slash',
-                                            routerLink: ['/admin/profils']
+                                            label: 'Type structure',
+                                            icon: 'pi pi-fw pi-list',
+                                            routerLink: ['/admin/type-structures']
                                         },
                                         {
-                                            label: 'motif',
-                                            icon: 'pi pi-fw pi-eye-slash',
-                                            routerLink: ['/admin/motifs']
+                                            label: 'Type detachement',
+                                            icon: 'pi pi-fw pi-list',
+                                            routerLink: ['/admin/type-demandes']
                                         },
                                         {
-                                            label: 'ampliations',
-                                            icon: 'pi pi-fw pi-eye-slash',
-                                            routerLink: ['/admin/ampliations']
+                                            label: 'Type disponibilite',
+                                            icon: 'pi pi-fw pi-list',
+                                            routerLink: ['/admin/type-demandes-dis']
                                         },
 
                                         {
-                                            label: 'Pieces',
-                                            icon: 'pi pi-fw pi-eye-slash',
+                                            label: 'Motif detachement',
+                                            icon: 'pi pi-fw pi-list',
+                                            routerLink: ['/admin/motifs']
+                                        },{
+                                            label: 'Motif disponibilite',
+                                            icon: 'pi pi-fw pi-list',
+                                            routerLink: ['/admin/motif-disponibilte']
+                                        },
+
+                                        {
+                                            label: 'Piece detachement',
+                                            icon: 'pi pi-fw pi-list',
                                             routerLink: ['/admin/pieces']
                                         },
                                         {
-                                            label: 'Articles',
-                                            icon: 'pi pi-fw pi-eye-slash',
-                                            routerLink: ['/admin/articles']
+                                            label: 'Piece disponibilite',
+                                            icon: 'pi pi-fw pi-list',
+                                            routerLink: ['/admin/pieceDisponibilites']
                                         },
-                                        {
-                                            label: 'Corps',
-                                            icon: 'pi pi-fw pi-eye-slash',
-                                            routerLink: ['/admin/corps']
-                                        },
+                                         // {
+                                        //     label: 'visa',
+                                        //     icon: 'pi pi-fw pi-eye-slash',
+                                        //     routerLink: ['/admin/visas']
+                                        // },
+                                         // {
+                                        //     label: 'ampliations',
+                                        //     icon: 'pi pi-fw pi-eye-slash',
+                                        //     routerLink: ['/admin/ampliations']
+                                        // },
+                                        // {
+                                        //     label: 'Articles',
+                                        //     icon: 'pi pi-fw pi-eye-slash',
+                                        //     routerLink: ['/admin/articles']
+                                        // },
+                                        // {
+                                        //     label: 'Corps',
+                                        //     icon: 'pi pi-fw pi-eye-slash',
+                                        //     routerLink: ['/admin/corps']
+                                        // },
                                     ]
                         },
                     ]
@@ -149,15 +161,15 @@ export class AppMenuComponent implements OnInit {
                                 icon: 'pi pi-fw pi-home',
                                 routerLink: ['/admin']
                             },
-                            
+
                             {
                                 label: 'Détachements',
-                                icon: 'pi pi-fw pi-eye-slash',
+                                icon: 'pi pi-fw pi-list',
                                 routerLink: ['/detachements']
                             },
                             {
                                 label: 'Disponilités',
-                                icon: 'pi pi-fw pi-eye-slash',
+                                icon: 'pi pi-fw pi-list',
                                 routerLink: ['/disponibilites']
                             }
                         ]
@@ -168,7 +180,7 @@ export class AppMenuComponent implements OnInit {
                 this.model = [
                     {
                         // label: 'Dashboard',
-                        icon: 'pi pi-home',
+                        //icon: 'pi pi-home',
                         items: [
                             {
                                 label: 'Tableau de bord',
@@ -182,57 +194,56 @@ export class AppMenuComponent implements OnInit {
                                 items: [
                                     {
                                         label: 'detachement',
-                                        icon: 'pi pi-fw pi-eye-slash',
+                                        icon: 'pi pi-fw pi-chart-line',
                                         routerLink: ['/stat-demandes']
                                     },
                                     {
                                         label: 'disponibilité',
-                                        icon: 'pi pi-fw pi-eye-slash',
+                                        icon: 'pi pi-fw pi-chart-line',
                                         routerLink: ['/stat-demandes']
                                     },
                                 ]
                             },
                             {
                                 label: 'Détachements',
-                                icon: 'pi pi-lock',
-                                //visible: this.authService.checkPermission([Authority.ADMIN, Authority.VIEW_USER], AuthenticationService.privileges),
+                                icon: 'pi pi-fw pi-list',
                                 items: [
-                                    
+
                                     {
                                         label: 'Mes demandes',
-                                        icon: 'pi pi-fw pi-eye-slash',
+                                        icon: 'pi pi-fw pi-list',
                                         routerLink: ['/detachements']
                                     },
-                                    
+
                                     {
                                         label: 'Demandes agents',
-                                        icon: 'pi pi-fw pi-eye-slash',
+                                        icon: 'pi pi-fw pi-list',
                                         routerLink: ['/detachements/agents']
                                     },
                                 ]
                             },
                             {
                                 label: 'Disponilités',
-                                icon: 'pi pi-lock',
+                                icon: 'pi pi-fw pi-list',
                                 //visible: this.authService.checkPermission([Authority.ADMIN, Authority.VIEW_USER], AuthenticationService.privileges),
                                 items: [
-                                
+
                                     {
                                         label: 'Mes demandes',
-                                        icon: 'pi pi-fw pi-eye-slash',
+                                        icon: 'pi pi-fw pi-list',
                                         routerLink: ['/disponibilites']
                                     },
-                                    
+
                                     {
                                         label: 'Demandes agents',
-                                        icon: 'pi pi-fw pi-eye-slash',
+                                        icon: 'pi pi-fw pi-list',
                                         routerLink: ['/disponibilites/agents']
                                     },
                                 ]
                             },
                         ]
                     },
-    
+
                 ]
             }
         }

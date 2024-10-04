@@ -25,7 +25,7 @@
   
     <div class="row">
       <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Structure de disponibilité : </span> {{ demande.destination?.libelle }}</span>
+        <span class="va-m"><span class="font-bold">Structure de détachement : </span> {{ demande.destination?.libelle }}</span>
       </div>
     
       <div class="col-md-6 details-item">
@@ -44,9 +44,49 @@
       </div>
     </div>
 
+<section class="formgrid">
     <div class="row">
       <div class="col-md-6 details-item">
-        <span class="va-m"><span class="font-bold">Statut demande : </span> {{ demande.statut }}</span>
+        <span class="va-m"><span class="font-bold">nombre d'années : </span> {{ demande.duree?.annee }}</span>
+      </div>
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">nombre de mois : </span> {{ demande.duree?.mois }} </span>
+      </div>
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">nombre de jours : </span> {{ demande.duree?.jours }} </span>
+      </div>
+    </div>
+  </section>
+
+    <div class="row">
+      <div class="col-md-6 details-item">
+        <span class="va-m"><span class="font-bold">Statut demande :
+           </span> <span class="statut-label" [ngClass]="{
+            'statut-initiee': demande.statut === 'INITIEE',
+            'statut-payee': demande.statut === 'PAYEE',
+            'statut-avis-sh': demande.statut === 'AVIS_SH',
+            'statut-avis-drh': demande.statut === 'AVIS_DRH',
+            'statut-avis-dgfp': demande.statut === 'AVIS_DGFP',
+            'statut-receptionee': demande.statut === 'RECEPTIONEE',
+            'statut-imputee': demande.statut === 'IMPUTEE',
+            'statut-conforme': demande.statut === 'CONFORME',
+            'statut-rejet-ca': demande.statut === 'REJET_CA',
+            'statut-rejet-drh': demande.statut === 'REJET_DRH',
+            'statut-validee': demande.statut === 'VALIDEE',
+            'statut-refusee': demande.statut === 'REFUSEE',
+            'statut-rejet-sg': demande.statut === 'REJET_SG',
+            'statut-abandonnee': demande.statut === 'ABANDONNEE',
+            'statut-elaboration': demande.statut === 'ELABORATION',
+            'statut-clos': demande.statut === 'CLOS',
+            'statut-demande-validee': demande.statut === 'DEMANDE_VALIDEE',
+            'statut-demande-rejetee': demande.statut === 'DEMANDE_REJETEE',
+            'statut-projet-elabore': demande.statut === 'PROJET_ELABORE',
+            'statut-projet-valide': demande.statut === 'PROJET_VALIDE',
+            'statut-projet-verifie': demande.statut === 'PROJET_VERIFIE',
+            'statut-projet-vise': demande.statut === 'PROJET_VISE',
+            'statut-projet-signe': demande.statut === 'PROJET_SIGNE',
+            'statut-projet-rejete': demande.statut === 'PROJET_REJETE'
+          }">{{ demande.statut }}</span></span>
       </div>
     </div>
   </p-fieldset>
@@ -114,7 +154,7 @@
   </p-fieldset>
   <br>
 
-  <p-fieldset legend="Projet d'arrété" [toggleable]="true">
+  <p-fieldset legend="acte signé" [toggleable]="true" *ngIf="demande.statut === 'CLOS'">
     <div class="row">
       <div class="col-md-12">
         <div class="table-responsive">
@@ -130,10 +170,10 @@
               <tr>
                 <!-- <th scope="row">{{i+1}}</th> -->
                 <!-- <td>{{item.libelle}}</td> -->
-                <!-- <td> MFP_SPMABG_2023-0001.pdf</td> -->
+                <td> acte.pdf</td>
                 <td>
-                  <!-- <button description="Visualiser" icon="pi pi-eye" label="Visualiser"  (click)="voirPiece('item.url')"  class="p-button-primary mr-2"pButton >
-                  </button> -->
+                  <button description="Visualiser" icon="pi pi-eye" label="Visualiser" (click)="downloadActe(demande)" class="p-button-primary mr-2" pButton>
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -142,6 +182,7 @@
       </div>
     </div>
   </p-fieldset>
+  
 
   <p-divider></p-divider>
   <div class="row justify-content-center">
@@ -149,13 +190,28 @@
     <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 
     <div class="p-ml-auto text-right">
-      <button description="rejeter demande sg" icon="pi pi-times" label="Rejeter demande" [hidden]="disableRejeterDemande" (click)="rejeterDemande()" class="p-button p-button-danger mr-2"
+      <button description="rejeter demande drh" icon="pi pi-times" label="Rejeter demande" [hidden]="disableRejeterDemandeDRH" (click)="openModalRejetter(demande)" class="p-button p-button-danger mr-2"
               pButton></button>
     </div>
+    <div class="p-ml-auto text-right">
+      <button description="rejeter demande SG" icon="pi pi-times" label="Rejeter demande" [hidden]="disableRejeterDemandeSG" (click)="openModalRejetter(demande)" class="p-button p-button-danger mr-2"
+              pButton></button>
+    </div>
+
 
     
     <div class="p-ml-auto text-right">
       <button description="aviser sh" icon="pi pi-pencil" label="Aviser" [hidden]="disableAviserSH" (click)="openModalAviser(demande)" class="p-button-success mr-2"
+      pButton></button>
+    </div>
+    <div class="p-ml-auto text-right">
+      <button description="analyser-ca" icon="pi pi-pencil" label="Analyser" [hidden]="disableAnalyserCA" (click)="openModalAnalyser(demande)" class="p-button-success mr-2"
+      pButton></button>
+    </div>
+    
+
+    <div class="p-ml-auto text-right">
+      <button description="Imputer " icon="pi pi-pencil" label="Imputer demande"  [hidden]="disableImputerDemande" (click)="openModalImputerDemande(demande)" class="p-button-success mr-2"
       pButton></button>
     </div>
 
@@ -165,7 +221,7 @@
     </div>
 
     <div class="p-ml-auto text-right">
-      <button description="aviser sg" icon="pi pi-pencil" label="Valider" [hidden]="disableAviserSG" (click)="openModalAviser(demande)" class="p-button-success mr-2"
+      <button description="aviser sg" icon="pi pi-pencil" label="Decision" [hidden]="disableAviserSG" (click)="openModalAviser(demande)" class="p-button-success mr-2"
       pButton></button>
     </div>
 
@@ -173,7 +229,15 @@
       <button description="receptionner" icon="pi pi-folder-open" label="Receptionner" [hidden]="disableReceptionner" (click)="openModalReceptionner(demande)" class="p-button-primary mr-2"
       pButton></button>
     </div>
+    <div class="p-ml-auto text-right">
+      <button description="modifier" icon="pi pi-folder-open" label="modifier" [hidden]="disablemodifierCADemande" (click)="openModalEdit(demande)" class="p-button-primary mr-2"
+      pButton></button>
+    </div>
 
+    <div class="p-ml-auto text-right">
+      <button description="receptionner après validation" icon="pi pi-folder-open" label="Receptionner validation" [hidden]="disableReceptionnerV" (click)="openModalReceptionnerV()" class="p-button-primary mr-2"
+      pButton></button>
+    </div>
 
     <div class="p-ml-auto text-right">
       <button description="elaborer" icon="pi pi-pencil" label="Procéder à l'élaboration" [hidden]="disableElaborer" (click)="openModalElaborerProjet(demande)" class="p-button-success mr-2"
@@ -191,6 +255,7 @@
   <button description="viser" icon="pi pi-pencil" label="Viser projet" [hidden]="diableViserDCMEF" (click)="openModalViserProjet(demande)" class="p-button-success mr-2"
   pButton></button>
 </div>
+
 
 
 <!-- <div class="p-ml-auto text-right">
@@ -211,10 +276,13 @@
                   pButton></button>
       </div>
 
-  
+  <div class="p-ml-auto text-right">
+          <button description="telecharger" icon="pi pi-pencil" [hidden]="disableExporterElaboration" label="Exporter l'arrete signé" (click)="exporter()" class="p-button-success mr-2"
+                  pButton></button>
+      </div>
 
       <div class="p-ml-auto text-right">
-          <button description="telecharger" icon="pi pi-pencil" [hidden]="disableExporterElaboration" label="Exporter l'arrete signé" (click)="exporter()" class="p-button-success mr-2"
+          <button description="telecharger" icon="pi pi-file-pdf" [hidden]="disableGenerateDemande" label="Imprimer la demande" (click)="generateDemande(demande)" class="p-button-raised p-button-success mr-2 "
                   pButton></button>
       </div>
 
