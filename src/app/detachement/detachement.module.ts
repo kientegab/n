@@ -67,7 +67,6 @@ import { ValiderDetachementComponent } from './valider-detachement/valider-detac
     AnalyserDisponibiliteComponent,
     DocumentUploadComponent,
     ValiderDetachementComponent
- 
 
   ],
     imports: [
