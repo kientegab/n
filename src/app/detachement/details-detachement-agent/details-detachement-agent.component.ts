@@ -415,7 +415,7 @@ downloadActe(demande: IDemande): void {
           this.disableGenerateDemande = false;
         }
 
-          if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGF')) {
+          if (this.demande.statut === 'DEMANDE_VALIDEE' && (this.profil === 'STDRH' || this.profil === 'STDGFP')) {
             this.disableReceptionnerV = false;
           }
       
