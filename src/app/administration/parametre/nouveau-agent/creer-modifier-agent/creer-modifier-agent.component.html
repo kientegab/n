@@ -152,6 +152,39 @@
     <span>Veuillez sélectionner une structure</span>
   </div>
 </div>
+
+<div class="field col-6">
+  <label for="emploi">Emploi</label>
+  <input
+    id="emploi"
+    name="emploi"
+    #emploi="ngModel"
+    [(ngModel)]="request.emploi"
+    pInputText
+    required
+    placeholder="Entrez votre emploi"
+  />
+  <div class="p-error" *ngIf="emploi.invalid && (emploi.dirty || emploi.touched)">
+    Veuillez renseigner votre emploi.
+  </div>
+</div>
+
+<!-- Fonction -->
+<div class="field col-6">
+  <label for="fonction">Fonction</label>
+  <input
+    id="fonction"
+    name="fonction"
+    #fonction="ngModel"
+    [(ngModel)]="request.fonction"
+    pInputText
+    required
+    placeholder="Entrez votre fonction"
+  />
+  <div class="p-error" *ngIf="fonction.invalid && (fonction.dirty || fonction.touched)">
+    Veuillez renseigner votre fonction.
+  </div>
+</div>
       </div>
     </div>
   

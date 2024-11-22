@@ -163,6 +163,8 @@ fetchAgentDetails() {
    //   this.request.superieurHierarchique.matricule = data.superieurHierarchique.matricule;
       this.request.ministere = response.body!.ministere;
       this.request.structure = response.body!.structure;
+      this.request.emploi = response.body!.emploi;
+      this.request.fonction = response.body!.fonction;
       this.request.email = response.body!.email;
 
       this.showMessage({ severity: 'success', summary: 'Succès, Agent récupérés.', detail: 'Détails de l\'agent récupérés.' });

@@ -22,6 +22,7 @@ export interface IAgent {
     categorie?: string;
     structure?: IStructure;
     fonction?: string;
+    emploi?: string;
     position?: string;
     superieurHierarchique?: IAgent;
     profil?: IProfil;
@@ -53,7 +54,9 @@ export class Agent implements IAgent {
         public position?: string,
         public superieurHierarchique?: IAgent,
         public profil?: IProfil,
-        public ministere?: IMinistere
+        public ministere?: IMinistere,
+        public emploi?: string
+
 
         // public actif?: boolean
     ) { }
