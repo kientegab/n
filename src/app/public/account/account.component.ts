@@ -55,7 +55,7 @@ export class AccountComponent implements OnInit {
   isFetchingAgentInfo: boolean = false; // Pour gérer l'état de chargement
   dossierTypes!: any[];
   selectedType: any;
-
+  filteredStructures: any;
 
   profil: IProfil = new Profil()
 
@@ -78,6 +78,8 @@ export class AccountComponent implements OnInit {
     this.loadStructure();
     this.loadProfil();
     this.LoadAgentByMatricule();
+//this.loadStructuresByMinistere();
+
 
     if (!this.request.superieurHierarchique) {
       this.request.superieurHierarchique = {
@@ -92,7 +94,7 @@ export class AccountComponent implements OnInit {
   }
 
   loadMinistere(): void {
-    this.ministereService.findAll().subscribe(result => {
+    this.ministereService.findListe().subscribe(result => {
         if (result && result.body) {
             this.ministeres = result.body || [];
         }
@@ -171,6 +173,59 @@ loadAgentByMatricule(matricule :string) {
       this.handleError(error);
     });
   }
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  loadStructuresByMinistere(ministereId: number): void {
+    if (!ministereId) {
+      this.filteredStructures = [];
+      return;
+    }
+    
+
+    this.structureService.findStructureByMinistere(ministereId).subscribe(response =>{
+      this.filteredStructures = response.body!;
+      console.log("structures::::::::::::::::::::::::",this.filteredStructures);
+    },
+      error => {
+        console.error('Erreur lors du chargement des structures :', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Impossible de charger les structures.',
+        })
+      });
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  fetchAgentDetails() {
+    if (!this.request.matricule) {
+      this.messageService.add({ severity: 'warn', summary: 'Attention', detail: 'Veuillez renseigner un matricule.' });
+      return;
+    }
+  
+    this.agentService.getAgentByMatricule(this.request.matricule).subscribe( response =>{
+     
+      this.request = response.body!;
+      console.log("agent================", this.request)
+
+        // Mettre à jour les champs du formulaire avec les données récupérées
+        this.request.nom = response.body!.nom;
+        this.request.prenom = response.body!.prenom;
+        this.request.telephone = response.body!.telephone;
+        this.request.profil = response.body!.profil;
+     //   this.request.superieurHierarchique.matricule = data.superieurHierarchique.matricule;
+        this.request.ministere = response.body!.ministere;
+        this.request.structure = response.body!.structure;
+        this.request.email = response.body!.email;
+  
+        this.messageService.add({ severity: 'success', summary: 'Succès', detail: 'Détails de l\'agent récupérés.' });
+      },
+      error => {
+        this.messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Agent introuvable.' });
+      });
+    }
+  
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 LoadAgentByMatricule() {
@@ -215,58 +270,51 @@ LoadAgentByMatricule() {
 
 
 create() {
-  // Assurez-vous que les informations du supérieur hiérarchique sont correctement récupérées
-  if (this.request.superieurHierarchique && this.request.superieurHierarchique.matricule) {
-    this.isFetchingAgentInfo = true;
-    this.agentService.getAgentInfoByMatricule(this.request.superieurHierarchique.matricule)
-      .subscribe(
-        (response) => {
-          if (response && response.body) {
-            this.agent = response.body;
-            this.isFetchingAgentInfo = false;
-            this.request.superieurHierarchique = this.agent;
+  this.isOpInProgress = true; // Indique que l'opération est en cours
 
-            this.isOpInProgress = true;
-            this.accountService.create(this.request).subscribe(
-              {
-                next: (response) => {
-                  this.showMessage({
-                    severity: 'success',
-                    summary: 'Compte d\'utilisateur créé avec succès'
-                  });
+  // Appel au service pour créer le compte
+  this.accountService.create(this.request).subscribe({
+    next: (response) => {
+      this.showMessage({
+        severity: 'success',
+        summary: 'Compte d\'utilisateur créé avec succès'
+      });
 
-                  // Utilisez setTimeout pour afficher le message de succès avant la redirection
-                  setTimeout(() => {
-                    this.resetForm();
-                    this.router.navigate(['/login']);
-                  }, 10000); // 2 secondes de délai avant la redirection
+      // Délai avant la redirection pour afficher le message
+      setTimeout(() => {
+        this.resetForm(); // Réinitialise le formulaire
+        this.router.navigate(['/login']); // Redirige vers la page de connexion
+      }, 2000); // Délai de 2 secondes
 
-                  this.isOpInProgress = false;
-                },
-                error: (error) => {
-                  console.error("error" + JSON.stringify(error));
-                  this.isOpInProgress = false;
-                  let errorMessage = "Vous avez déjà un compte!! contactez l'admin"
-                  this.message = { severity: 'error', summary: errorMessage };
-                }
-              }
-            );
-          } else {
-            console.error("Erreur lors de la récupération des informations de l'agent", response);
-            this.isFetchingAgentInfo = false;
-          }
-        },
-        (error: any) => {
-          console.error("Erreur lors de la récupération des informations de l'agent", error);
-          this.isFetchingAgentInfo = false;
-        }
-      );
-  } else {
+      this.isOpInProgress = false; // Fin de l'opération
+    },
+    error: (error) => {
+      console.error("Erreur lors de la création du compte:", error);
+
+      this.isOpInProgress = false; // Fin de l'opération même en cas d'erreur
+
+      // Gestion des différents types d'erreurs
+      let errorMessage = 'Une erreur est survenue lors de la création du compte.';
+      if (error.status === 409) { // Conflit : compte déjà existant
+        errorMessage = "Vous avez déjà un compte ! Contactez l'administrateur.";
+      } else if (error.status === 400) { // Requête invalide
+        errorMessage = "Données invalides. Vérifiez votre saisie.";
+      }
+
+      this.showMessage({
+        severity: 'error',
+        summary: errorMessage
+      });
+    }
+  });
+}
+
+/*   } else {
     console.log("agent================================================", this.agent);
     console.log("agent================================================", this.agentInfo);
     this.agent = new Agent();
-  }
-}
+  } */
+
 
 resetForm() {
   this.request = {} // Réinitialisez le modèle du formulaire (request) à un nouvel objet CreateAccountRequest.

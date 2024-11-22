@@ -57,6 +57,7 @@ export class CreerModifierAgentComponent {
   isFetchingAgentInfo: boolean = false; // Pour gérer l'état de chargement
   dossierTypes!: any[];
   selectedType: any;
+  filteredStructures: any;
 
 
   profil: IProfil = new Profil()
@@ -111,7 +112,7 @@ export class CreerModifierAgentComponent {
   }
 
   loadMinistere(): void {
-    this.ministereService.findAll().subscribe(result => {
+    this.ministereService.findListe().subscribe(result => {
         if (result && result.body) {
             this.ministeres = result.body || [];
         }
@@ -145,6 +146,33 @@ loadProfil(): void {
 //   });
 // }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+fetchAgentDetails() {
+  if (!this.request.matricule) {
+    this.showMessage({ severity: 'warn', summary: 'Attention', detail: 'Veuillez renseigner un matricule.' });
+    return;
+  }
+
+  this.agentService.getAgentByMatricule(this.request.matricule).subscribe( response =>{
+   
+      // Mettre à jour les champs du formulaire avec les données récupérées
+      this.request.nom = response.body!.nom;
+      this.request.prenom = response.body!.prenom;
+      this.request.telephone = response.body!.telephone;
+      this.request.profil = response.body!.profil;
+   //   this.request.superieurHierarchique.matricule = data.superieurHierarchique.matricule;
+      this.request.ministere = response.body!.ministere;
+      this.request.structure = response.body!.structure;
+      this.request.email = response.body!.email;
+
+      this.showMessage({ severity: 'success', summary: 'Succès, Agent récupérés.', detail: 'Détails de l\'agent récupérés.' });
+    },
+    error => {
+      this.showMessage({ severity: 'error', summary: 'Erreur, Agent introuvable.', detail: 'Agent introuvable.' });
+    });
+  }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 isEditing() {
   return !!this.agent.id;
 }
@@ -247,131 +275,107 @@ LoadAgentByMatriculeSuperieur(matricule: string) {
 }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  create() {
+create() {
+  this.clearDialogMessages();
+  this.isDialogOpInProgress = true;
 
+  // Vérifie si une requête (données utilisateur) est fournie
+  if (this.request) {
+    console.log("Utilisateur à traiter :", this.request);
 
-    this.clearDialogMessages();
-    this.isDialogOpInProgress = true;
-       if(this.request){
-        console.log("Agent to save ==========", this.profil);
-        if (this.request.id) {
-          this.agentService.updateAgent(this.request).subscribe(
-            {
-              next: (response) => {
-                this.dialogRef.close(response);
-                this.dialogRef.destroy();
-                this.showMessage({ severity: 'success', summary: 'Agent modifié avec succès' });
-
-              },
-              error: (error) => {
-                console.error("error" + JSON.stringify(error));
-                this.isOpInProgress = false;
-                this.showMessage({ severity: 'error', summary: error.error.message });
-
-              }
-            });
+    // Si l'ID existe, il s'agit d'une modification
+    if (this.request.id) {
+      this.agentService.updateAgent(this.request).subscribe({
+        next: (response) => {
+          this.dialogRef.close(response); // Ferme la boîte de dialogue avec succès
+          this.showMessage({
+            severity: 'success',
+            summary: 'Utilisateur modifié avec succès'
+          });
+        },
+        error: (error) => {
+          console.error("Erreur lors de la modification :", error);
+          this.isDialogOpInProgress = false; // Réinitialise l'état
+          this.handleError(error); // Appelle une fonction centralisée pour gérer les erreurs
         }
+      });
+    } else {
+      // Si pas d'ID, il s'agit d'une création
+      this.accountService.create(this.request).subscribe({
+        next: (response) => {
+          this.showMessage({
+            severity: 'success',
+            summary: 'Compte utilisateur créé avec succès'
+          });
 
-       }else{
+          // Attends 2 secondes pour afficher le message avant de rediriger
+          setTimeout(() => {
+            this.resetForm(); // Réinitialise le formulaire
+            this.router.navigate(['admin/agents']); // Redirige vers la liste des agents
+          }, 2000);
 
-       }
-   // this.LoadAgentByMatriculeSuperieur(this.request.superieurHierarchique!.matricule!)
-//debut
-if (this.request.superieurHierarchique && this.request.superieurHierarchique.matricule) {
-    this.isFetchingAgentInfo = true; // Activez l'indicateur de chargement
-   // console.warn("agent================================================", this.agent)
-    //console.log("matricule================================================", matricule)
-    // Faites une requête au service pour obtenir les informations de l'agent en utilisant this.matricule
-    this.agentService.getAgentInfoByMatricule(this.request.superieurHierarchique.matricule)
-        .subscribe(
-            (response) => {
-
-               // console.warn("agent================================================", this.agent)
-               // console.warn("agent================================================", this.agentInfo)
-
-                // Vérifiez que la réponse est réussie
-                if (response && response.body) {
-                    this.agent = response.body;
-                    this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement une fois les données obtenues
-                    this.request.superieurHierarchique = this.agent;
-
-
-                    this.isOpInProgress = true;
-                    // console.log("Profils=====================================================",this.profil)
-                    //console.log("Création de compte=====================================================",this.request);
-                    console.log(" objet Supérieur ", this.agent)
-                    console.log("bon",this.request);
-
-                    this.accountService.create(this.request).subscribe(
-
-
-                      {
-                        next: (response) => {
-                          this.dialogRef.close(response);
-                          this.dialogRef.destroy();
-                          this.router.navigate(['admin/agents']);
-                          this.showMessage({
-                              severity: 'success',
-                              summary: 'agent créé avec succès',
-
-                          });
-
-                              this.resetForm();
-                  //     this.router.navigate(['agents']);
-                       setTimeout(() => {
-                         this.accountService.login();
-                       }, 2000);
-                       this.accountRequest = {};
-                       this.pwdConfirmation = null;
-                       this.form.reset();
-                       this.isOpInProgress = false;
-                  //   },
-
-                          this.isDialogOpInProgress = false;
-                      },
-                      error: (error) => {
-                         console.error("error" + JSON.stringify(error));
-                         this.isOpInProgress = false;
-                         this.isDialogOpInProgress = false;
-                         this.showMessage({severity: 'error', summary: error.error.message});
-
-                     }
-
-
-
-                  }
-
-                    )
-
-                    //console.log("agent================================================", this.agent)
-                    //console.warn("agent================================================", this.agentInfo)
-                } else {
-                    console.error("Erreur lors de la récupération des informations de l'agent", response);
-                    this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement en cas d'erreur
-
-                }
-            },
-            (error: any) => {
-                console.error("Erreur lors de la récupération des informations de l'agent", error);
-                this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement en cas d'erreur
-            }
-        );
-} else {
-    console.log("agent================================================", this.agent)
-    console.log("agent================================================", this.agentInfo)
-    // Réinitialisez les informations de l'agent si le numéro matricule est vide
-    this.agent = new Agent();
+          this.isDialogOpInProgress = false; // Fin de l'opération
+        },
+        error: (error) => {
+          console.error("Erreur lors de la création du compte :", error);
+          this.isDialogOpInProgress = false; // Fin de l'opération en cas d'erreur
+          this.handleError(error); // Gère les erreurs
+        }
+      });
+    }
+  } else {
+    this.isDialogOpInProgress = false;
+    this.showMessage({
+      severity: 'error',
+      summary: 'Données utilisateur manquantes.'
+    });
+  }
 }
-//fin
 
+/**
+ * Gère les erreurs rencontrées lors des opérations.
+ * @param error - L'objet erreur reçu
+ */
+handleError(error: any) {
+  let errorMessage = 'Une erreur est survenue.';
 
+  if (error.status === 409) { // Conflit : utilisateur déjà existant
+    errorMessage = "Cet utilisateur existe déjà. Contactez l'administrateur.";
+  } else if (error.status === 400) { // Requête invalide
+    errorMessage = "Données invalides. Veuillez vérifier votre saisie.";
+  } else if (error.error && error.error.message) {
+    // Si un message spécifique est disponible
+    errorMessage = error.error.message;
+  }
 
-
-
+  this.showMessage({
+    severity: 'error',
+    summary: errorMessage
+  });
 }
 
 
-
+    loadStructuresByMinistere(ministereId: number): void {
+      if (!ministereId) {
+        this.filteredStructures = [];
+        return;
+      }
+      
+  
+      this.structureService.findStructureByMinistere(ministereId).subscribe(response =>{
+        this.filteredStructures = response.body!;
+        console.log("structures::::::::::::::::::::::::",this.filteredStructures);
+      },
+        error => {
+          console.error('Erreur lors du chargement des structures :', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: 'Impossible de charger les structures.',
+          })
+        });
+    }
+  
 
   resetForm() {
     this.request = {}; // Réinitialisez le modèle du formulaire (request) à un objet vide.
@@ -386,11 +390,11 @@ if (this.request.superieurHierarchique && this.request.superieurHierarchique.mat
 }
 // Errors
 
-handleError(error: HttpErrorResponse) {
+/*handleError(error: HttpErrorResponse) {
     console.error(`Processing Error: ${JSON.stringify(error)}`);
     this.isDialogOpInProgress = false;
     this.dialogErrorMessage = error.error.title;
-}
+}*/
 
 showMessage(message: Message) {
     this.message = message;

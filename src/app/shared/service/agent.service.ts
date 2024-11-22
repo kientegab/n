@@ -69,5 +69,9 @@ export class AgentService {
   getAgentByMatricule(matricule: string): Observable<EntityResponseType> {
     return this.http.get<IAgent>(`${agentMatriculeUrl}/matricule/${matricule}`, { observe: 'response' });
   }
-
+  
+  findActivatedAgents(): Observable<EntityArrayResponseType> {
+    return this.http.get<IAgent[]>(`${agentUrl}/list-activated`, { observe: 'response' });
+  }
+  
 }

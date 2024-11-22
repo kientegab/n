@@ -14,46 +14,85 @@
 </ng-template>
 <p-progressBar *ngIf="isDialogOpInProgress" mode="indeterminate" color="#1e88e0"></p-progressBar>
 <p-message *ngIf="message" [severity]="message.severity" [text]="message.summary"></p-message>
-<!-- <p-message severity="info" text="Message Content"></p-message> -->
-<!-- Form -->
-<form (ngSubmit)="create()" #cf="ngForm" style="margin-top:20px;">
 
-    <!--  -->
+<form (ngSubmit)="create()" #cf="ngForm" class="p-fluid" style="margin-top: 20px;">
 
-    <div class="formgrid grid">
-        <div class="field col-6 md:col-6">
-            <label for="matricule">No. Matricule</label>
-            <input id="matricule" name="matricule" #matricule="ngModel"
-                [(ngModel)]="request.matricule"  pInputText required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
-            <div class="p-error" *ngIf="matricule.invalid && (matricule.dirty || matricule.touched) ">
-                <span>Veillez renseigner votre No. matricule</span>
-            </div>
+    <!-- Section: Informations Personnelles -->
+    <div class="form-section">
+      <h4 class="section-title">Informations Personnelles</h4>
+      <div class="formgrid grid">
+        <div class="field col-6">
+          <label for="matricule">No. Matricule</label>
+          <div class="p-inputgroup">
+            <input
+              id="matricule"
+              name="matricule"
+              #matricule="ngModel"
+              [(ngModel)]="request.matricule"
+              pInputText
+              required
+              placeholder="Entrez votre matricule"
+            />
+            <button
+              type="button"
+              pButton
+              icon="pi pi-search"
+              class="p-button-secondary"
+              (click)="fetchAgentDetails()"
+            ></button>
+          </div>
+          <div class="p-error" *ngIf="matricule.invalid && (matricule.dirty || matricule.touched)">
+            Veuillez renseigner votre No. matricule.
+          </div>
+        </div>
+        <div class="field col-6">
+          <label for="nom">Nom</label>
+          <input
+            id="nom"
+            name="nom"
+            #nom="ngModel"
+            [(ngModel)]="request.nom"
+            pInputText
+            required
+            placeholder="Entrez votre nom"
+          />
+          <div class="p-error" *ngIf="nom.invalid && (nom.dirty || nom.touched)">
+            Veuillez renseigner votre nom.
+          </div>
+        </div>
+        <div class="field col-6">
+          <label for="prenom">Prénom</label>
+          <input
+            id="prenom"
+            name="prenom"
+            #prenom="ngModel"
+            [(ngModel)]="request.prenom"
+            pInputText
+            required
+            placeholder="Entrez votre prénom"
+          />
+          <div class="p-error" *ngIf="prenom.invalid && (prenom.dirty || prenom.touched)">
+            Veuillez renseigner votre prénom.
+          </div>
+        </div>
+        <div class="field col-6">
+          <label for="telephone">Téléphone</label>
+          <input
+            type="number"
+            id="telephone"
+            name="telephone"
+            #telephone="ngModel"
+            [(ngModel)]="request.telephone"
+            pInputText
+            required
+            placeholder="Entrez votre numéro de téléphone"
+          />
+          <div class="p-error" *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)">
+            Veuillez renseigner votre numéro de téléphone.
+          </div>
         </div>
 
-        <div class="field col-6 md:col-6">
-            <label for="nom">Nom</label>
-            <input id="nom" name="nom" #nom="ngModel" [(ngModel)]="request.nom" pInputText required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
-            <div class="p-error" *ngIf="nom.invalid && (nom.dirty || nom.touched) ">
-                <span>Veillez renseigner votre nom</span>
-            </div>
-        </div>
-        <div class="col-12 md:col-6">
-            <label for="prenom">Prenom</label>
-            <input id="prenom" name="prenom" #prenom="ngModel" [(ngModel)]="request.prenom" pInputText
-                required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
-            <div class="p-error" *ngIf="prenom.invalid && (prenom.dirty || prenom.touched)">
-                <span>Veillez renseigner votre prenom</span>
-            </div>
-        </div>
-        <div class="col-12 md:col-6">
-            <label for="telephone">Telephone</label>
-            <input type="number"   id="telephone" name="telephone" #telephone="ngModel" [(ngModel)]="request.telephone" pInputText
-                required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
-            <div class="p-error" *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)">
-                <span>Veillez renseigner votre telephone</span>
-            </div>
-        </div>
-        <div class="field col-6 md:col-6">
+        <div class="field col-6">
             <label for="profil">Profil</label>
             <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" id="profil"
                 name="profil" #profil="ngModel" [options]="profils"
@@ -64,99 +103,141 @@
                 <span>Veillez selectionner le profil</span>
             </div>
         </div>
-       <!--  <div class="field col-6 md:col-6">
-            <label for="telephone">Telephone</label>
-            <input type="number"   id="telephone" name="telephone" #telephone="ngModel" [(ngModel)]="request.telephone" pInputText
-                required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
-            <div class="p-error" *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)">
-                <span>Veillez renseigner votre telephone</span>
-            </div>
-        </div> -->
+      </div>
+    </div>
+  
+    <!-- Section: Informations Professionnelles -->
+    <div class="form-section">
+      <h4 class="section-title">Informations Professionnelles</h4>
+      <div class="formgrid grid">
         <div class="col-12 md:col-6">
-            <label for="superieur">Matricule du supérieur hiérarchique</label>
-            <input id="superieur" name="superieur" #superieur="ngModel"
-                [(ngModel)]="request.superieurHierarchique!.matricule"   pInputText required class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"/>
-            <div class="p-error" *ngIf="matricule.invalid && (matricule.dirty || matricule.touched) ">
-                <span>Veillez renseigner le No. matricule</span>
-            </div>
-        </div>
-        <div class="col-12 md:col-6">
-            <label for="ministeres">Ministeres</label>
-            <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" id="profil"
-                name="ministeres"  [options]="ministeres"
-                [(ngModel)]="request.ministere" optionLabel="libelle" [required]="true" [filter]="true"
-                appendTo="body" [showClear]="true">
+            <label for="ministeres">Ministères</label>
+            <p-dropdown
+              id="ministeres"
+              name="ministeres"
+              [options]="ministeres"
+              [(ngModel)]="request.ministere"
+              optionLabel="libelle"
+              [required]="true"
+              [filter]="true"
+              appendTo="body"
+              [showClear]="true"
+              placeholder="Sélectionnez votre ministère"
+
+              (onChange)="loadStructuresByMinistere($event.value.id)"
+            >
             </p-dropdown>
-            <div class="p-error" *ngIf="!ministeres">
-                <span>Veillez selectionner le ministère</span>
+            <div class="p-error" *ngIf="!request.ministere">
+              <span>Veuillez sélectionner un ministère</span>
             </div>
-        </div>
-        <div class="col-12 md:col-6">
-            <label for="structures">Structures</label>
-            <p-dropdown autoWidth="false" styleClass="mb-3" [style]="{'width':'100%'}" id="structures"
-                name="structures"  [options]="structures"
-                [(ngModel)]="request.structure" optionLabel="libelle" [required]="true" [filter]="true"
-                appendTo="body" [showClear]="true">
-            </p-dropdown>
-            <div class="p-error" *ngIf="!structures">
-                <span>Veillez selectionner la structure</span>
-            </div>
-        </div>
-        <div class="col-12 md:col-6">
-            <label for="email">Addresse Email</label>
-        <input id="email" name="email" type="email" #email="ngModel" [(ngModel)]="request.email" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-            pInputText email required />
-        <div class="p-error" *ngIf="email.invalid && (email.dirty || email.touched) ">
-            <span>Veillez renseigner votre addresse email</span>
-        </div>
-        <div class="p-error" *ngIf="email.invalid && (email.dirty || email.touched) ">
-            <span>Veillez renseigner une addresse email valide</span>
-        </div>
-        </div>
-        <div class="field col-6 md:col-6">
-            <label for="password">Mot de Passe</label>
-            <p-password id="password" name="password" #password="ngModel" class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full"
-                [(ngModel)]="request.password" [toggleMask]="true" [feedback]="false" minlength="6"
-                required>
-            </p-password>
-            <div class="p-error" *ngIf="password.invalid && (password.dirty || password.touched) ">
-                <span>Veillez renseigner votre mot de passe</span>
-            </div>
-            <div class="p-error" *ngIf="password.invalid && (password.dirty || password.touched) ">
-                <span>Le mot de passe doit etre d'au moins 6 caracteres</span>
-            </div>
-        </div>
-        <div class="col-12 md:col-6">
-            <label for="pwd-confirmation">Confirmation du Mot de Passe</label>
-            <p-password id="pwd-confirmation" name="pwd-confirmation" #confirmation="ngModel"
-                [(ngModel)]="pwdConfirmation" [toggleMask]="true" [feedback]="false" required>
-            </p-password>
-            <div class="p-error"
-                *ngIf="confirmation.invalid && (confirmation.dirty || confirmation.touched) ">
-                <span>Veillez renseigner la confirmation du mot de passe</span>
-            </div>
-            <div class="p-error"
-                *ngIf="(confirmation.dirty || confirmation.touched) && request.password !== pwdConfirmation">
-                <span>Les mots de passe ne sont pas les memes</span>
-            </div>
-        </div>
+          </div>
 
+      <div class="col-12 md:col-6">
+  <label for="structures">Structures</label>
+  <p-dropdown
+    id="structures"
+    name="structures"
+    [options]="filteredStructures"
+    [(ngModel)]="request.structure"
+    optionLabel="libelle"
+    [required]="true"
+    [filter]="true"
+    appendTo="body"
+    [showClear]="true"
+    placeholder="Sélectionnez votre structure"
 
-
-        <p-divider></p-divider>
-        <div class="text-right">
-            <button type="submit" pButton label="Creer"
-                icon="pi {{isOpInProgress ? 'pi-spinner pi-spin' : 'pi-user-plus'}}"
-                class="p-button-raised p-button-text p-button-secondary p-mr-2"
-               >
-            </button>
-            <button type="reset" pButton label="Effacer" icon="pi pi-times-circle"
-                class="p-button-raised p-button-text p-button-secondary">
-            </button>
+  >
+  </p-dropdown>
+  <div class="p-error" *ngIf="!request.structure">
+    <span>Veuillez sélectionner une structure</span>
+  </div>
+</div>
+      </div>
+    </div>
+  
+    <!-- Section: Sécurité -->
+    <div class="form-section">
+      <h4 class="section-title">Sécurité</h4>
+      <div class="formgrid grid">
+        <div class="field col-6">
+          <label for="email">Adresse Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            #email="ngModel"
+            [(ngModel)]="request.email"
+            pInputText
+            required
+            placeholder="Entrez votre adresse email"
+          />
+          <div class="p-error" *ngIf="email.invalid && (email.dirty || email.touched)">
+            Veuillez renseigner une adresse email valide.
+          </div>
         </div>
-
-
+        <div class="field col-6">
+          <label for="password">Mot de Passe</label>
+          <p-password
+            id="password"
+            name="password"
+            #password="ngModel"
+            [(ngModel)]="request.password"
+            required
+            minlength="6"
+            [feedback]="false"
+            placeholder="Entrez un mot de passe"
+          ></p-password>
+          <div class="p-error" *ngIf="password.invalid && (password.dirty || password.touched)">
+            Veuillez renseigner un mot de passe d'au moins 6 caractères.
+          </div>
+        </div>
+      </div>
     </div>
 
-</form>
-
+    <div class="field col-6">
+        <label for="confirmPassword">Confirmer le Mot de Passe</label>
+        <p-password
+          id="confirmPassword"
+          name="confirmPassword"
+          #confirmPassword="ngModel"
+          [(ngModel)]="pwdConfirmation"
+          required
+          minlength="6"
+          [feedback]="false"
+          placeholder="Confirmez le mot de passe"
+        ></p-password>
+        <div
+          class="p-error"
+          *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
+        >
+          Veuillez confirmer le mot de passe.
+        </div>
+        <div
+          class="p-error"
+          *ngIf="request.password !== pwdConfirmation && confirmPassword.dirty"
+        >
+          Les mots de passe ne correspondent pas.
+        </div>
+      </div>
+  
+    <!-- Boutons -->
+    <div class="form-actions grid align-items-center">
+        <div class="col-6 text-left">
+          <button
+            type="reset"
+            pButton
+            label="Effacer"
+            class="p-button-raised p-button-secondary"
+          ></button>
+        </div>
+        <div class="col-6 text-right">
+          <button
+            type="submit"
+            pButton
+            label="Créer"
+            class="p-button-raised custom-create-button"
+          ></button>
+        </div>
+      </div>
+  </form>
+  

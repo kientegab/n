@@ -108,7 +108,7 @@ export class NouveauAgentComponent {
 
       loadAll(): void {
         const req = this.buildReq();
-        this.agentService.query(req).subscribe(result => {
+        this.agentService.findActivatedAgents().subscribe(result => {
           if (result && result.body) {
             this.totalRecords =result.body.length;
             // this.totalRecords = Number(result.headers.get('X-Total-Count'));

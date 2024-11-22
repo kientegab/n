@@ -16,6 +16,8 @@ const structureUrl = environment.detachementUrl+'/ministere-structures/list-page
 // const structurePostUrl = environment.detachementUrl+'/structures';
 const structurePostUrl = environment.detachementUrl+'/structures';
 
+//const structureByMinistere = environment.detachementUrl+'/structures';
+
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +39,7 @@ export class StructureService {
   }
 
   findStructureByMinistere(id: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IStructure[]>(`${structureUrl}/ministere-structures/${id}`, { observe: 'response' });
+    return this.http.get<IStructure[]>(`${baseUri}/ministere-structures/${id}`, { observe: 'response' });
   }
 
 

@@ -13,7 +13,8 @@ export interface ICanActivateRequest {
 	matricule?: string;
     email?: string;
     password?: string;
-
+    emploi?: string;
+    fonction?: string; 
 
 	dateNaissance?: Date;
 	dateRecrutement?: Date;
@@ -39,7 +40,9 @@ export class CanActivateRequest implements ICanActivateRequest{
     public password?: string,
     // public ministeres?: IMinistere[],
     // public structures?: IStructure[],
-    public superieurHierarchique?: ICanActivateRequest
+    public superieurHierarchique?: ICanActivateRequest,
+    public emploi?: string,
+    public fonction?: string 
     ){}
 
 }

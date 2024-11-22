@@ -86,12 +86,14 @@ export class CreerModifierDetachementComponent {
 
 
     agent: IAgent = new Agent();
+    superieurHierarchique:IAgent = new Agent();
 
 
     motif: IMotif = new Motif();
 
 
     agentInfo: any; // C'est où vous stockerez les informations de l'agent
+    superieurInfo: any;
     isFetchingAgentInfo: boolean = false; // Pour gérer l'état de chargement
 
 
@@ -160,7 +162,28 @@ export class CreerModifierDetachementComponent {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    onMatriculeSuperieurChange() {
+        if (this.demande.superieurHierarchique?.matricule) {
+          this.agentService.getAgentInfoByMatricule
+            (this.demande.superieurHierarchique.matricule)
+            .subscribe(
+              (response) => {
+                if (response && response.body) {
+                    this.superieurHierarchique = response.body;
+                  //  this.superieur = (response.body.superieurHierarchique ? response.body.superieurHierarchique.nom: '') + ' ' + (response.body.superieurHierarchique ? response.body.superieurHierarchique!.prenom: '');
+                    this.isFetchingAgentInfo = false; // Désactivez l'indicateur de chargement une fois les données obtenues
+                    console.warn("Supérieur hierarchique================================================", this.superieurHierarchique)
+                    console.warn("Supérieur hierarchique info================================================", this.superieurInfo)
+                }
+                this.demande.superieurHierarchique = this.superieurHierarchique ;
+              },
+              (error) => {
+                console.error('Erreur lors de la récupération des données :', error);
+              }
+            );
+        }
+      }
+      
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     onSelectFile($event: any, piece: Piece): void {
         console.log($event.target.files[0]);
@@ -196,7 +219,7 @@ export class CreerModifierDetachementComponent {
         this.onTypeDemandeurChange();
 
 
-
+        this.onMatriculeSuperieurChange();
         this.loadStructure();
         this.loadPieces();
         this.loadTypeDemande();
@@ -214,23 +237,25 @@ export class CreerModifierDetachementComponent {
             this.agent.structure = {libelle: ''};
         }
 
-
+/* 
         if (!this.agent.superieurHierarchique) {
             this.agent.superieurHierarchique = {nom: ''};
         }
 
 
-        if (!this.agent.structure.ministere) {
-            this.agent.structure.ministere = {libelle: ''};
-        }
+      
 
         if (!this.agent.superieurHierarchique) {
             this.agent.superieurHierarchique = {nom: ''};
         }
         if (!this.agent.superieurHierarchique) {
             this.agent.superieurHierarchique = {prenom: ''};
-        }
+        } */
         // Assurez-vous que libelle est défini
+        if (!this.agent.structure.ministere) {
+            this.agent.structure.ministere = {libelle: ''};
+        }
+
         if (!this.agent.structure.libelle) {
             this.agent.structure.libelle = '';
         }
@@ -242,7 +267,11 @@ export class CreerModifierDetachementComponent {
             this.demande.agent = {prenom: ""};
         }
 
+        if (!this.demande.superieurHierarchique) {
+            this.demande.superieurHierarchique = {matricule: ""};
+        }
 
+     
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -310,9 +339,9 @@ export class CreerModifierDetachementComponent {
 
 
 
-    get superieurHierarchique(): string {
+  /*   get superieurHierarchique(): string {
         return `${this.agent.superieurHierarchique!.prenom} ${this.agent.superieurHierarchique!.nom}`;
-      }
+      } */
 
 
     onMotifChange(): void {

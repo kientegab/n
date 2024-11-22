@@ -66,7 +66,7 @@
         <td>{{ agent.matricule }}</td>
           <td>{{ agent.nom }}</td>
           <td>{{ agent.prenom }}</td>
-          <td>{{ agent.profil.name }}</td>
+          <td>{{ agent.profil?.name }}</td>
           <td class="actionsStyle">
             <app-actions-toolbar-iud [enableBtnInfo]="enableBtnInfo" (info)="openModalDetail(agent)"
               (delete)="onDelete(agent)" [enableBtnDelete]="enableBtnDelete" (edit)="openModalEdit(agent)" [enableBtnEdit]="enableBtnEdit">

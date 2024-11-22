@@ -21,6 +21,7 @@ export interface IDemande {
     statut?: String;
     pieceJointes?: IPieceJointe[];
     agent?: IAgent;
+    superieurHierarchique?: IAgent;
     historique?: IHistorique;
     motif?: IMotif,
     // piecesFourniesDTO?: IPiecesFourniesDTO[],
@@ -28,7 +29,7 @@ export interface IDemande {
     structure?: IStructure[],
     ampliationDemande?: IAmpliationDemande[],
     articleDemande?: IArticleDemande[],
-    visaDemande?: IVisaDemande[]
+    visaDemande?: IVisaDemande[],
     // listDemande?: ITypeDemande[]
     imputerA?:string;
 }
@@ -53,7 +54,9 @@ export class Demande implements IDemande {
         public ampliationDemande?: IAmpliationDemande[],
         public articleDemande?: IArticleDemande[],
         public visaDemande?: IVisaDemande[],
-        public imputerA?:string
+        public imputerA?:string,
+        public superieurHierarchique?: IAgent
+
         // public listDemande?: ITypeDemande[]
 
     ){

@@ -117,8 +117,9 @@
             <div class="col-12 md:col-4">
                 <div class="p-field p-fluid">
                     <label for="superieur">Supérieur hiérarchique</label>
-                    <input [(ngModel)]="agent.superieurHierarchique!.nom" id="superieur" [readonly]="false"
+                    <input [(ngModel)]="demande.superieurHierarchique!.matricule" id="superieur" [readonly]="false"
                         name="superieur"
+                        (ngModelChange)="onMatriculeSuperieurChange()"
                         class="text-base text-color surface-overlay p-2 border-1 border-solid surface-border border-round appearance-none outline-none focus:border-primary w-full">
                 </div>
             </div>
